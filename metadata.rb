@@ -13,6 +13,5 @@ depends           'yum-centos'
 depends           'yum-epel'
 depends           'yum-elrepo'
 
-supports          'centos', '~> 6.0'
 supports          'centos', '~> 7.0'
 supports          'centos', '~> 8.0'
