@@ -1,6 +1,6 @@
 #
 # Cookbook:: osl-repos
-# Recipe:: centos
+# Recipe:: disable
 #
 # Copyright:: 2020, Oregon State University
 #
@@ -16,8 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This excludes the elrepo and epel repos from being installed
+# This is an example of directly using the resource to disable select repos
 osl_repos_centos 'default' do
-  epel false
-  elrepo false
+  powertools_enabled false
+  updates_enabled false
 end

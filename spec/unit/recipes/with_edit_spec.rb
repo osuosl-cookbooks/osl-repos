@@ -1,6 +1,6 @@
 #
 # Cookbook:: osl-repos
-# Spec:: default
+# Spec:: with_edit
 #
 # Copyright:: 2020, Oregon State University
 #
@@ -19,7 +19,7 @@
 require_relative '../../spec_helper'
 
 ####### Begin Spec Tests #######
-describe 'osl-repos::default' do
+describe 'osl-repos-test::with_edit' do
   ALL_PLATFORMS.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
@@ -88,32 +88,12 @@ describe 'osl-repos::default' do
 
                 # Test the base repository
                 it do
-                  expect(chef_run).to create_yum_repository('base').with(
-                    mirrorlist: nil,
-                    baseurl: 'http://centos-altarch.osuosl.org/$releasever/os/power9/',
-                    gpgkey: "#{ if arch == 'x86_64'
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                                else
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                                end }",
-                    enabled: true
-                  )
+                  expect(chef_run).to_not create_yum_repository('base')
                 end
 
                 # Test the extras repository
                 it do
-                  expect(chef_run).to create_yum_repository('extras').with(
-                    mirrorlist: nil,
-                    baseurl: 'http://centos-altarch.osuosl.org/$releasever/extras/power9/',
-                    gpgkey: "#{ if arch == 'x86_64'
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                                else
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                                end }",
-                    enabled: true
-                  )
+                  expect(chef_run).to_not create_yum_repository('extras')
                 end
 
                 # Test the updates repository
@@ -136,32 +116,12 @@ describe 'osl-repos::default' do
 
                 # Test the base repository
                 it do
-                  expect(chef_run).to create_yum_repository('base').with(
-                    mirrorlist: nil,
-                    baseurl: 'http://centos-altarch.osuosl.org/$releasever/os/$basearch/',
-                    gpgkey: "#{ if arch == 'x86_64'
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                                else
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                                end }",
-                    enabled: true
-                  )
+                  expect(chef_run).to_not create_yum_repository('base')
                 end
 
                 # Test the extras repository
                 it do
-                  expect(chef_run).to create_yum_repository('extras').with(
-                    mirrorlist: nil,
-                    baseurl: 'http://centos-altarch.osuosl.org/$releasever/extras/$basearch/',
-                    gpgkey: "#{ if arch == 'x86_64'
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                                else
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                                end }",
-                    enabled: true
-                  )
+                  expect(chef_run).to_not create_yum_repository('extras')
                 end
 
                 # Test the updates repository
@@ -188,32 +148,12 @@ describe 'osl-repos::default' do
 
               # Test the base repository
               it do
-                expect(chef_run).to create_yum_repository('base').with(
-                  mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/os/$basearch/',
-                  gpgkey: "#{ if arch == 'x86_64'
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                              else
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                              end }",
-                  enabled: true
-                )
+                expect(chef_run).to_not create_yum_repository('base')
               end
 
               # Test the extras repository
               it do
-                expect(chef_run).to create_yum_repository('extras').with(
-                  mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/extras/$basearch/',
-                  gpgkey: "#{ if arch == 'x86_64'
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                              else
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                              end }",
-                  enabled: true
-                )
+                expect(chef_run).to_not create_yum_repository('extras')
               end
 
               # Test the updates repository
@@ -278,29 +218,17 @@ describe 'osl-repos::default' do
 
               # Test the appstream repository
               it do
-                expect(chef_run).to create_yum_repository('appstream').with(
-                  mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/AppStream/power9/os',
-                  enabled: true
-                )
+                expect(chef_run).to_not create_yum_repository('appstream')
               end
 
               # Test the base repository
               it do
-                expect(chef_run).to create_yum_repository('base').with(
-                  mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/BaseOS/power9/os',
-                  enabled: true
-                )
+                expect(chef_run).to_not create_yum_repository('base')
               end
 
               # Test the extras repository
               it do
-                expect(chef_run).to create_yum_repository('extras').with(
-                  mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/extras/power9/os',
-                  enabled: true
-                )
+                expect(chef_run).to_not create_yum_repository('extras')
               end
 
               # Test the powertools repository
@@ -308,8 +236,13 @@ describe 'osl-repos::default' do
                 expect(chef_run).to create_yum_repository('powertools').with(
                   mirrorlist: nil,
                   baseurl: 'http://centos.osuosl.org/$releasever/PowerTools/power9/os',
-                  enabled: true
+                  enabled: false
                 )
+              end
+
+              # Machines running on the power9 architecture should not install the elrepo repository
+              it do
+                expect(chef_run).to_not create_yum_repository('elrepo')
               end
 
             ####### Begin 'x86_64', 'i386', 'aarch64', and 's390x' case #######
@@ -317,29 +250,17 @@ describe 'osl-repos::default' do
 
               # Test the appstream repository
               it do
-                expect(chef_run).to create_yum_repository('appstream').with(
-                  mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/AppStream/$basearch/os',
-                  enabled: true
-                )
+                expect(chef_run).to_not create_yum_repository('appstream')
               end
 
               # Test the base repository
               it do
-                expect(chef_run).to create_yum_repository('base').with(
-                  mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/BaseOS/$basearch/os',
-                  enabled: true
-                )
+                expect(chef_run).to_not create_yum_repository('base')
               end
 
               # Test the extras repository
               it do
-                expect(chef_run).to create_yum_repository('extras').with(
-                  mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/extras/$basearch/os',
-                  enabled: true
-                )
+                expect(chef_run).to_not create_yum_repository('extras')
               end
 
               # Test the powertools repository
@@ -347,27 +268,14 @@ describe 'osl-repos::default' do
                 expect(chef_run).to create_yum_repository('powertools').with(
                   mirrorlist: nil,
                   baseurl: 'http://centos.osuosl.org/$releasever/PowerTools/$basearch/os',
-                  enabled: true
+                  enabled: false
                 )
               end
-
             end ####### End switchcase #######
 
-            # The elrepo repositorry should be installed on the x86_64 architecture
-            if arch == 'x86_64'
-              it do
-                expect(chef_run).to create_yum_repository('elrepo').with(
-                  mirrorlist: nil,
-                  baseurl: 'http://ftp.osuosl.org/pub/elrepo/elrepo/el8/$basearch/',
-                  enabled: true
-                )
-              end
-
-            # Non x86_64 architectures should not install the elrepo repository
-            else
-              it do
-                expect(chef_run).to_not create_yum_repository('elrepo')
-              end
+            # The elrepo repository should not be installed
+            it do
+              expect(chef_run).to_not create_yum_repository('elrepo')
             end
           end ####### End architecture context #######
 

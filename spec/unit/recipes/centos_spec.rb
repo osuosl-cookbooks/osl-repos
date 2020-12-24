@@ -19,7 +19,7 @@
 require_relative '../../spec_helper'
 
 ####### Begin Spec Tests #######
-describe 'osl-repos::default' do
+describe 'osl-repos::centos' do
   ALL_PLATFORMS.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
@@ -236,12 +236,7 @@ describe 'osl-repos::default' do
             # Test the epel repository
             # This repository is outside of the switchcase because it is the same across all architectures
             it do
-              expect(chef_run).to create_yum_repository('epel').with(
-                mirrorlist: nil,
-                baseurl: 'http://epel.osuosl.org/7/$basearch',
-                gpgkey: 'http://epel.osuosl.org/RPM-GPG-KEY-EPEL-7',
-                enabled: true
-              )
+              expect(chef_run).to_not create_yum_repository('epel')
             end
           end ####### End Centos 7 Architecture Loop #######
         end
@@ -353,21 +348,9 @@ describe 'osl-repos::default' do
 
             end ####### End switchcase #######
 
-            # The elrepo repositorry should be installed on the x86_64 architecture
-            if arch == 'x86_64'
-              it do
-                expect(chef_run).to create_yum_repository('elrepo').with(
-                  mirrorlist: nil,
-                  baseurl: 'http://ftp.osuosl.org/pub/elrepo/elrepo/el8/$basearch/',
-                  enabled: true
-                )
-              end
-
-            # Non x86_64 architectures should not install the elrepo repository
-            else
-              it do
-                expect(chef_run).to_not create_yum_repository('elrepo')
-              end
+            # The elrepo repositorry should not be installed
+            it do
+              expect(chef_run).to_not create_yum_repository('elrepo')
             end
           end ####### End architecture context #######
 
@@ -375,12 +358,7 @@ describe 'osl-repos::default' do
 
           # Test the epel repository
           it do
-            expect(chef_run).to create_yum_repository('epel').with(
-              mirrorlist: nil,
-              baseurl: 'http://epel.osuosl.org/8/Everything/$basearch/',
-              gpgkey: 'http://epel.osuosl.org/RPM-GPG-KEY-EPEL-8',
-              enabled: true
-            )
+            expect(chef_run).to_not create_yum_repository('epel')
           end
         end ####### End Centos 8 architecture loop #######
 

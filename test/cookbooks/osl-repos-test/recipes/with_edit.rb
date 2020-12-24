@@ -1,6 +1,6 @@
 #
 # Cookbook:: osl-repos
-# Recipe:: centos
+# Recipe:: with_edit
 #
 # Copyright:: 2020, Oregon State University
 #
@@ -16,8 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This excludes the elrepo and epel repos from being installed
-osl_repos_centos 'default' do
-  epel false
-  elrepo false
+# This is an example of using the 'edit resource' function to modify the already included and enabled repos
+
+include_recipe 'osl-repos::epel'
+
+edit_resource(:osl_repos_centos, 'default') do
+  powertools true
+  powertools_enabled false
+  updates true
 end

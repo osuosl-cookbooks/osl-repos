@@ -1,6 +1,6 @@
 #
 # Cookbook:: osl-repos
-# Spec:: default
+# Spec:: nomanage
 #
 # Copyright:: 2020, Oregon State University
 #
@@ -19,7 +19,7 @@
 require_relative '../../spec_helper'
 
 ####### Begin Spec Tests #######
-describe 'osl-repos::default' do
+describe 'osl-repos-test::nomanage' do
   ALL_PLATFORMS.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
@@ -118,17 +118,7 @@ describe 'osl-repos::default' do
 
                 # Test the updates repository
                 it do
-                  expect(chef_run).to create_yum_repository('updates').with(
-                    mirrorlist: nil,
-                    baseurl: 'http://centos-altarch.osuosl.org/$releasever/updates/power9/',
-                    gpgkey: "#{ if arch == 'x86_64'
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                                else
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                                end }",
-                    enabled: true
-                  )
+                  expect(chef_run).to_not create_yum_repository('updates')
                 end
 
               ####### Begin 'aarch64', 's390x' case #######
@@ -166,17 +156,7 @@ describe 'osl-repos::default' do
 
                 # Test the updates repository
                 it do
-                  expect(chef_run).to create_yum_repository('updates').with(
-                    mirrorlist: nil,
-                    baseurl: 'http://centos-altarch.osuosl.org/$releasever/updates/$basearch/',
-                    gpgkey: "#{ if arch == 'x86_64'
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                                else
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                                end }",
-                    enabled: true
-                  )
+                  expect(chef_run).to_not create_yum_repository('updates')
                 end
 
               end ####### End of alt-arch case #######
@@ -218,17 +198,7 @@ describe 'osl-repos::default' do
 
               # Test the updates repository
               it do
-                expect(chef_run).to create_yum_repository('updates').with(
-                  mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/updates/$basearch/',
-                  gpgkey: "#{ if arch == 'x86_64'
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                              else
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                              end }",
-                  enabled: true
-                )
+                expect(chef_run).to_not create_yum_repository('updates')
               end
 
             end ####### End alternate architecture switcase #######
@@ -305,11 +275,7 @@ describe 'osl-repos::default' do
 
               # Test the powertools repository
               it do
-                expect(chef_run).to create_yum_repository('powertools').with(
-                  mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/PowerTools/power9/os',
-                  enabled: true
-                )
+                expect(chef_run).to_not create_yum_repository('powertools')
               end
 
             ####### Begin 'x86_64', 'i386', 'aarch64', and 's390x' case #######
@@ -344,11 +310,7 @@ describe 'osl-repos::default' do
 
               # Test the powertools repository
               it do
-                expect(chef_run).to create_yum_repository('powertools').with(
-                  mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/PowerTools/$basearch/os',
-                  enabled: true
-                )
+                expect(chef_run).to_not create_yum_repository('powertools')
               end
 
             end ####### End switchcase #######

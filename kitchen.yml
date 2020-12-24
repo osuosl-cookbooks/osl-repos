@@ -12,4 +12,21 @@ suites:
   - name: default
     run_list:
       - recipe[osl-repos::default]
-
+  - name: centos
+    run_list:
+      - recipe[osl-repos::centos]
+  - name: disable
+    run_list:
+      - recipe[osl-repos-test::disable]
+  - name: elrepo
+    run_list:
+      - recipe[osl-repos::elrepo]
+  - name: epel
+    run_list:
+      - recipe[osl-repos::epel]
+  - name: nomanage
+    run_list:
+      - recipe[osl-repos-test::nomanage]
+  - name: with_edit
+    run_list:
+      - recipe[osl-repos-test::with_edit]

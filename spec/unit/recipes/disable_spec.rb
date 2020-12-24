@@ -1,6 +1,6 @@
 #
 # Cookbook:: osl-repos
-# Spec:: default
+# Spec:: disable
 #
 # Copyright:: 2020, Oregon State University
 #
@@ -19,7 +19,7 @@
 require_relative '../../spec_helper'
 
 ####### Begin Spec Tests #######
-describe 'osl-repos::default' do
+describe 'osl-repos-test::disable' do
   ALL_PLATFORMS.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
@@ -127,7 +127,7 @@ describe 'osl-repos::default' do
                                   'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
                                   'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
                                 end }",
-                    enabled: true
+                    enabled: false
                   )
                 end
 
@@ -175,7 +175,7 @@ describe 'osl-repos::default' do
                                   'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
                                   'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
                                 end }",
-                    enabled: true
+                    enabled: false
                   )
                 end
 
@@ -227,7 +227,7 @@ describe 'osl-repos::default' do
                                 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
                                 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
                               end }",
-                  enabled: true
+                  enabled: false
                 )
               end
 
@@ -308,7 +308,7 @@ describe 'osl-repos::default' do
                 expect(chef_run).to create_yum_repository('powertools').with(
                   mirrorlist: nil,
                   baseurl: 'http://centos.osuosl.org/$releasever/PowerTools/power9/os',
-                  enabled: true
+                  enabled: false
                 )
               end
 
@@ -347,7 +347,7 @@ describe 'osl-repos::default' do
                 expect(chef_run).to create_yum_repository('powertools').with(
                   mirrorlist: nil,
                   baseurl: 'http://centos.osuosl.org/$releasever/PowerTools/$basearch/os',
-                  enabled: true
+                  enabled: false
                 )
               end
 

@@ -1,6 +1,6 @@
 #
 # Cookbook:: osl-repos
-# Recipe:: centos
+# Recipe:: epel
 #
 # Copyright:: 2020, Oregon State University
 #
@@ -16,8 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This excludes the elrepo and epel repos from being installed
+# This excludes all repos in the osl_repos_centos resource except the epel repo
 osl_repos_centos 'default' do
-  epel false
+  appstream false
+  base false
   elrepo false
+  extras false
+  powertools false
+  updates false
 end
