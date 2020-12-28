@@ -1,21 +1,58 @@
 # osl-repos
 
-TODO: Enter the cookbook description here.
-
+  This cookbook manages the base, epel, extras, and updates repositories on Centos 7; and the appstream, base, elrepo,
+  epel, and powertools repositories on Centos 8. This cookbook imports these repositories and points them at the osuosl
+  repositories.
 ## Requirements
 
+ - Chef/Cinc 15+
+ - Centos 7+
 ### Platforms
 
 - CentOS 7+
 
 ### Cookbooks
 
+ - yum
+ - yum-centos
+ - yum-elrepo
+ - yum-epel
 ## Attributes
+
+  None
 
 ## Resources
 
+  osl_repos_centos
+
+  Properties
+
+  Note: The 'appstream', 'elrepo', and 'powertools' related attributes are only relevant to Centos 8, and the 'updates' related
+  attributes are only relevant to Centos 7.
+
+ - appstream:              indicates if the appstream repository is managed
+ - base:                   indicates if the base repository is managed
+ - elrepo:                 indicates if the elrepo repository is managed
+ - epel:                   indicates if the epel repository is managed
+ - extras:                 indicates if the appstream repository is managed
+ - powertools:             indicates if the powertools repository is managed
+ - updates:                indicates if the updates repository is managed
+
+
+ - appstream_enabled:      indicates if the appstream repository is enabled
+ - base_enabled:           indicates if the base repository is enabled
+ - elrepo_enabled:         indicates if the elrepo repository is enabled
+ - epel_enabled:           indicates if the epel repository is enabled
+ - extras_enabled:         indicates if the appstream repository is enabled
+ - powertools_enabled:     indicates if the powertools repository is enabled
+ - updates_enabled:        indicates if the updates repository is enabled
+
 ## Recipes
 
+ - osl-repos::default   configures and enables all repositories managed by this cookbook
+ - osl-repos::centos    configures and enables all repositories, with the exception of the 'elrepo' and 'epel' repos
+ - osl-repos::elrepo    configures and enables the 'elrepo' repository
+ - osl-repos::epel      configures and enables the 'epel' repository
 ## Contributing
 
 1. Fork the repository on Github
