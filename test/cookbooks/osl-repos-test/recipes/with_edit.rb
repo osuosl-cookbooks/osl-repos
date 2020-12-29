@@ -17,10 +17,12 @@
 # limitations under the License.
 
 # This is an example of using the 'edit resource' function to modify the already included and enabled repos
-
-include_recipe 'osl-repos::epel'
+include_recipe 'osl-repos::centos'
 
 edit_resource(:osl_repos_centos, 'default') do
+  appstream false
+  base false
+  extras false
   powertools true
   powertools_enabled false
   updates true

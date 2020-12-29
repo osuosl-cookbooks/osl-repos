@@ -17,4 +17,6 @@
 # limitations under the License.
 
 # This installs all repos in the osl_repos_centos resource
-osl_repos_centos 'default'
+include_recipe 'osl-repos::centos'
+include_recipe 'osl-repos::elrepo'
+include_recipe 'osl-repos::epel'

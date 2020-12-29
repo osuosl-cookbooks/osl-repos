@@ -17,7 +17,4 @@
 # limitations under the License.
 
 # This excludes the elrepo and epel repos from being installed
-osl_repos_centos 'default' do
-  epel false
-  elrepo false
-end
+osl_repos_centos 'default'

@@ -232,12 +232,6 @@ describe 'osl-repos::centos' do
               end
 
             end ####### End alternate architecture switcase #######
-
-            # Test the epel repository
-            # This repository is outside of the switchcase because it is the same across all architectures
-            it do
-              expect(chef_run).to_not create_yum_repository('epel')
-            end
           end ####### End Centos 7 Architecture Loop #######
         end
 
@@ -347,19 +341,7 @@ describe 'osl-repos::centos' do
               end
 
             end ####### End switchcase #######
-
-            # The elrepo repositorry should not be installed
-            it do
-              expect(chef_run).to_not create_yum_repository('elrepo')
-            end
           end ####### End architecture context #######
-
-          # The epel repository is common across all architectures and Centos Versions
-
-          # Test the epel repository
-          it do
-            expect(chef_run).to_not create_yum_repository('epel')
-          end
         end ####### End Centos 8 architecture loop #######
 
       end ############## End Centos Version Switchcase ##############

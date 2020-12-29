@@ -17,11 +17,4 @@
 # limitations under the License.
 
 # This excludes all repos in the osl_repos_centos resource except the elrepo repo
-osl_repos_centos 'default' do
-  appstream false
-  base false
-  epel false
-  extras false
-  powertools false
-  updates false
-end
+osl_repos_elrepo 'default'

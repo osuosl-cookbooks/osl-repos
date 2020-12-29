@@ -23,8 +23,8 @@ describe 'osl-repos::default' do
   ALL_PLATFORMS.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
-        # Here we step into our :osl_repos_centos resource, this enables us to test the resources created within it
-        ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
+        # Here we step into our :osl_repos_XXX resources, this enables us to test the resources created within it
+        ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos, :osl_repos_elrepo, :osl_repos_epel])) do |node|
           # This sets the base architecture to 'x86_64'
           node.default['kernel']['machine'] = 'x86_64'
         end.converge(described_recipe)
@@ -54,7 +54,7 @@ describe 'osl-repos::default' do
         %w(x86_64 i386 aarch64 ppc64 ppc64le s390x).each do |arch|
           context "arch #{arch}" do
             cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
+              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos, :osl_repos_elrepo, :osl_repos_epel])) do |node|
                 # Here we set the architecture to match our current iteration of the loop
                 node.automatic['kernel']['machine'] = arch
 
@@ -254,7 +254,7 @@ describe 'osl-repos::default' do
         %w(x86_64 i386 aarch64 ppc64 ppc64le s390x).each do |arch|
           context "arch #{arch}" do
             cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
+              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos, :osl_repos_elrepo, :osl_repos_epel])) do |node|
                 # If the architecture is ppc64 or ppc64le we manually set the recognized cpu model to power 9
                 # This is important to set here because it is included in our repo url
                 node.automatic['kernel']['machine'] = arch

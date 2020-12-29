@@ -15,14 +15,6 @@ when 7
     it { should_not exist }
   end
 
-  # Test the epel repository
-  describe yum.repo('epel') do
-    it { should exist }
-    it { should be_enabled }
-    its('baseurl') { should eq 'http://epel.osuosl.org/7/x86_64/' }
-    its('mirrors') { should eq nil }
-  end
-
   # Test the extras repository
   describe yum.repo('extras') do
     it { should_not exist }
@@ -48,19 +40,6 @@ when 8
   # Test the base repository
   describe yum.repo('base') do
     it { should_not exist }
-  end
-
-  # Test the elrepo repository
-  describe yum.repo('elrepo') do
-    it { should_not exist }
-  end
-
-  # Test the epel repository
-  describe yum.repo('epel') do
-    it { should exist }
-    it { should be_enabled }
-    its('baseurl') { should eq 'http://epel.osuosl.org/8/Everything/x86_64/' }
-    its('mirrors') { should eq nil }
   end
 
   # Test the extras repository

@@ -4,6 +4,8 @@ describe file('/etc/yum.conf') do
   its('content') { should match /^installonly_limit=2/ }
 end
 
+# Because we controll all of the repositories, we need to test each of them
+
 # There will be different cases for the Centos 7 and Centos 8 repositories
 case os.release.to_i
 

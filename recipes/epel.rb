@@ -16,12 +16,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This excludes all repos in the osl_repos_centos resource except the epel repo
-osl_repos_centos 'default' do
-  appstream false
-  base false
-  elrepo false
-  extras false
-  powertools false
-  updates false
-end
+# Installs and configures the epel repo
+osl_repos_epel 'default'

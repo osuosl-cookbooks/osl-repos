@@ -176,12 +176,7 @@ describe 'osl-repos-test::with_edit' do
             # Test the epel repository
             # This repository is outside of the switchcase because it is the same across all architectures
             it do
-              expect(chef_run).to create_yum_repository('epel').with(
-                mirrorlist: nil,
-                baseurl: 'http://epel.osuosl.org/7/$basearch',
-                gpgkey: 'http://epel.osuosl.org/RPM-GPG-KEY-EPEL-7',
-                enabled: true
-              )
+              expect(chef_run).to_not create_yum_repository('epel')
             end
           end ####### End Centos 7 Architecture Loop #######
         end
@@ -240,11 +235,6 @@ describe 'osl-repos-test::with_edit' do
                 )
               end
 
-              # Machines running on the power9 architecture should not install the elrepo repository
-              it do
-                expect(chef_run).to_not create_yum_repository('elrepo')
-              end
-
             ####### Begin 'x86_64', 'i386', 'aarch64', and 's390x' case #######
             when 'x86_64', 'i386', 'aarch64', 's390x'
 
@@ -272,24 +262,7 @@ describe 'osl-repos-test::with_edit' do
                 )
               end
             end ####### End switchcase #######
-
-            # The elrepo repository should not be installed
-            it do
-              expect(chef_run).to_not create_yum_repository('elrepo')
-            end
           end ####### End architecture context #######
-
-          # The epel repository is common across all architectures and Centos Versions
-
-          # Test the epel repository
-          it do
-            expect(chef_run).to create_yum_repository('epel').with(
-              mirrorlist: nil,
-              baseurl: 'http://epel.osuosl.org/8/Everything/$basearch/',
-              gpgkey: 'http://epel.osuosl.org/RPM-GPG-KEY-EPEL-8',
-              enabled: true
-            )
-          end
         end ####### End Centos 8 architecture loop #######
 
       end ############## End Centos Version Switchcase ##############

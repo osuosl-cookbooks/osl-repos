@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This is an example of directly using the resource to fully exclude specefic repos
+# This is an example of directly using the resource to fully exclude specefic repo
 osl_repos_centos 'default' do
   powertools false
   updates false
