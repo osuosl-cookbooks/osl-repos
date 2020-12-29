@@ -65,7 +65,7 @@ describe 'osl-repos::elrepo' do
               it do
                 expect(chef_run).to create_yum_repository('elrepo').with(
                   mirrorlist: nil,
-                  baseurl: 'http://ftp.osuosl.org/pub/elrepo/elrepo/el8/$basearch/',
+                  baseurl: 'http://ftp.osuosl.org/pub/elrepo/elrepo/el$releasever/$basearch/',
                   enabled: true
                 )
               end

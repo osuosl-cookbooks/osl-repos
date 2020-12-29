@@ -194,8 +194,7 @@ describe 'osl-repos-test::disable' do
                   gpgkey: "#{ if arch == 'x86_64'
                                 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
                               else
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
+                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
                               end }",
                   enabled: true
                 )
@@ -209,8 +208,7 @@ describe 'osl-repos-test::disable' do
                   gpgkey: "#{ if arch == 'x86_64'
                                 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
                               else
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
+                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
                               end }",
                   enabled: true
                 )
@@ -224,8 +222,7 @@ describe 'osl-repos-test::disable' do
                   gpgkey: "#{ if arch == 'x86_64'
                                 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
                               else
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
+                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
                               end }",
                   enabled: false
                 )

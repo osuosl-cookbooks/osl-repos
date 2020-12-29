@@ -18,6 +18,6 @@
 
 # This is an example of directly using the resource to disable select repos
 osl_repos_centos 'default' do
-  powertools_enabled false
-  updates_enabled false
+  powertools false
+  updates false
 end

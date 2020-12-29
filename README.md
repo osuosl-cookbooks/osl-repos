@@ -30,26 +30,17 @@
   Note: The 'appstream', and 'powertools' related attributes are only relevant to Centos 8, and the 'updates' related
   attributes are only relevant to Centos 7.
 
- - appstream:              indicates if the appstream repository is managed
- - base:                   indicates if the base repository is managed
- 
- - extras:                 indicates if the appstream repository is managed
- - powertools:             indicates if the powertools repository is managed
- - updates:                indicates if the updates repository is managed
-
-
- - appstream_enabled:      indicates if the appstream repository is enabled
- - base_enabled:           indicates if the base repository is enabled
- - extras_enabled:         indicates if the appstream repository is enabled
- - powertools_enabled:     indicates if the powertools repository is enabled
- - updates_enabled:        indicates if the updates repository is enabled
+ - appstream:              indicates if the appstream repository is enabled
+ - base:                   indicates if the base repository is enabled
+ - extras:                 indicates if the appstream repository is enabled
+ - powertools:             indicates if the powertools repository is enabled
+ - updates:                indicates if the updates repository is enabled
 
   osl_repos_epel
 
   Properties
  
- - epel:                   indicates if the epel repository is managed
- - epel_enabled:           indicates if the epel repository is enabled
+ - epel:                   indicates if the epel repository is enabled
 
   osl_repos_elrepo
 
@@ -57,8 +48,7 @@
   
   Properties
  
- - elrepo:                 indicates if the elrepo repository is managed
- - elrepo_enabled:         indicates if the elrepo repository is enabled
+ - elrepo:                 indicates if the elrepo repository is enabled
 
 ## Recipes
 

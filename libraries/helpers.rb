@@ -20,13 +20,17 @@ module OslRepos
         url
       end
 
+      # power9 replaces $basearch in power9 repositories
       def base_arch
-        arch = '$basearch'
-        if node['kernel']['machine'] == 'ppc64' || node['kernel']['machine'] == 'ppc64le'
-          # POWER9 on CentOS has it's own 'power9' repo so we need to deal with it this way (except for EPEL)
-          arch = node['ibm_power']['cpu']['cpu_model'] =~ /power9/ ? 'power9' : '$basearch' # rubocop:disable Metrics/BlockNesting
+        power9? ? 'power9' : '$basearch'
+      end
+
+      def power9?
+        if node['kernel']['machine'] == 'ppc64' || node['kernel']['machine'] == 'ppc64le' || !node['ibm_power'].nil?
+          node['ibm_power']['cpu']['cpu_model'] =~ /power9/
+        else
+          false
         end
-        arch
       end
     end
   end

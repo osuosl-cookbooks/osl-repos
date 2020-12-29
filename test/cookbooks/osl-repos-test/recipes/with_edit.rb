@@ -21,9 +21,7 @@ include_recipe 'osl-repos::centos'
 
 edit_resource(:osl_repos_centos, 'default') do
   appstream false
-  base false
   extras false
-  powertools true
-  powertools_enabled false
-  updates true
+  powertools false
+  updates false
 end

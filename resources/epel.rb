@@ -22,11 +22,11 @@ action :add do
 
   ### Centos 7 Case ###
   when 7
-    node.default['yum']['epel']['baseurl'] = "http://epel.osuosl.org/#{node['platform_version'].to_i}/$basearch"
+    node.default['yum']['epel']['baseurl'] = 'http://epel.osuosl.org/$releasever/$basearch'
 
   ### Centos 8 Case ###
   when 8
-    node.default['yum']['epel']['baseurl'] = "http://epel.osuosl.org/#{node['platform_version'].to_i}/Everything/$basearch/"
+    node.default['yum']['epel']['baseurl'] = 'http://epel.osuosl.org/$releasever/Everything/$basearch/'
 
   end
 
@@ -34,10 +34,10 @@ action :add do
   node.default['yum']['epel']['gpgkey'] = "http://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{node['platform_version'].to_i}"
 
   # Determine if the repository is managed
-  node.default['yum']['epel']['managed'] = new_resource.epel
+  node.default['yum']['epel']['managed'] = true
 
   # Determine if the repository is enabled
-  node.default['yum']['epel']['enabled'] = new_resource.epel_enabled
+  node.default['yum']['epel']['enabled'] = new_resource.epel
 
   # 'yum-epel' will install the epel repository and apply our configuration
   include_recipe 'yum-epel'

@@ -41,7 +41,7 @@ describe 'osl-repos::epel' do
         it do
           expect(chef_run).to create_yum_repository('epel').with(
             mirrorlist: nil,
-            baseurl: 'http://epel.osuosl.org/7/$basearch',
+            baseurl: 'http://epel.osuosl.org/$releasever/$basearch',
             gpgkey: 'http://epel.osuosl.org/RPM-GPG-KEY-EPEL-7',
             enabled: true
           )
@@ -53,7 +53,7 @@ describe 'osl-repos::epel' do
         it do
           expect(chef_run).to create_yum_repository('epel').with(
             mirrorlist: nil,
-            baseurl: 'http://epel.osuosl.org/8/Everything/$basearch/',
+            baseurl: 'http://epel.osuosl.org/$releasever/Everything/$basearch/',
             gpgkey: 'http://epel.osuosl.org/RPM-GPG-KEY-EPEL-8',
             enabled: true
           )

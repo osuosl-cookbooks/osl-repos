@@ -3,8 +3,7 @@ provides :osl_repos_centos
 
 default_action :add
 
-# These properties indicate wether or not a repo should be managed
-# If unmanaged the repo file will not be created or changed
+# These properties indicate wether or not a repo should be enabled
 property :base, [true, false], default: true
 property :extras, [true, false], default: true
 property :updates, [true, false], default: true
@@ -13,17 +12,6 @@ property :updates, [true, false], default: true
 # The associated properties will be ignored on Centos 7
 property :appstream, [true, false], default: true
 property :powertools, [true, false], default: true
-
-# These properties indicate wether or not a repo should be enabled
-# Note: If unmanaged is set the repo's enabled/disabled state will not be changed
-property :base_enabled, [true, false], default: true
-property :extras_enabled, [true, false], default: true
-property :updates_enabled, [true, false], default: true
-
-# These repositories are only availible on Centos 8
-# The associated properties will be ignored on Centos 7
-property :appstream_enabled, [true, false], default: true
-property :powertools_enabled, [true, false], default: true
 
 # This is the default and only action, It will add all availible repos, unless specified in properties above
 action :add do
@@ -57,17 +45,15 @@ action :add do
         if node['kernel']['machine'] == 'x86_64'
           'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
         else
-          'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-          'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
+          'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
         end
     end
 
     # Updates is only installed on Centos 7
     # Determine if updates repo is managed
-    node.default['yum']['updates']['managed'] = new_resource.updates
-
+    node.default['yum']['updates']['managed'] = true
     # Determine if updates repo is enabled
-    node.default['yum']['updates']['enabled'] = new_resource.updates_enabled
+    node.default['yum']['updates']['enabled'] = new_resource.updates
 
   ####### Begin Centos 8 case #######
   when 8
@@ -80,24 +66,24 @@ action :add do
 
     # Powertools and appstream are only availible for Centos 8 so we set their properties here
     # Determine if powertools and appstream are managed
-    node.default['yum']['appstream']['managed'] = new_resource.appstream
-    node.default['yum']['powertools']['managed'] = new_resource.powertools
+    node.default['yum']['appstream']['managed'] = true
+    node.default['yum']['powertools']['managed'] = true
 
     # Determine if powertools and appstream are enabled
-    node.default['yum']['appstream']['enabled'] = new_resource.appstream_enabled
-    node.default['yum']['powertools']['enabled'] = new_resource.powertools_enabled
+    node.default['yum']['appstream']['enabled'] = new_resource.appstream
+    node.default['yum']['powertools']['enabled'] = new_resource.powertools
 
   end ####### End of switchcase #######
 
   # These repositories are used by Centos 7 and Centos 8, so we set their state outside of the switchcase
 
   # Determine if the base, epel, and extras repositories are managed
-  node.default['yum']['base']['managed'] = new_resource.base
-  node.default['yum']['extras']['managed'] = new_resource.extras
+  node.default['yum']['base']['managed'] = true
+  node.default['yum']['extras']['managed'] = true
 
   # Determine if the base, epel, and extras repositories are enabled
-  node.default['yum']['base']['enabled'] = new_resource.base_enabled
-  node.default['yum']['extras']['enabled'] = new_resource.extras_enabled
+  node.default['yum']['base']['enabled'] = new_resource.base
+  node.default['yum']['extras']['enabled'] = new_resource.extras
 
   # Include 'yum', and 'yum-centos' recipies
   # 'yum' will apply our changes to the main config file
