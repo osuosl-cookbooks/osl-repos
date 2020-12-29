@@ -8,7 +8,7 @@ when 7
   describe yum.repo('epel') do
     it { should exist }
     it { should be_enabled }
-    its('baseurl') { should eq 'http://epel.osuosl.org/7/x86_64/' }
+    its('baseurl') { should eq 'https://epel.osuosl.org/7/x86_64/' }
     its('mirrors') { should eq nil }
   end
 
@@ -19,7 +19,7 @@ when 8
   describe yum.repo('epel') do
     it { should exist }
     it { should be_enabled }
-    its('baseurl') { should eq 'http://epel.osuosl.org/8/Everything/x86_64/' }
+    its('baseurl') { should eq 'https://epel.osuosl.org/8/Everything/x86_64/' }
     its('mirrors') { should eq nil }
   end
 

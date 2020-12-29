@@ -22,16 +22,16 @@ action :add do
 
   ### Centos 7 Case ###
   when 7
-    node.default['yum']['epel']['baseurl'] = 'http://epel.osuosl.org/$releasever/$basearch'
+    node.default['yum']['epel']['baseurl'] = 'https://epel.osuosl.org/$releasever/$basearch'
 
   ### Centos 8 Case ###
   when 8
-    node.default['yum']['epel']['baseurl'] = 'http://epel.osuosl.org/$releasever/Everything/$basearch/'
+    node.default['yum']['epel']['baseurl'] = 'https://epel.osuosl.org/$releasever/Everything/$basearch/'
 
   end
 
   # Set the epel gpg key, this is the same for both platforms
-  node.default['yum']['epel']['gpgkey'] = "http://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{node['platform_version'].to_i}"
+  node.default['yum']['epel']['gpgkey'] = "https://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{node['platform_version'].to_i}"
 
   # Determine if the repository is managed
   node.default['yum']['epel']['managed'] = true

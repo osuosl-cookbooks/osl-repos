@@ -7,15 +7,15 @@ module OslRepos
         if node['platform_version'].to_i < 8
           case node['kernel']['machine']
           when 'x86_64', 'i386'
-            url = 'http://centos.osuosl.org'
+            url = 'https://centos.osuosl.org'
           when 'aarch64', 'ppc64', 'ppc64le'
-            url = 'http://centos-altarch.osuosl.org'
+            url = 'https://centos-altarch.osuosl.org'
           when 's390x'
             node.default['yum']['epel']['enabled'] = false
-            url = 'http://centos-altarch.osuosl.org'
+            url = 'https://centos-altarch.osuosl.org'
           end
         else
-          url = 'http://centos.osuosl.org'
+          url = 'https://centos.osuosl.org'
         end
         url
       end

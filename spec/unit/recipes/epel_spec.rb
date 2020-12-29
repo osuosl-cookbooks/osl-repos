@@ -7,7 +7,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,8 +41,8 @@ describe 'osl-repos::epel' do
         it do
           expect(chef_run).to create_yum_repository('epel').with(
             mirrorlist: nil,
-            baseurl: 'http://epel.osuosl.org/$releasever/$basearch',
-            gpgkey: 'http://epel.osuosl.org/RPM-GPG-KEY-EPEL-7',
+            baseurl: 'https://epel.osuosl.org/$releasever/$basearch',
+            gpgkey: 'https://epel.osuosl.org/RPM-GPG-KEY-EPEL-7',
             enabled: true
           )
         end
@@ -53,8 +53,8 @@ describe 'osl-repos::epel' do
         it do
           expect(chef_run).to create_yum_repository('epel').with(
             mirrorlist: nil,
-            baseurl: 'http://epel.osuosl.org/$releasever/Everything/$basearch/',
-            gpgkey: 'http://epel.osuosl.org/RPM-GPG-KEY-EPEL-8',
+            baseurl: 'https://epel.osuosl.org/$releasever/Everything/$basearch/',
+            gpgkey: 'https://epel.osuosl.org/RPM-GPG-KEY-EPEL-8',
             enabled: true
           )
         end

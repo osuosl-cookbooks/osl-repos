@@ -7,7 +7,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,9 +36,42 @@ describe 'osl-repos::elrepo' do
 
       ############## Begin Centos 7 case ##############
       when 7
-        it do
-          expect(chef_run).to_not create_yum_repository('elrepo')
-        end
+
+        # We need to test each supported architecture
+        # This loop creates a context for each architecture and applies its tests.
+        %w(x86_64 i386 aarch64 ppc64 ppc64le s390x).each do |arch|
+          context "arch #{arch}" do
+            cached(:chef_run) do
+              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_elrepo])) do |node|
+                # Here we set the architecture to match our current iteration of the loop
+                node.automatic['kernel']['machine'] = arch
+
+                # If the architecture is ppc64 or ppc64le we manually set the recognized cpu model to power 9
+                # This is important to set here because it is included in our repo url
+                if arch =~ /(ppc64|ppc64le)/
+                  node.automatic['ibm_power']['cpu']['cpu_model'] = 'power9'
+                end
+              end.converge(described_recipe)
+            end
+
+            # The elrepo repositorry should be installed on the x86_64 architecture
+            if arch == 'x86_64'
+              it do
+                expect(chef_run).to create_yum_repository('elrepo').with(
+                  mirrorlist: nil,
+                  baseurl: 'https://ftp.osuosl.org/pub/elrepo/elrepo/el$releasever/$basearch/',
+                  enabled: true
+                )
+              end
+
+            # Non x86_64 architectures should not install the elrepo repository
+            else
+              it do
+                expect(chef_run).to_not create_yum_repository('elrepo')
+              end
+            end
+          end ####### End architecture context #######
+        end ####### End Centos 7 architecture loop #######
 
       ############## Begin Centos 8 Case ##############
       when 8
@@ -65,7 +98,7 @@ describe 'osl-repos::elrepo' do
               it do
                 expect(chef_run).to create_yum_repository('elrepo').with(
                   mirrorlist: nil,
-                  baseurl: 'http://ftp.osuosl.org/pub/elrepo/elrepo/el$releasever/$basearch/',
+                  baseurl: 'https://ftp.osuosl.org/pub/elrepo/elrepo/el$releasever/$basearch/',
                   enabled: true
                 )
               end

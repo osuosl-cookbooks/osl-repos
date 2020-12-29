@@ -8,7 +8,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -71,7 +71,7 @@ describe 'osl-repos-test::disable' do
 
             # The base url of our repos is determined by the architecture, we need to create different cases for each
             # of the non-standard affected architectures.
-            # These architectures will all use the baseurl prefix 'http://centos-altarch.osuosl.org'
+            # These architectures will all use the baseurl prefix 'https://centos-altarch.osuosl.org'
             case arch
 
             ####### Begin alt-arch case #######
@@ -90,7 +90,7 @@ describe 'osl-repos-test::disable' do
                 it do
                   expect(chef_run).to create_yum_repository('base').with(
                     mirrorlist: nil,
-                    baseurl: 'http://centos-altarch.osuosl.org/$releasever/os/power9/',
+                    baseurl: 'https://centos-altarch.osuosl.org/$releasever/os/power9/',
                     gpgkey: "#{ if arch == 'x86_64'
                                   'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
                                 else
@@ -105,7 +105,7 @@ describe 'osl-repos-test::disable' do
                 it do
                   expect(chef_run).to create_yum_repository('extras').with(
                     mirrorlist: nil,
-                    baseurl: 'http://centos-altarch.osuosl.org/$releasever/extras/power9/',
+                    baseurl: 'https://centos-altarch.osuosl.org/$releasever/extras/power9/',
                     gpgkey: "#{ if arch == 'x86_64'
                                   'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
                                 else
@@ -120,7 +120,7 @@ describe 'osl-repos-test::disable' do
                 it do
                   expect(chef_run).to create_yum_repository('updates').with(
                     mirrorlist: nil,
-                    baseurl: 'http://centos-altarch.osuosl.org/$releasever/updates/power9/',
+                    baseurl: 'https://centos-altarch.osuosl.org/$releasever/updates/power9/',
                     gpgkey: "#{ if arch == 'x86_64'
                                   'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
                                 else
@@ -138,7 +138,7 @@ describe 'osl-repos-test::disable' do
                 it do
                   expect(chef_run).to create_yum_repository('base').with(
                     mirrorlist: nil,
-                    baseurl: 'http://centos-altarch.osuosl.org/$releasever/os/$basearch/',
+                    baseurl: 'https://centos-altarch.osuosl.org/$releasever/os/$basearch/',
                     gpgkey: "#{ if arch == 'x86_64'
                                   'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
                                 else
@@ -153,7 +153,7 @@ describe 'osl-repos-test::disable' do
                 it do
                   expect(chef_run).to create_yum_repository('extras').with(
                     mirrorlist: nil,
-                    baseurl: 'http://centos-altarch.osuosl.org/$releasever/extras/$basearch/',
+                    baseurl: 'https://centos-altarch.osuosl.org/$releasever/extras/$basearch/',
                     gpgkey: "#{ if arch == 'x86_64'
                                   'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
                                 else
@@ -168,7 +168,7 @@ describe 'osl-repos-test::disable' do
                 it do
                   expect(chef_run).to create_yum_repository('updates').with(
                     mirrorlist: nil,
-                    baseurl: 'http://centos-altarch.osuosl.org/$releasever/updates/$basearch/',
+                    baseurl: 'https://centos-altarch.osuosl.org/$releasever/updates/$basearch/',
                     gpgkey: "#{ if arch == 'x86_64'
                                   'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
                                 else
@@ -184,13 +184,13 @@ describe 'osl-repos-test::disable' do
             ####### Begin standard architecture case #######
             when 'x86_64', 'i386'
 
-              # NOTE: The baseurl prefix of these repos is 'http://centos.osuosl.org'
+              # NOTE: The baseurl prefix of these repos is 'https://centos.osuosl.org'
 
               # Test the base repository
               it do
                 expect(chef_run).to create_yum_repository('base').with(
                   mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/os/$basearch/',
+                  baseurl: 'https://centos.osuosl.org/$releasever/os/$basearch/',
                   gpgkey: "#{ if arch == 'x86_64'
                                 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
                               else
@@ -204,7 +204,7 @@ describe 'osl-repos-test::disable' do
               it do
                 expect(chef_run).to create_yum_repository('extras').with(
                   mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/extras/$basearch/',
+                  baseurl: 'https://centos.osuosl.org/$releasever/extras/$basearch/',
                   gpgkey: "#{ if arch == 'x86_64'
                                 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
                               else
@@ -218,7 +218,7 @@ describe 'osl-repos-test::disable' do
               it do
                 expect(chef_run).to create_yum_repository('updates').with(
                   mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/updates/$basearch/',
+                  baseurl: 'https://centos.osuosl.org/$releasever/updates/$basearch/',
                   gpgkey: "#{ if arch == 'x86_64'
                                 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
                               else
@@ -266,7 +266,7 @@ describe 'osl-repos-test::disable' do
               it do
                 expect(chef_run).to create_yum_repository('appstream').with(
                   mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/AppStream/power9/os',
+                  baseurl: 'https://centos.osuosl.org/$releasever/AppStream/power9/os',
                   enabled: true
                 )
               end
@@ -275,7 +275,7 @@ describe 'osl-repos-test::disable' do
               it do
                 expect(chef_run).to create_yum_repository('base').with(
                   mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/BaseOS/power9/os',
+                  baseurl: 'https://centos.osuosl.org/$releasever/BaseOS/power9/os',
                   enabled: true
                 )
               end
@@ -284,7 +284,7 @@ describe 'osl-repos-test::disable' do
               it do
                 expect(chef_run).to create_yum_repository('extras').with(
                   mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/extras/power9/os',
+                  baseurl: 'https://centos.osuosl.org/$releasever/extras/power9/os',
                   enabled: true
                 )
               end
@@ -293,7 +293,7 @@ describe 'osl-repos-test::disable' do
               it do
                 expect(chef_run).to create_yum_repository('powertools').with(
                   mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/PowerTools/power9/os',
+                  baseurl: 'https://centos.osuosl.org/$releasever/PowerTools/power9/os',
                   enabled: false
                 )
               end
@@ -305,7 +305,7 @@ describe 'osl-repos-test::disable' do
               it do
                 expect(chef_run).to create_yum_repository('appstream').with(
                   mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/AppStream/$basearch/os',
+                  baseurl: 'https://centos.osuosl.org/$releasever/AppStream/$basearch/os',
                   enabled: true
                 )
               end
@@ -314,7 +314,7 @@ describe 'osl-repos-test::disable' do
               it do
                 expect(chef_run).to create_yum_repository('base').with(
                   mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/BaseOS/$basearch/os',
+                  baseurl: 'https://centos.osuosl.org/$releasever/BaseOS/$basearch/os',
                   enabled: true
                 )
               end
@@ -323,7 +323,7 @@ describe 'osl-repos-test::disable' do
               it do
                 expect(chef_run).to create_yum_repository('extras').with(
                   mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/extras/$basearch/os',
+                  baseurl: 'https://centos.osuosl.org/$releasever/extras/$basearch/os',
                   enabled: true
                 )
               end
@@ -332,7 +332,7 @@ describe 'osl-repos-test::disable' do
               it do
                 expect(chef_run).to create_yum_repository('powertools').with(
                   mirrorlist: nil,
-                  baseurl: 'http://centos.osuosl.org/$releasever/PowerTools/$basearch/os',
+                  baseurl: 'https://centos.osuosl.org/$releasever/PowerTools/$basearch/os',
                   enabled: false
                 )
               end
