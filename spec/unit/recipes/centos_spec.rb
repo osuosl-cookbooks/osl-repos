@@ -263,7 +263,7 @@ describe 'osl-repos::centos' do
               it do
                 expect(chef_run).to create_yum_repository('appstream').with(
                   mirrorlist: nil,
-                  baseurl: 'https://centos.osuosl.org/$releasever/AppStream/power9/os',
+                  baseurl: 'https://centos.osuosl.org/$releasever/AppStream/power9/os/',
                   enabled: true
                 )
               end
@@ -272,7 +272,7 @@ describe 'osl-repos::centos' do
               it do
                 expect(chef_run).to create_yum_repository('base').with(
                   mirrorlist: nil,
-                  baseurl: 'https://centos.osuosl.org/$releasever/BaseOS/power9/os',
+                  baseurl: 'https://centos.osuosl.org/$releasever/BaseOS/power9/os/',
                   enabled: true
                 )
               end
@@ -281,7 +281,7 @@ describe 'osl-repos::centos' do
               it do
                 expect(chef_run).to create_yum_repository('extras').with(
                   mirrorlist: nil,
-                  baseurl: 'https://centos.osuosl.org/$releasever/extras/power9/os',
+                  baseurl: 'https://centos.osuosl.org/$releasever/extras/power9/os/',
                   enabled: true
                 )
               end
@@ -290,7 +290,7 @@ describe 'osl-repos::centos' do
               it do
                 expect(chef_run).to create_yum_repository('powertools').with(
                   mirrorlist: nil,
-                  baseurl: 'https://centos.osuosl.org/$releasever/PowerTools/power9/os',
+                  baseurl: 'https://centos.osuosl.org/$releasever/PowerTools/power9/os/',
                   enabled: true
                 )
               end
@@ -302,7 +302,7 @@ describe 'osl-repos::centos' do
               it do
                 expect(chef_run).to create_yum_repository('appstream').with(
                   mirrorlist: nil,
-                  baseurl: 'https://centos.osuosl.org/$releasever/AppStream/$basearch/os',
+                  baseurl: 'https://centos.osuosl.org/$releasever/AppStream/$basearch/os/',
                   enabled: true
                 )
               end
@@ -311,7 +311,7 @@ describe 'osl-repos::centos' do
               it do
                 expect(chef_run).to create_yum_repository('base').with(
                   mirrorlist: nil,
-                  baseurl: 'https://centos.osuosl.org/$releasever/BaseOS/$basearch/os',
+                  baseurl: 'https://centos.osuosl.org/$releasever/BaseOS/$basearch/os/',
                   enabled: true
                 )
               end
@@ -320,7 +320,7 @@ describe 'osl-repos::centos' do
               it do
                 expect(chef_run).to create_yum_repository('extras').with(
                   mirrorlist: nil,
-                  baseurl: 'https://centos.osuosl.org/$releasever/extras/$basearch/os',
+                  baseurl: 'https://centos.osuosl.org/$releasever/extras/$basearch/os/',
                   enabled: true
                 )
               end
@@ -329,7 +329,7 @@ describe 'osl-repos::centos' do
               it do
                 expect(chef_run).to create_yum_repository('powertools').with(
                   mirrorlist: nil,
-                  baseurl: 'https://centos.osuosl.org/$releasever/PowerTools/$basearch/os',
+                  baseurl: 'https://centos.osuosl.org/$releasever/PowerTools/$basearch/os/',
                   enabled: true
                 )
               end

@@ -41,7 +41,7 @@ describe 'osl-repos::epel' do
         it do
           expect(chef_run).to create_yum_repository('epel').with(
             mirrorlist: nil,
-            baseurl: 'https://epel.osuosl.org/$releasever/$basearch',
+            baseurl: 'https://epel.osuosl.org/$releasever/$basearch/',
             gpgkey: 'https://epel.osuosl.org/RPM-GPG-KEY-EPEL-7',
             enabled: true
           )

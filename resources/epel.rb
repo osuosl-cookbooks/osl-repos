@@ -22,7 +22,7 @@ action :add do
 
   ### Centos 7 Case ###
   when 7
-    node.default['yum']['epel']['baseurl'] = 'https://epel.osuosl.org/$releasever/$basearch'
+    node.default['yum']['epel']['baseurl'] = 'https://epel.osuosl.org/$releasever/$basearch/'
 
   ### Centos 8 Case ###
   when 8

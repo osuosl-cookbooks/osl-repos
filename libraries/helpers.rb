@@ -26,8 +26,12 @@ module OslRepos
       end
 
       def power9?
-        if node['kernel']['machine'] == 'ppc64' || node['kernel']['machine'] == 'ppc64le' || !node['ibm_power'].nil?
-          node['ibm_power']['cpu']['cpu_model'] =~ /power9/
+        if node['ibm_power'] && node['ibm_power']['cpu']
+          if node['kernel']['machine'] == 'ppc64' || node['kernel']['machine'] == 'ppc64le' || !node['ibm_power'].nil?
+            node['ibm_power']['cpu']['cpu_model'] =~ /power9/
+          else
+            false
+          end
         else
           false
         end
