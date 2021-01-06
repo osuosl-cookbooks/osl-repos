@@ -1,7 +1,7 @@
 # Cookbook:: osl-repos
 # Spec:: default
 #
-# Copyright:: 2020, Oregon State University
+# Copyright:: 2020-2021, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 
 require_relative '../../spec_helper'
 
-####### Begin Spec Tests #######
+# Begin Spec Tests
 describe 'osl-repos::elrepo' do
   ALL_PLATFORMS.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
@@ -34,23 +34,17 @@ describe 'osl-repos::elrepo' do
       # There will be different cases for the Centos 7 and Centos 8 repositories
       case p[:version].to_i
 
-      ############## Begin Centos 7 case ##############
+      # Begin Centos 7 case
       when 7
 
         # We need to test each supported architecture
         # This loop creates a context for each architecture and applies its tests.
-        %w(x86_64 i386 aarch64 ppc64 ppc64le s390x).each do |arch|
+        %w(x86_64 aarch64 s390x).each do |arch|
           context "arch #{arch}" do
             cached(:chef_run) do
               ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_elrepo])) do |node|
                 # Here we set the architecture to match our current iteration of the loop
                 node.automatic['kernel']['machine'] = arch
-
-                # If the architecture is ppc64 or ppc64le we manually set the recognized cpu model to power 9
-                # This is important to set here because it is included in our repo url
-                if arch =~ /(ppc64|ppc64le)/
-                  node.automatic['ibm_power']['cpu']['cpu_model'] = 'power9'
-                end
               end.converge(described_recipe)
             end
 
@@ -70,26 +64,39 @@ describe 'osl-repos::elrepo' do
                 expect(chef_run).to_not create_yum_repository('elrepo')
               end
             end
-          end ####### End architecture context #######
-        end ####### End Centos 7 architecture loop #######
+          end # End architecture context
+        end # End Centos 7 architecture loop
 
-      ############## Begin Centos 8 Case ##############
+        # ppc64le can either be power8 or power9 architecture, we will test for both cases
+        %w(power8 power9).each do |arch|
+          context "arch #{arch}" do
+            cached(:chef_run) do
+              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
+                node.automatic['kernel']['machine'] = 'ppc64le'
+
+                # Set cpu_model to either power8 or power9
+                node.automatic['ibm_power']['cpu']['cpu_model'] = arch
+              end.converge(described_recipe)
+            end
+
+            # Non x86_64 architectures should not install the elrepo repository
+            it do
+              expect(chef_run).to_not create_yum_repository('elrepo')
+            end
+          end # End ppc Context
+        end # End ppc Switchcase
+
+      # Begin Centos 8 Case
       when 8
 
         # We need to test each supported architecture
         # This loop creates a context for each architecture and applies its tests.
-        %w(x86_64 i386 aarch64 ppc64 ppc64le s390x).each do |arch|
+        %w(x86_64 aarch64 s390x).each do |arch|
           context "arch #{arch}" do
             cached(:chef_run) do
               ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_elrepo])) do |node|
                 # Here we set the architecture to match our current iteration of the loop
                 node.automatic['kernel']['machine'] = arch
-
-                # If the architecture is ppc64 or ppc64le we manually set the recognized cpu model to power 9
-                # This is important to set here because it is included in our repo url
-                if arch =~ /(ppc64|ppc64le)/
-                  node.automatic['ibm_power']['cpu']['cpu_model'] = 'power9'
-                end
               end.converge(described_recipe)
             end
 
@@ -109,9 +116,29 @@ describe 'osl-repos::elrepo' do
                 expect(chef_run).to_not create_yum_repository('elrepo')
               end
             end
-          end ####### End architecture context #######
-        end ####### End Centos 8 architecture loop #######
-      end ############## End Centos Version Switchcase ##############
+          end # End architecture context
+        end # End Centos 8 architecture loop
+
+        # ppc64le can either be power8 or power9 architecture, we will test for both cases
+        %w(power8 power9).each do |arch|
+          context "arch #{arch}" do
+            cached(:chef_run) do
+              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
+                node.automatic['kernel']['machine'] = 'ppc64le'
+
+                # Set cpu_model to either power8 or power9
+                node.automatic['ibm_power']['cpu']['cpu_model'] = arch
+              end.converge(described_recipe)
+            end
+
+            # Non x86_64 architectures should not install the elrepo repository
+            it do
+              expect(chef_run).to_not create_yum_repository('elrepo')
+            end
+          end # End ppc Context
+        end # End ppc Switchcase
+
+      end # End Centos Version Switchcase
     end
   end
 end

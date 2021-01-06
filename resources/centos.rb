@@ -30,7 +30,7 @@ action :add do
   # As mentioned above C7 and C8 have different availible repos and options
   case node['platform_version'].to_i
 
-  ####### Begin Centos 7 case #######
+  # Begin Centos 7 case
   when 7
 
     # Update the base url for our Centos 7 repos (base, updates, extras, and epel)
@@ -55,7 +55,7 @@ action :add do
     # Determine if updates repo is enabled
     node.default['yum']['updates']['enabled'] = new_resource.updates
 
-  ####### Begin Centos 8 case #######
+  # Begin Centos 8 case
   when 8
 
     # Update the base url for our Centos 8 repos (appstream, base, epel, extras, and powertools)
@@ -73,7 +73,7 @@ action :add do
     node.default['yum']['appstream']['enabled'] = new_resource.appstream
     node.default['yum']['powertools']['enabled'] = new_resource.powertools
 
-  end ####### End of switchcase #######
+  end # End of switchcase
 
   # These repositories are used by Centos 7 and Centos 8, so we set their state outside of the switchcase
 

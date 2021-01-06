@@ -1,13 +1,13 @@
 # Test for the main configuration file ('/etc/yum.conf'cookstyle)
-describe file('/etc/yum.conf') do
-  its('content') { should match /^installonlypkgs=kernel kernel-osuosl/ }
-  its('content') { should match /^installonly_limit=2/ }
+describe ini('/etc/yum.conf') do
+  its('main.installonlypkgs') { should eq 'kernel kernel-osuosl' }
+  its('main.installonly_limit') { should eq '2' }
 end
 
 # There will be different cases for the Centos 7 and Centos 8 repositories
 case os.release.to_i
 
-####### Begin Centos 7 Case #######
+# Begin Centos 7 Case
 when 7
 
   # Test the base repository
@@ -34,7 +34,7 @@ when 7
     its('mirrors') { should eq nil }
   end
 
-####### Begin Centos 8 Case #######
+# Begin Centos 8 Case
 when 8
 
   # Test the appstream repository

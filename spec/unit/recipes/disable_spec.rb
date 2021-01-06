@@ -1,8 +1,8 @@
 #
 # Cookbook:: osl-repos
-# Spec:: disable
+# Spec:: default
 #
-# Copyright:: 2020, Oregon State University
+# Copyright:: 2020-2021, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 require_relative '../../spec_helper'
 
-####### Begin Spec Tests #######
+# Begin Spec Tests
 describe 'osl-repos-test::disable' do
   ALL_PLATFORMS.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
@@ -46,143 +46,63 @@ describe 'osl-repos-test::disable' do
       # There will be different cases for the Centos 7 and Centos 8 repositories
       case p[:version].to_i
 
-      ############## Begin Centos 7 case ##############
+      # Begin Centos 7 case
       when 7
 
         # We need to test each supported architecture
         # This loop creates a context for each architecture and applies its tests.
-        %w(x86_64 i386 aarch64 ppc64 ppc64le s390x).each do |arch|
+        %w(x86_64 aarch64 s390x).each do |arch|
           context "arch #{arch}" do
             cached(:chef_run) do
               ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
                 # Here we set the architecture to match our current iteration of the loop
                 node.automatic['kernel']['machine'] = arch
-
-                # If the architecture is ppc64 or ppc64le we manually set the recognized cpu model to power 9
-                # This is important to set here because it is included in our repo url
-                if arch =~ /(ppc64|ppc64le)/
-                  node.automatic['ibm_power']['cpu']['cpu_model'] = 'power9'
-                end
               end.converge(described_recipe)
             end
 
-            ### The following will test for the correct settings being applied to each Centos 7 repository
-            ### ( Based on the default values for managed and enabled being set to true )
+            # The following will test for the correct settings being applied to each Centos 7 repository
+            # ( Based on the default values for managed and enabled being set to true )
 
-            # The base url of our repos is determined by the architecture, we need to create different cases for each
-            # of the non-standard affected architectures.
-            # These architectures will all use the baseurl prefix 'https://centos-altarch.osuosl.org'
             case arch
 
-            ####### Begin alt-arch case #######
-            when 'aarch64', 'ppc64', 'ppc64le', 's390x'
+            # Begin 'aarch64', 's390x' case
+            when 'aarch64', 's390x'
 
-              # The power9 architectures will have a different basearch than aarch64 and s390x, so we create another
-              # case for them
-              case arch
+              # The base url of our repos is determined by the architecture
+              # These architectures will all use the baseurl prefix 'https://centos-altarch.osuosl.org'
 
-              ####### Begin power9 case #######
-              when 'ppc64', 'ppc64le'
+              # Test the base repository
+              it do
+                expect(chef_run).to create_yum_repository('base').with(
+                  mirrorlist: nil,
+                  baseurl: 'https://centos-altarch.osuosl.org/$releasever/os/$basearch/',
+                  gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch',
+                  enabled: true
+                )
+              end
 
-                # NOTE: Each repo in this section will contain the string 'power9' in its baseurl instead of '$basearch'
+              # Test the extras repository
+              it do
+                expect(chef_run).to create_yum_repository('extras').with(
+                  mirrorlist: nil,
+                  baseurl: 'https://centos-altarch.osuosl.org/$releasever/extras/$basearch/',
+                  gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch',
+                  enabled: true
+                )
+              end
 
-                # Test the base repository
-                it do
-                  expect(chef_run).to create_yum_repository('base').with(
-                    mirrorlist: nil,
-                    baseurl: 'https://centos-altarch.osuosl.org/$releasever/os/power9/',
-                    gpgkey: "#{ if arch == 'x86_64'
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                                else
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                                end }",
-                    enabled: true
-                  )
-                end
+              # Test the updates repository
+              it do
+                expect(chef_run).to create_yum_repository('updates').with(
+                  mirrorlist: nil,
+                  baseurl: 'https://centos-altarch.osuosl.org/$releasever/updates/$basearch/',
+                  gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch',
+                  enabled: false
+                )
+              end
 
-                # Test the extras repository
-                it do
-                  expect(chef_run).to create_yum_repository('extras').with(
-                    mirrorlist: nil,
-                    baseurl: 'https://centos-altarch.osuosl.org/$releasever/extras/power9/',
-                    gpgkey: "#{ if arch == 'x86_64'
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                                else
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                                end }",
-                    enabled: true
-                  )
-                end
-
-                # Test the updates repository
-                it do
-                  expect(chef_run).to create_yum_repository('updates').with(
-                    mirrorlist: nil,
-                    baseurl: 'https://centos-altarch.osuosl.org/$releasever/updates/power9/',
-                    gpgkey: "#{ if arch == 'x86_64'
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                                else
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                                end }",
-                    enabled: false
-                  )
-                end
-
-              ####### Begin 'aarch64', 's390x' case #######
-              when 'aarch64', 's390x'
-
-                # Test the base repository
-                it do
-                  expect(chef_run).to create_yum_repository('base').with(
-                    mirrorlist: nil,
-                    baseurl: 'https://centos-altarch.osuosl.org/$releasever/os/$basearch/',
-                    gpgkey: "#{ if arch == 'x86_64'
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                                else
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                                end }",
-                    enabled: true
-                  )
-                end
-
-                # Test the extras repository
-                it do
-                  expect(chef_run).to create_yum_repository('extras').with(
-                    mirrorlist: nil,
-                    baseurl: 'https://centos-altarch.osuosl.org/$releasever/extras/$basearch/',
-                    gpgkey: "#{ if arch == 'x86_64'
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                                else
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                                end }",
-                    enabled: true
-                  )
-                end
-
-                # Test the updates repository
-                it do
-                  expect(chef_run).to create_yum_repository('updates').with(
-                    mirrorlist: nil,
-                    baseurl: 'https://centos-altarch.osuosl.org/$releasever/updates/$basearch/',
-                    gpgkey: "#{ if arch == 'x86_64'
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                                else
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 ' \
-                                  'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                                end }",
-                    enabled: false
-                  )
-                end
-
-              end ####### End of alt-arch case #######
-
-            ####### Begin standard architecture case #######
-            when 'x86_64', 'i386'
+            # Begin x86_64 architecture case
+            else
 
               # NOTE: The baseurl prefix of these repos is 'https://centos.osuosl.org'
 
@@ -191,11 +111,7 @@ describe 'osl-repos-test::disable' do
                 expect(chef_run).to create_yum_repository('base').with(
                   mirrorlist: nil,
                   baseurl: 'https://centos.osuosl.org/$releasever/os/$basearch/',
-                  gpgkey: "#{ if arch == 'x86_64'
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                              else
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                              end }",
+                  gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7',
                   enabled: true
                 )
               end
@@ -205,11 +121,7 @@ describe 'osl-repos-test::disable' do
                 expect(chef_run).to create_yum_repository('extras').with(
                   mirrorlist: nil,
                   baseurl: 'https://centos.osuosl.org/$releasever/extras/$basearch/',
-                  gpgkey: "#{ if arch == 'x86_64'
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                              else
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                              end }",
+                  gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7',
                   enabled: true
                 )
               end
@@ -219,128 +131,167 @@ describe 'osl-repos-test::disable' do
                 expect(chef_run).to create_yum_repository('updates').with(
                   mirrorlist: nil,
                   baseurl: 'https://centos.osuosl.org/$releasever/updates/$basearch/',
-                  gpgkey: "#{ if arch == 'x86_64'
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-                              else
-                                'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-                              end }",
+                  gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7',
                   enabled: false
                 )
               end
 
-            end ####### End alternate architecture switcase #######
-          end ####### End Centos 7 Architecture Loop #######
-        end
+            end # End architecture switcase
+          end # End Centos 7 Architecture Context
+        end # # End Centos 7 Architecture Loop
 
-      ############## Begin Centos 8 Case ##############
+        # ppc64le can either be power8 or power9 architecture, we will test for both cases
+        %w(power8 power9).each do |arch|
+          context "arch #{arch}" do
+            cached(:chef_run) do
+              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
+                node.automatic['kernel']['machine'] = 'ppc64le'
+
+                # Set cpu_model to either power8 or power9
+                node.automatic['ibm_power']['cpu']['cpu_model'] = arch
+              end.converge(described_recipe)
+            end
+
+            base_arch = arch == 'power9' ? 'power9' : '$basearch'
+
+            # Test the base repository
+            it do
+              expect(chef_run).to create_yum_repository('base').with(
+                mirrorlist: nil,
+                baseurl: "https://centos-altarch.osuosl.org/$releasever/os/#{base_arch}/",
+                gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch',
+                enabled: true
+              )
+            end
+
+            # Test the extras repository
+            it do
+              expect(chef_run).to create_yum_repository('extras').with(
+                mirrorlist: nil,
+                baseurl: "https://centos-altarch.osuosl.org/$releasever/extras/#{base_arch}/",
+                gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch',
+                enabled: true
+              )
+            end
+
+            # Test the updates repository
+            it do
+              expect(chef_run).to create_yum_repository('updates').with(
+                mirrorlist: nil,
+                baseurl: "https://centos-altarch.osuosl.org/$releasever/updates/#{base_arch}/",
+                gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch',
+                enabled: false
+              )
+            end
+          end # End ppc Context
+        end # End ppc Switchcase
+
+      # Begin Centos 8 Case
       when 8
 
         # We need to test each supported architecture
         # This loop creates a context for each architecture and applies its tests.
-        %w(x86_64 i386 aarch64 ppc64 ppc64le s390x).each do |arch|
+        %w(x86_64 aarch64 s390x).each do |arch|
           context "arch #{arch}" do
             cached(:chef_run) do
               ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
-                # If the architecture is ppc64 or ppc64le we manually set the recognized cpu model to power 9
-                # This is important to set here because it is included in our repo url
                 node.automatic['kernel']['machine'] = arch
-                if arch =~ /(ppc64|ppc64le)/
-                  node.automatic['ibm_power']['cpu']['cpu_model'] = 'power9'
-                end
               end.converge(described_recipe)
             end
 
-            ### The following will test for the correct settings being applied to each Centos 7 repository
-            ### ( Based on the default values for managed and enabled being set to true )
+            # The following will test for the correct settings being applied to each Centos 8 repository
+            # ( Based on the default values for managed and enabled being set to true )
 
-            # The power9 architectures will have a different basearch than the other architectures, so we create a
-            # switchcase for them
-            case arch
+            # Test the appstream repository
+            it do
+              expect(chef_run).to create_yum_repository('appstream').with(
+                mirrorlist: nil,
+                baseurl: 'https://centos.osuosl.org/$releasever/AppStream/$basearch/os/',
+                enabled: true
+              )
+            end
 
-            ####### Begin power9 case #######
-            when 'ppc64', 'ppc64le'
+            # Test the base repository
+            it do
+              expect(chef_run).to create_yum_repository('base').with(
+                mirrorlist: nil,
+                baseurl: 'https://centos.osuosl.org/$releasever/BaseOS/$basearch/os/',
+                enabled: true
+              )
+            end
 
-              # NOTE: Each repo in this section will contain the string 'power9' in its baseurl instead of '$basearch'
+            # Test the extras repository
+            it do
+              expect(chef_run).to create_yum_repository('extras').with(
+                mirrorlist: nil,
+                baseurl: 'https://centos.osuosl.org/$releasever/extras/$basearch/os/',
+                enabled: true
+              )
+            end
 
-              # Test the appstream repository
-              it do
-                expect(chef_run).to create_yum_repository('appstream').with(
-                  mirrorlist: nil,
-                  baseurl: 'https://centos.osuosl.org/$releasever/AppStream/power9/os/',
-                  enabled: true
-                )
-              end
+            # Test the powertools repository
+            it do
+              expect(chef_run).to create_yum_repository('powertools').with(
+                mirrorlist: nil,
+                baseurl: 'https://centos.osuosl.org/$releasever/PowerTools/$basearch/os/',
+                enabled: false
+              )
+            end
+          end # End architecture context
+        end # End Centos 8 architecture loop
 
-              # Test the base repository
-              it do
-                expect(chef_run).to create_yum_repository('base').with(
-                  mirrorlist: nil,
-                  baseurl: 'https://centos.osuosl.org/$releasever/BaseOS/power9/os/',
-                  enabled: true
-                )
-              end
+        # ppc64le can either be power8 or power9 architecture, we will test for both cases
+        %w(power8 power9).each do |arch|
+          context "arch #{arch}" do
+            cached(:chef_run) do
+              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
+                node.automatic['kernel']['machine'] = 'ppc64le'
 
-              # Test the extras repository
-              it do
-                expect(chef_run).to create_yum_repository('extras').with(
-                  mirrorlist: nil,
-                  baseurl: 'https://centos.osuosl.org/$releasever/extras/power9/os/',
-                  enabled: true
-                )
-              end
+                # Set cpu_model to either power8 or power9
+                node.automatic['ibm_power']['cpu']['cpu_model'] = arch
+              end.converge(described_recipe)
+            end
 
-              # Test the powertools repository
-              it do
-                expect(chef_run).to create_yum_repository('powertools').with(
-                  mirrorlist: nil,
-                  baseurl: 'https://centos.osuosl.org/$releasever/PowerTools/power9/os/',
-                  enabled: false
-                )
-              end
+            base_arch = arch == 'power9' ? 'power9' : '$basearch'
 
-            ####### Begin 'x86_64', 'i386', 'aarch64', and 's390x' case #######
-            when 'x86_64', 'i386', 'aarch64', 's390x'
+            # Test the appstream repository
+            it do
+              expect(chef_run).to create_yum_repository('appstream').with(
+                mirrorlist: nil,
+                baseurl: "https://centos.osuosl.org/$releasever/AppStream/#{base_arch}/os/",
+                enabled: true
+              )
+            end
 
-              # Test the appstream repository
-              it do
-                expect(chef_run).to create_yum_repository('appstream').with(
-                  mirrorlist: nil,
-                  baseurl: 'https://centos.osuosl.org/$releasever/AppStream/$basearch/os/',
-                  enabled: true
-                )
-              end
+            # Test the base repository
+            it do
+              expect(chef_run).to create_yum_repository('base').with(
+                mirrorlist: nil,
+                baseurl: "https://centos.osuosl.org/$releasever/BaseOS/#{base_arch}/os/",
+                enabled: true
+              )
+            end
 
-              # Test the base repository
-              it do
-                expect(chef_run).to create_yum_repository('base').with(
-                  mirrorlist: nil,
-                  baseurl: 'https://centos.osuosl.org/$releasever/BaseOS/$basearch/os/',
-                  enabled: true
-                )
-              end
+            # Test the extras repository
+            it do
+              expect(chef_run).to create_yum_repository('extras').with(
+                mirrorlist: nil,
+                baseurl: "https://centos.osuosl.org/$releasever/extras/#{base_arch}/os/",
+                enabled: true
+              )
+            end
 
-              # Test the extras repository
-              it do
-                expect(chef_run).to create_yum_repository('extras').with(
-                  mirrorlist: nil,
-                  baseurl: 'https://centos.osuosl.org/$releasever/extras/$basearch/os/',
-                  enabled: true
-                )
-              end
-
-              # Test the powertools repository
-              it do
-                expect(chef_run).to create_yum_repository('powertools').with(
-                  mirrorlist: nil,
-                  baseurl: 'https://centos.osuosl.org/$releasever/PowerTools/$basearch/os/',
-                  enabled: false
-                )
-              end
-
-            end ####### End switchcase #######
-          end ####### End architecture context #######
-        end ####### End Centos 8 architecture loop #######
-      end ############## End Centos Version Switchcase ##############
+            # Test the powertools repository
+            it do
+              expect(chef_run).to create_yum_repository('powertools').with(
+                mirrorlist: nil,
+                baseurl: "https://centos.osuosl.org/$releasever/PowerTools/#{base_arch}/os/",
+                enabled: false
+              )
+            end
+          end # End ppc64 Context
+        end # End ppc64 Switchcase
+      end # End Centos Version Switchcase
     end
   end
 end

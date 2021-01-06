@@ -20,11 +20,11 @@ action :add do
   # As mentioned above C7 and C8 have different availible repos and options
   case node['platform_version'].to_i
 
-  ### Centos 7 Case ###
+  # Centos 7 Case
   when 7
     node.default['yum']['epel']['baseurl'] = 'https://epel.osuosl.org/$releasever/$basearch/'
 
-  ### Centos 8 Case ###
+  # Centos 8 Case
   when 8
     node.default['yum']['epel']['baseurl'] = 'https://epel.osuosl.org/$releasever/Everything/$basearch/'
 
@@ -34,7 +34,7 @@ action :add do
   node.default['yum']['epel']['gpgkey'] = "https://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{node['platform_version'].to_i}"
 
   # Determine if the repository is managed
-  node.default['yum']['epel']['managed'] = true
+  node.default['yum']['epel']['managed'] = true unless node['kernel']['machine'] == 's390x'
 
   # Determine if the repository is enabled
   node.default['yum']['epel']['enabled'] = new_resource.epel

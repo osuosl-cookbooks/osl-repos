@@ -6,13 +6,10 @@ module OslRepos
         # CentOS 7 splits up ppc64 and aarch64 into a secondary architecture repo.
         if node['platform_version'].to_i < 8
           case node['kernel']['machine']
-          when 'x86_64', 'i386'
+          when 'aarch64', 'ppc64le', 's390x'
+            url = 'https://centos-altarch.osuosl.org'
+          else
             url = 'https://centos.osuosl.org'
-          when 'aarch64', 'ppc64', 'ppc64le'
-            url = 'https://centos-altarch.osuosl.org'
-          when 's390x'
-            node.default['yum']['epel']['enabled'] = false
-            url = 'https://centos-altarch.osuosl.org'
           end
         else
           url = 'https://centos.osuosl.org'
@@ -22,12 +19,17 @@ module OslRepos
 
       # power9 replaces $basearch in power9 repositories
       def base_arch
-        power9? ? 'power9' : '$basearch'
+        if power9?
+          'power9'
+        else
+          '$basearch'
+        end
       end
 
+      # Is this a power9 architecture?
       def power9?
         if node['ibm_power'] && node['ibm_power']['cpu']
-          if node['kernel']['machine'] == 'ppc64' || node['kernel']['machine'] == 'ppc64le' || !node['ibm_power'].nil?
+          if node['kernel']['machine'] == 'ppc64le' || !node['ibm_power'].nil?
             node['ibm_power']['cpu']['cpu_model'] =~ /power9/
           else
             false

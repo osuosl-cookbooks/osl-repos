@@ -1,7 +1,7 @@
 # Cookbook:: osl-repos
 # Spec:: default
 #
-# Copyright:: 2020, Oregon State University
+# Copyright:: 2020-2021, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 
 require_relative '../../spec_helper'
 
-####### Begin Spec Tests #######
+# Begin Spec Tests
 describe 'osl-repos::epel' do
   ALL_PLATFORMS.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
@@ -35,7 +35,7 @@ describe 'osl-repos::epel' do
       # However the epel repository is the same across all architectures, so we will only be testing x86_64
       case p[:version].to_i
 
-      ############## Begin Centos 7 case ##############
+      # Begin Centos 7 case
       when 7
         # Test the epel repository
         it do
@@ -47,7 +47,7 @@ describe 'osl-repos::epel' do
           )
         end
 
-      ############## Begin Centos 8 Case ##############
+      # Begin Centos 8 Case
       when 8
         # Test the epel repository
         it do
@@ -59,7 +59,7 @@ describe 'osl-repos::epel' do
           )
         end
 
-      end ############## End Centos Version Switchcase ##############
+      end # End Centos Version Switchcase
     end
   end
 end
