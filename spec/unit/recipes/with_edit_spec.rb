@@ -252,13 +252,11 @@ describe 'osl-repos-test::with_edit' do
               end.converge(described_recipe)
             end
 
-            base_arch = arch == 'power9' ? 'power9' : '$basearch'
-
             # Test the appstream repository
             it do
               expect(chef_run).to create_yum_repository('appstream').with(
                 mirrorlist: nil,
-                baseurl: "https://centos.osuosl.org/$releasever/AppStream/#{base_arch}/os/",
+                baseurl: 'https://centos.osuosl.org/$releasever/AppStream/$basearch/os/',
                 enabled: false
               )
             end
@@ -267,7 +265,7 @@ describe 'osl-repos-test::with_edit' do
             it do
               expect(chef_run).to create_yum_repository('base').with(
                 mirrorlist: nil,
-                baseurl: "https://centos.osuosl.org/$releasever/BaseOS/#{base_arch}/os/",
+                baseurl: 'https://centos.osuosl.org/$releasever/BaseOS/$basearch/os/',
                 enabled: true
               )
             end
@@ -276,7 +274,7 @@ describe 'osl-repos-test::with_edit' do
             it do
               expect(chef_run).to create_yum_repository('extras').with(
                 mirrorlist: nil,
-                baseurl: "https://centos.osuosl.org/$releasever/extras/#{base_arch}/os/",
+                baseurl: 'https://centos.osuosl.org/$releasever/extras/$basearch/os/',
                 enabled: false
               )
             end
@@ -285,7 +283,7 @@ describe 'osl-repos-test::with_edit' do
             it do
               expect(chef_run).to create_yum_repository('powertools').with(
                 mirrorlist: nil,
-                baseurl: "https://centos.osuosl.org/$releasever/PowerTools/#{base_arch}/os/",
+                baseurl: 'https://centos.osuosl.org/$releasever/PowerTools/$basearch/os/',
                 enabled: false
               )
             end

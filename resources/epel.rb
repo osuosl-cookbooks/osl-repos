@@ -17,18 +17,8 @@ action :add do
   # Note: any changes made here and throught the recipe will not apply if the repository is unmanaged
   node.default['yum']['epel']['mirrorlist'] = nil
 
-  # As mentioned above C7 and C8 have different availible repos and options
-  case node['platform_version'].to_i
-
-  # Centos 7 Case
-  when 7
-    node.default['yum']['epel']['baseurl'] = 'https://epel.osuosl.org/$releasever/$basearch/'
-
-  # Centos 8 Case
-  when 8
-    node.default['yum']['epel']['baseurl'] = 'https://epel.osuosl.org/$releasever/Everything/$basearch/'
-
-  end
+  # Set epel baseurl
+  node.default['yum']['epel']['baseurl'] = epel_baseurl
 
   # Set the epel gpg key, this is the same for both platforms
   node.default['yum']['epel']['gpgkey'] = "https://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{node['platform_version'].to_i}"

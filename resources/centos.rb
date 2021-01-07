@@ -39,14 +39,9 @@ action :add do
     node.default['yum']['extras']['baseurl'] = "#{centos_url}/$releasever/extras/#{base_arch}/"
 
     # Set the gpg key for each repo (excluding epel)
-    # This case ensures that the AltArch gpg key is included in any non x86_64 architecture
+    # This ensures that the AltArch gpg key is included in any non x86_64 architecture
     %w(base updates extras).each do |r|
-      node.default['yum'][r]['gpgkey'] =
-        if node['kernel']['machine'] == 'x86_64'
-          'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
-        else
-          'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch'
-        end
+      node.default['yum'][r]['gpgkey'] = centos_7_gpgkey
     end
 
     # Updates is only installed on Centos 7
