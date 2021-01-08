@@ -12,6 +12,7 @@ property :updates, [true, false], default: true
 # The associated properties will be ignored on Centos 7
 property :appstream, [true, false], default: true
 property :powertools, [true, false], default: true
+property :highavailability, [true, false], default: false
 
 # This is the default and only action, It will add all availible repos, unless specified in properties above
 action :add do
@@ -26,6 +27,7 @@ action :add do
   node.default['yum']['extras']['mirrorlist'] = nil
   node.default['yum']['powertools']['mirrorlist'] = nil
   node.default['yum']['updates']['mirrorlist'] = nil
+  node.default['yum']['highavailability']['mirrorlist'] = nil
 
   # As mentioned above C7 and C8 have different availible repos and options
   case node['platform_version'].to_i
@@ -57,15 +59,18 @@ action :add do
     node.default['yum']['appstream']['baseurl'] = "#{centos_url}/$releasever/AppStream/#{base_arch}/os/"
     node.default['yum']['base']['baseurl'] = "#{centos_url}/$releasever/BaseOS/#{base_arch}/os/"
     node.default['yum']['extras']['baseurl'] = "#{centos_url}/$releasever/extras/#{base_arch}/os/"
+    node.default['yum']['highavailability']['baseurl'] = "#{centos_url}/$releasever/HighAvailability/#{base_arch}/os/"
     node.default['yum']['powertools']['baseurl'] = "#{centos_url}/$releasever/PowerTools/#{base_arch}/os/"
 
-    # Powertools and appstream are only availible for Centos 8 so we set their properties here
-    # Determine if powertools and appstream are managed
+    # appstream, highavailibility, and powertools are only availible for Centos 8 so we set their properties here
+    # Determine if appstream, highavailibility, and powertools are managed
     node.default['yum']['appstream']['managed'] = true
+    node.default['yum']['highavailability']['managed'] = true
     node.default['yum']['powertools']['managed'] = true
 
-    # Determine if powertools and appstream are enabled
+    # Determine if appstream, highavailibility, and powertools are enabled
     node.default['yum']['appstream']['enabled'] = new_resource.appstream
+    node.default['yum']['highavailability']['enabled'] = new_resource.highavailability
     node.default['yum']['powertools']['enabled'] = new_resource.powertools
 
   end # End of switchcase

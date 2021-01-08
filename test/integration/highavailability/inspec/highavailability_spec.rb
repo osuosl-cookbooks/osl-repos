@@ -29,7 +29,7 @@ when 7
   # Test the updates repository
   describe yum.repo('updates') do
     it { should exist }
-    it { should_not be_enabled }
+    it { should be_enabled }
     its('baseurl') { should eq 'https://centos.osuosl.org/7/updates/x86_64/' }
     its('mirrors') { should eq nil }
   end
@@ -64,7 +64,7 @@ when 8
   # Test the extras repository
   describe yum.repo('highavailability') do
     it { should exist }
-    it { should_not be_enabled }
+    it { should be_enabled }
     its('baseurl') { should eq 'https://centos.osuosl.org/8/HighAvailability/x86_64/os/' }
     its('mirrors') { should eq nil }
   end
@@ -72,7 +72,7 @@ when 8
   # Test the powertools repository
   describe yum.repo('powertools') do
     it { should exist }
-    it { should_not be_enabled }
+    it { should be_enabled }
     its('baseurl') { should eq 'https://centos.osuosl.org/8/PowerTools/x86_64/os/' }
     its('mirrors') { should eq nil }
   end

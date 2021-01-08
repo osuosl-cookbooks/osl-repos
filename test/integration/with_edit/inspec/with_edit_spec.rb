@@ -61,6 +61,14 @@ when 8
     its('mirrors') { should eq nil }
   end
 
+  # Test the extras repository
+  describe yum.repo('highavailability') do
+    it { should exist }
+    it { should_not be_enabled }
+    its('baseurl') { should eq 'https://centos.osuosl.org/8/HighAvailability/x86_64/os/' }
+    its('mirrors') { should eq nil }
+  end
+
   # Test the powertools repository
   describe yum.repo('powertools') do
     it { should exist }

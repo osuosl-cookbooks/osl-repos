@@ -21,6 +21,9 @@ suites:
   - name: epel
     run_list:
       - recipe[osl-repos::epel]
+  - name: highavailability
+    run_list:
+      - recipe[osl-repos-test::highavailability]
   - name: with_edit
     run_list:
       - recipe[osl-repos-test::with_edit]

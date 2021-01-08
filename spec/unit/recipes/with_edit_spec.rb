@@ -1,6 +1,6 @@
 #
-# Cookbook:: osl-repos
-# Spec:: default
+# Cookbook:: osl-repos-test
+# Spec:: with_edit
 #
 # Copyright:: 2020-2021, Oregon State University
 #
@@ -229,6 +229,15 @@ describe 'osl-repos-test::with_edit' do
               )
             end
 
+            # Test the highavailability repository
+            it do
+              expect(chef_run).to create_yum_repository('highavailability').with(
+                mirrorlist: nil,
+                baseurl: 'https://centos.osuosl.org/$releasever/HighAvailability/$basearch/os/',
+                enabled: false
+              )
+            end
+
             # Test the powertools repository
             it do
               expect(chef_run).to create_yum_repository('powertools').with(
@@ -275,6 +284,15 @@ describe 'osl-repos-test::with_edit' do
               expect(chef_run).to create_yum_repository('extras').with(
                 mirrorlist: nil,
                 baseurl: 'https://centos.osuosl.org/$releasever/extras/$basearch/os/',
+                enabled: false
+              )
+            end
+
+            # Test the highavailability repository
+            it do
+              expect(chef_run).to create_yum_repository('highavailability').with(
+                mirrorlist: nil,
+                baseurl: 'https://centos.osuosl.org/$releasever/HighAvailability/$basearch/os/',
                 enabled: false
               )
             end

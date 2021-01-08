@@ -1,6 +1,6 @@
 #
-# Cookbook:: osl-repos
-# Spec:: default
+# Cookbook:: osl-repos-test
+# Spec:: highavailability
 #
 # Copyright:: 2020-2021, Oregon State University
 #
@@ -19,7 +19,7 @@
 require_relative '../../spec_helper'
 
 # Begin Spec Tests
-describe 'osl-repos::centos' do
+describe 'osl-repos-test::highavailability' do
   ALL_PLATFORMS.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
@@ -234,7 +234,7 @@ describe 'osl-repos::centos' do
               expect(chef_run).to create_yum_repository('highavailability').with(
                 mirrorlist: nil,
                 baseurl: 'https://centos.osuosl.org/$releasever/HighAvailability/$basearch/os/',
-                enabled: false
+                enabled: true
               )
             end
 
@@ -294,7 +294,7 @@ describe 'osl-repos::centos' do
               expect(chef_run).to create_yum_repository('highavailability').with(
                 mirrorlist: nil,
                 baseurl: 'https://centos.osuosl.org/$releasever/HighAvailability/$basearch/os/',
-                enabled: false
+                enabled: true
               )
             end
 

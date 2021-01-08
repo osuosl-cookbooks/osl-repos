@@ -1,5 +1,5 @@
 # Cookbook:: osl-repos
-# Spec:: default
+# Spec:: elrepo
 #
 # Copyright:: 2020-2021, Oregon State University
 #
