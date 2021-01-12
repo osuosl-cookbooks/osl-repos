@@ -3,7 +3,7 @@ provides :osl_repos_centos
 
 default_action :add
 
-# These properties indicate wether or not a repo should be enabled
+# These properties indicate whether or not a repo should be enabled
 property :base, [true, false], default: true
 property :extras, [true, false], default: true
 property :updates, [true, false], default: true

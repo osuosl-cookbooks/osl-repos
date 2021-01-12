@@ -1,61 +1,106 @@
-# osl-repos
+osl-repos
+================
 
-  This cookbook manages the base, epel, extras, and updates repositories on Centos 7; and the appstream, base, elrepo,
-  epel, and powertools repositories on Centos 8. This cookbook imports these repositories and points them at the osuosl
-  repositories.
-## Requirements
+This cookbook manages the base, epel, extras, and updates repositories on Centos 7; and the appstream, base, elrepo,
+epel, and powertools repositories on Centos 8. This cookbook imports these repositories and points them at the osuosl
+repositories.
 
- - Chef/Cinc 15+
- - Centos 7+
-### Platforms
+## Most Recent Release
 
-- CentOS 7+
+```ruby
+cookbook 'osl-repos', '~> 1.0.0'
+```
 
-### Cookbooks
+## From Git
 
- - yum
- - yum-centos
- - yum-elrepo
- - yum-epel
-## Attributes
+```ruby
+cookbook 'osl-repos', git: 'git@github.com:osuosl-cookbooks/osl-repos.git'
+```
 
-  None
+## Repository
 
-## Resources
-
-  osl_repos_centos
-
-  Properties
-
-  Note: The 'appstream', and 'powertools' related attributes are only relevant to Centos 8, and the 'updates' related
-  attributes are only relevant to Centos 7.
-
- - appstream:              indicates if the appstream repository is enabled
- - base:                   indicates if the base repository is enabled
- - extras:                 indicates if the appstream repository is enabled
- - powertools:             indicates if the powertools repository is enabled
- - updates:                indicates if the updates repository is enabled
-
-  osl_repos_epel
-
-  Properties
- 
- - epel:                   indicates if the epel repository is enabled
-
-  osl_repos_elrepo
-
-  Note: The 'elrepo' repository is only availible or Centos 8.
-  
-  Properties
- 
- - elrepo:                 indicates if the elrepo repository is enabled
+```
+https://github.com/osuosl-cookbooks/osl-repos
+```
 
 ## Recipes
 
- - osl-repos::default   configures and enables all repositories managed by this cookbook
- - osl-repos::centos    configures and enables all repositories, with the exception of the 'elrepo' and 'epel' repos
- - osl-repos::elrepo    configures and enables the 'elrepo' repository
- - osl-repos::epel      configures and enables the 'epel' repository
+- `osl-repos::default` - Configures and enables all repositories managed by this cookbook
+- `osl-repos::centos`  - Configures and enables all repositories, with the exception of the 'elrepo' and 'epel' repos
+- `osl-repos::elrepo`  - Configures and enables the 'elrepo' repository
+- `osl-repos::epel`    - Configures and enables the 'epel' repository
+
+## Resources
+
+- `osl_repos_centos` - Manages and configures the appstream, base, extras, highavailability, powertools, and updates repositories
+- `osl_repos_epel`   - Manages and configures the epel repository
+- `osl_repos_elrepo` - Manages and configures the elrepo repository
+
+### Actions:
+
+| Action 	| Description                                                            	|
+|--------	|------------------------------------------------------------------------	|
+| add    	| Configures all repositories managed by a given resource                	|
+
+### Properties:
+
+Note: All repositories controlled by a resource will be installed and configured. These properties determine if said repos are ENABLED
+
+| Resource  	| Property        	| Effect                     	      | Default  | Compatibility     |
+|-----------	|-----------------  |---------------------------------	|--------  |-----------------  |
+| centos 	    | appstream     	  | Enable the appstream repo   	    | True     | Centos 8          |
+| centos 	    | base           	  | Enable the base repo   	          | True     | Centos 7 and 8    |
+| centos      | extras            | Enable the extras repo   	        | True     | Centos 7 and 8    |
+| centos   	  | highavailability  | Enable the highavailability repo  | False    | Centos 8          |
+| centos   	  | powertools        | Enable the powertools repo   	    | True     | Centos 8          |
+| centos      | updates        	  | Enable the updates repo   	  	  | True     | Centos 7          |
+| epel    	  | epel           	  | Enable the epel repo   	  	      | True     | Centos 7 and 8    |
+| elrepo  	  | elrepo         	  | Enable the elrepo repo   	  	    | True     | Centos 7 and 8    |
+
+
+## Examples:
+
+Configure the default suite of Centos repos by recipe:
+```ruby
+include_recipe 'osl-repos::centos'
+```
+Or resource:
+```ruby
+osl_repos_centos 'default'
+```
+
+Configure the EPEL repository via recipe:
+```ruby
+include_recipe 'osl-repos::epel'
+```
+Or resource:
+```ruby
+osl_repos_epel 'default'
+```
+
+Configure the ELRepo repository via recipe:
+```ruby
+include_recipe 'osl-repos::elrepo'
+```
+Or resource:
+```ruby
+osl_repos_epel 'default'
+```
+
+Disable or enable a specefic repo on creation (In this case PowerTools): 
+```ruby
+osl_repos_centos 'default' do
+  powertools false
+end
+```
+
+Disable or enable a specefic repo after including recipe or initializing resource: 
+```ruby
+edit resource(:osl_repos_centos, 'default') do
+  powertools false
+end
+```
+
 ## Contributing
 
 1. Fork the repository on Github

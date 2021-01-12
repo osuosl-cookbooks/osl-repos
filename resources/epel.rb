@@ -3,11 +3,11 @@ provides :osl_repos_epel
 
 default_action :add
 
-# This property indicates wether the epel repo should be managed
+# This property indicates whether the epel repo should be managed
 # If unmanaged the repo file will not be created or changed
 property :epel, [true, false], default: true
 
-# This property indicates wether or not the epel repo should be enabled
+# This property indicates whether or not the epel repo should be enabled
 # Note: If unmanaged is set the repo's enabled/disabled state will not be changed
 property :epel_enabled, [true, false], default: true
 

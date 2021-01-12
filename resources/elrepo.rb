@@ -3,7 +3,7 @@ provides :osl_repos_elrepo
 
 default_action :add
 
-# This property indicates wether the elrepo repo should be enabled
+# This property indicates whether the elrepo repo should be enabled
 # If unmanaged the repo file will not be created or changed
 property :elrepo, [true, false], default: true
 
