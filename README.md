@@ -25,7 +25,6 @@ https://github.com/osuosl-cookbooks/osl-repos
 
 ## Recipes
 
-- `osl-repos::default` - Configures and enables all repositories managed by this cookbook
 - `osl-repos::centos`  - Configures and enables all repositories, with the exception of the 'elrepo' and 'epel' repos
 - `osl-repos::elrepo`  - Configures and enables the 'elrepo' repository
 - `osl-repos::epel`    - Configures and enables the 'epel' repository
@@ -44,7 +43,7 @@ https://github.com/osuosl-cookbooks/osl-repos
 
 ### Properties:
 
-Note: All repositories controlled by a resource will be installed and configured. These properties determine if said repos are ENABLED
+Note: All repositories controlled by a resource will be installed and configured. These properties determine if said repos are **enabled**
 
 | Resource  	| Property        	| Effect                     	      | Default  | Compatibility     |
 |-----------	|-----------------  |---------------------------------	|--------  |-----------------  |
@@ -84,7 +83,7 @@ include_recipe 'osl-repos::elrepo'
 ```
 Or resource:
 ```ruby
-osl_repos_epel 'default'
+osl_repos_elrepo 'default'
 ```
 
 Disable or enable a specefic repo on creation (In this case PowerTools): 
