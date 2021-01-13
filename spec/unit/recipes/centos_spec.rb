@@ -104,8 +104,6 @@ describe 'osl-repos::centos' do
             # Begin x86_64 architecture case
             else
 
-              # NOTE: The baseurl prefix of these repos is 'https://centos.osuosl.org'
-
               # Test the base repository
               it do
                 expect(chef_run).to create_yum_repository('base').with(

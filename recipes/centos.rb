@@ -16,5 +16,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This excludes the elrepo and epel repos from being installed
 osl_repos_centos 'default'

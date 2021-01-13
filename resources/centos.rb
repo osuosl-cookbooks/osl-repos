@@ -4,24 +4,23 @@ provides :osl_repos_centos
 default_action :add
 
 # These properties indicate whether or not a repo should be enabled
+# appstream, highavailability, and powertools are only availible on centos 8
+# updates is only availible on centos 7
+# if a repo is not supported for the target os it's options will simply be ignored
 property :base, [true, false], default: true
 property :extras, [true, false], default: true
 property :updates, [true, false], default: true
-
-# These repositories are only availible on Centos 8
-# The associated properties will be ignored on Centos 7
 property :appstream, [true, false], default: true
 property :powertools, [true, false], default: true
 property :highavailability, [true, false], default: false
 
-# This is the default and only action, It will add all availible repos, unless specified in properties above
+# This is the default and only action it will manage all repos listed above and enable them as indicated
 action :add do
-  # Set 'installonly_limit' and 'installonlypkgs' in the main yum configuration file.
+  # Manage components of the main yum configuration file.
   node.default['yum']['main']['installonly_limit'] = '2'
   node.default['yum']['main']['installonlypkgs'] = 'kernel kernel-osuosl'
 
   # Initialize all repo mirrorlists to nil
-  # Note: any changes made here and throught the recipe will not apply if the corresponding repository is unmanaged
   node.default['yum']['appstream']['mirrorlist'] = nil
   node.default['yum']['base']['mirrorlist'] = nil
   node.default['yum']['extras']['mirrorlist'] = nil
@@ -31,11 +30,8 @@ action :add do
 
   # As mentioned above C7 and C8 have different availible repos and options
   case node['platform_version'].to_i
-
-  # Begin Centos 7 case
   when 7
 
-    # Update the base url for our Centos 7 repos (base, updates, extras, and epel)
     node.default['yum']['base']['baseurl'] = "#{centos_url}/$releasever/os/#{base_arch}/"
     node.default['yum']['updates']['baseurl'] = "#{centos_url}/$releasever/updates/#{base_arch}/"
     node.default['yum']['extras']['baseurl'] = "#{centos_url}/$releasever/extras/#{base_arch}/"
@@ -47,15 +43,13 @@ action :add do
     end
 
     # Updates is only installed on Centos 7
-    # Determine if updates repo is managed
     node.default['yum']['updates']['managed'] = true
+
     # Determine if updates repo is enabled
     node.default['yum']['updates']['enabled'] = new_resource.updates
 
-  # Begin Centos 8 case
   when 8
 
-    # Update the base url for our Centos 8 repos (appstream, base, epel, extras, and powertools)
     node.default['yum']['appstream']['baseurl'] = "#{centos_url}/$releasever/AppStream/#{base_arch}/os/"
     node.default['yum']['base']['baseurl'] = "#{centos_url}/$releasever/BaseOS/#{base_arch}/os/"
     node.default['yum']['extras']['baseurl'] = "#{centos_url}/$releasever/extras/#{base_arch}/os/"
@@ -63,7 +57,6 @@ action :add do
     node.default['yum']['powertools']['baseurl'] = "#{centos_url}/$releasever/PowerTools/#{base_arch}/os/"
 
     # appstream, highavailibility, and powertools are only availible for Centos 8 so we set their properties here
-    # Determine if appstream, highavailibility, and powertools are managed
     node.default['yum']['appstream']['managed'] = true
     node.default['yum']['highavailability']['managed'] = true
     node.default['yum']['powertools']['managed'] = true
@@ -73,11 +66,9 @@ action :add do
     node.default['yum']['highavailability']['enabled'] = new_resource.highavailability
     node.default['yum']['powertools']['enabled'] = new_resource.powertools
 
-  end # End of switchcase
+  end
 
-  # These repositories are used by Centos 7 and Centos 8, so we set their state outside of the switchcase
-
-  # Determine if the base, epel, and extras repositories are managed
+  # These repositories are used by both Centos 7 and Centos 8, so we set their state outside of the switchcase
   node.default['yum']['base']['managed'] = true
   node.default['yum']['extras']['managed'] = true
 

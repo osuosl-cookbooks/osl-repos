@@ -4,23 +4,15 @@ provides :osl_repos_epel
 default_action :add
 
 # This property indicates whether the epel repo should be managed
-# If unmanaged the repo file will not be created or changed
 property :epel, [true, false], default: true
 
 # This property indicates whether or not the epel repo should be enabled
-# Note: If unmanaged is set the repo's enabled/disabled state will not be changed
 property :epel_enabled, [true, false], default: true
 
 # This is the default and only action, It will add all availible repos, unless specified in properties above
 action :add do
-  # Initialize repo mirrorlists to nil
-  # Note: any changes made here and throught the recipe will not apply if the repository is unmanaged
   node.default['yum']['epel']['mirrorlist'] = nil
-
-  # Set epel baseurl
   node.default['yum']['epel']['baseurl'] = epel_baseurl
-
-  # Set the epel gpg key, this is the same for both platforms
   node.default['yum']['epel']['gpgkey'] = "https://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{node['platform_version'].to_i}"
 
   # Determine if the repository is managed

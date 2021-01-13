@@ -16,5 +16,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This excludes all repos in the osl_repos_centos resource except the elrepo repo
 osl_repos_elrepo 'default'

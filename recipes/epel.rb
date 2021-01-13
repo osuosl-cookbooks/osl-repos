@@ -16,5 +16,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Installs and configures the epel repo
 osl_repos_epel 'default'

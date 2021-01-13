@@ -22,8 +22,8 @@ module OslRepos
       end
 
       # Define variables to use in repo urls
+      # CentOS 7 splits up ppc64 and aarch64 into a secondary architecture repo.
       def centos_url
-        # CentOS 7 splits up ppc64 and aarch64 into a secondary architecture repo.
         if node['platform_version'].to_i == 7
           case node['kernel']['machine']
           when 'aarch64', 'ppc64le', 's390x'
