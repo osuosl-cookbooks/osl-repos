@@ -31,11 +31,8 @@ describe 'osl-repos::epel' do
         expect { chef_run }.to_not raise_error
       end
 
-      # There will be different cases for the Centos 7 and Centos 8 repositories
       # However the epel repository is the same across all architectures, so we will only be testing x86_64
       case p[:version].to_i
-
-      # Begin Centos 7 case
       when 7
         # Test the epel repository
         it do
@@ -47,7 +44,6 @@ describe 'osl-repos::epel' do
           )
         end
 
-      # Begin Centos 8 Case
       when 8
         # Test the epel repository
         it do

@@ -4,17 +4,18 @@ describe ini('/etc/yum.conf') do
   its('main.installonly_limit') { should eq '2' }
 end
 
-# There will be different cases for the Centos 7 and Centos 8 repositories
+arch = File.readlines('/proc/cpuinfo').grep(/POWER9/).any? ? 'power9' : os.arch
 case os.release.to_i
 
-# Begin Centos 7 Case
 when 7
+
+  centos_url = arch == 'x86_64' ? 'https://centos.osuosl.org' : 'https://centos-altarch.osuosl.org'
 
   # Test the base repository
   describe yum.repo('base') do
     it { should exist }
     it { should be_enabled }
-    its('baseurl') { should eq 'https://centos.osuosl.org/7/os/x86_64/' }
+    its('baseurl') { should eq "#{centos_url}/7/os/#{arch}/" }
     its('mirrors') { should eq nil }
   end
 
@@ -22,7 +23,7 @@ when 7
   describe yum.repo('extras') do
     it { should exist }
     it { should be_enabled }
-    its('baseurl') { should eq 'https://centos.osuosl.org/7/extras/x86_64/' }
+    its('baseurl') { should eq "#{centos_url}/7/extras/#{arch}/" }
     its('mirrors') { should eq nil }
   end
 
@@ -30,18 +31,17 @@ when 7
   describe yum.repo('updates') do
     it { should exist }
     it { should be_enabled }
-    its('baseurl') { should eq 'https://centos.osuosl.org/7/updates/x86_64/' }
+    its('baseurl') { should eq "#{centos_url}/7/updates/#{arch}/" }
     its('mirrors') { should eq nil }
   end
 
-# Begin Centos 8 Case
 when 8
 
   # Test the appstream repository
   describe yum.repo('appstream') do
     it { should exist }
     it { should be_enabled }
-    its('baseurl') { should eq 'https://centos.osuosl.org/8/AppStream/x86_64/os/' }
+    its('baseurl') { should eq "https://centos.osuosl.org/8/AppStream/#{arch}/os/" }
     its('mirrors') { should eq nil }
   end
 
@@ -49,7 +49,7 @@ when 8
   describe yum.repo('base') do
     it { should exist }
     it { should be_enabled }
-    its('baseurl') { should eq 'https://centos.osuosl.org/8/BaseOS/x86_64/os/' }
+    its('baseurl') { should eq "https://centos.osuosl.org/8/BaseOS/#{arch}/os/" }
     its('mirrors') { should eq nil }
   end
 
@@ -57,7 +57,7 @@ when 8
   describe yum.repo('extras') do
     it { should exist }
     it { should be_enabled }
-    its('baseurl') { should eq 'https://centos.osuosl.org/8/extras/x86_64/os/' }
+    its('baseurl') { should eq "https://centos.osuosl.org/8/extras/#{arch}/os/" }
     its('mirrors') { should eq nil }
   end
 
@@ -65,7 +65,7 @@ when 8
   describe yum.repo('highavailability') do
     it { should exist }
     it { should be_enabled }
-    its('baseurl') { should eq 'https://centos.osuosl.org/8/HighAvailability/x86_64/os/' }
+    its('baseurl') { should eq "https://centos.osuosl.org/8/HighAvailability/#{arch}/os/" }
     its('mirrors') { should eq nil }
   end
 
@@ -73,7 +73,7 @@ when 8
   describe yum.repo('powertools') do
     it { should exist }
     it { should be_enabled }
-    its('baseurl') { should eq 'https://centos.osuosl.org/8/PowerTools/x86_64/os/' }
+    its('baseurl') { should eq "https://centos.osuosl.org/8/PowerTools/#{arch}/os/" }
     its('mirrors') { should eq nil }
   end
 end

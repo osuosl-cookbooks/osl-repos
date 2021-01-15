@@ -31,10 +31,7 @@ describe 'osl-repos::elrepo' do
         expect { chef_run }.to_not raise_error
       end
 
-      # There will be different cases for the Centos 7 and Centos 8 repositories
       case p[:version].to_i
-
-      # Begin Centos 7 case
       when 7
 
         # We need to test each supported architecture
@@ -64,8 +61,8 @@ describe 'osl-repos::elrepo' do
                 expect(chef_run).to_not create_yum_repository('elrepo')
               end
             end
-          end # End architecture context
-        end # End Centos 7 architecture loop
+          end
+        end
 
         # ppc64le can either be power8 or power9 architecture, we will test for both cases
         %w(power8 power9).each do |arch|
@@ -83,10 +80,9 @@ describe 'osl-repos::elrepo' do
             it do
               expect(chef_run).to_not create_yum_repository('elrepo')
             end
-          end # End ppc Context
-        end # End ppc Switchcase
+          end
+        end
 
-      # Begin Centos 8 Case
       when 8
 
         # We need to test each supported architecture
@@ -116,8 +112,8 @@ describe 'osl-repos::elrepo' do
                 expect(chef_run).to_not create_yum_repository('elrepo')
               end
             end
-          end # End architecture context
-        end # End Centos 8 architecture loop
+          end
+        end
 
         # ppc64le can either be power8 or power9 architecture, we will test for both cases
         %w(power8 power9).each do |arch|
@@ -135,10 +131,10 @@ describe 'osl-repos::elrepo' do
             it do
               expect(chef_run).to_not create_yum_repository('elrepo')
             end
-          end # End ppc Context
-        end # End ppc Switchcase
+          end
+        end
 
-      end # End Centos Version Switchcase
+      end
     end
   end
 end

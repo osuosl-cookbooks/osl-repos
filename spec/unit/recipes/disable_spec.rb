@@ -43,10 +43,7 @@ describe 'osl-repos-test::disable' do
         )
       end
 
-      # There will be different cases for the Centos 7 and Centos 8 repositories
       case p[:version].to_i
-
-      # Begin Centos 7 case
       when 7
 
         # We need to test each supported architecture
@@ -64,8 +61,6 @@ describe 'osl-repos-test::disable' do
             # ( Based on the default values for managed and enabled being set to true )
 
             case arch
-
-            # Begin 'aarch64', 's390x' case
             when 'aarch64', 's390x'
 
               # The base url of our repos is determined by the architecture
@@ -101,7 +96,6 @@ describe 'osl-repos-test::disable' do
                 )
               end
 
-            # Begin x86_64 architecture case
             else
 
               # Test the base repository
@@ -134,9 +128,9 @@ describe 'osl-repos-test::disable' do
                 )
               end
 
-            end # End architecture switcase
-          end # End Centos 7 Architecture Context
-        end # # End Centos 7 Architecture Loop
+            end
+          end
+        end
 
         # ppc64le can either be power8 or power9 architecture, we will test for both cases
         %w(power8 power9).each do |arch|
@@ -181,10 +175,9 @@ describe 'osl-repos-test::disable' do
                 enabled: false
               )
             end
-          end # End ppc Context
-        end # End ppc Switchcase
+          end
+        end
 
-      # Begin Centos 8 Case
       when 8
 
         # We need to test each supported architecture
@@ -244,8 +237,8 @@ describe 'osl-repos-test::disable' do
                 enabled: false
               )
             end
-          end # End architecture context
-        end # End Centos 8 architecture loop
+          end
+        end
 
         # ppc64le can either be power8 or power9 architecture, we will test for both cases
         %w(power8 power9).each do |arch|
@@ -303,9 +296,9 @@ describe 'osl-repos-test::disable' do
                 enabled: false
               )
             end
-          end # End ppc64 Context
-        end # End ppc64 Switchcase
-      end # End Centos Version Switchcase
+          end
+        end
+      end
     end
   end
 end

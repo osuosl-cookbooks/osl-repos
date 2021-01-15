@@ -15,9 +15,9 @@ module OslRepos
       def epel_baseurl
         case node['platform_version'].to_i
         when 7
-          node.default['yum']['epel']['baseurl'] = 'https://epel.osuosl.org/$releasever/$basearch/'
+          'https://epel.osuosl.org/$releasever/$basearch/'
         when 8
-          node.default['yum']['epel']['baseurl'] = 'https://epel.osuosl.org/$releasever/Everything/$basearch/'
+          'https://epel.osuosl.org/$releasever/Everything/$basearch/'
         end
       end
 

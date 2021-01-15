@@ -5,18 +5,6 @@ This cookbook manages the base, epel, extras, and updates repositories on Centos
 epel, and powertools repositories on Centos 8. This cookbook imports these repositories and points them at the osuosl
 repositories.
 
-## Most Recent Release
-
-```ruby
-cookbook 'osl-repos', '~> 1.0.0'
-```
-
-## From Git
-
-```ruby
-cookbook 'osl-repos', git: 'git@github.com:osuosl-cookbooks/osl-repos.git'
-```
-
 ## Repository
 
 ```
@@ -31,9 +19,9 @@ https://github.com/osuosl-cookbooks/osl-repos
 
 ## Resources
 
-- `osl_repos_centos` - Manages and configures the appstream, base, extras, highavailability, powertools, and updates repositories
-- `osl_repos_epel`   - Manages and configures the epel repository
-- `osl_repos_elrepo` - Manages and configures the elrepo repository
+- `osl_repos_centos` - Manages and configures the appstream, base, extras, highavailability, powertools, and updates repositories using the `yum-centos` cookbook
+- `osl_repos_elrepo` - Manages and configures the elrepo repository using the `yum-epel` cookbook
+- `osl_repos_epel`   - Manages and configures the epel repository using the `yum-elrepo` cookbook
 
 ### Actions:
 

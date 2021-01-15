@@ -4,8 +4,8 @@ provides :osl_repos_centos
 default_action :add
 
 # These properties indicate whether or not a repo should be enabled
-# appstream, highavailability, and powertools are only availible on centos 8
-# updates is only availible on centos 7
+# appstream, highavailability, and powertools are only available on centos 8
+# updates is only available on centos 7
 # if a repo is not supported for the target os it's options will simply be ignored
 property :base, [true, false], default: true
 property :extras, [true, false], default: true
@@ -28,7 +28,6 @@ action :add do
   node.default['yum']['updates']['mirrorlist'] = nil
   node.default['yum']['highavailability']['mirrorlist'] = nil
 
-  # As mentioned above C7 and C8 have different availible repos and options
   case node['platform_version'].to_i
   when 7
 
@@ -36,7 +35,7 @@ action :add do
     node.default['yum']['updates']['baseurl'] = "#{centos_url}/$releasever/updates/#{base_arch}/"
     node.default['yum']['extras']['baseurl'] = "#{centos_url}/$releasever/extras/#{base_arch}/"
 
-    # Set the gpg key for each repo (excluding epel)
+    # Set the gpg key for each repo
     # This ensures that the AltArch gpg key is included in any non x86_64 architecture
     %w(base updates extras).each do |r|
       node.default['yum'][r]['gpgkey'] = centos_7_gpgkey
@@ -56,7 +55,7 @@ action :add do
     node.default['yum']['highavailability']['baseurl'] = "#{centos_url}/$releasever/HighAvailability/#{base_arch}/os/"
     node.default['yum']['powertools']['baseurl'] = "#{centos_url}/$releasever/PowerTools/#{base_arch}/os/"
 
-    # appstream, highavailibility, and powertools are only availible for Centos 8 so we set their properties here
+    # appstream, highavailibility, and powertools are only available for Centos 8 so we set their properties here
     node.default['yum']['appstream']['managed'] = true
     node.default['yum']['highavailability']['managed'] = true
     node.default['yum']['powertools']['managed'] = true

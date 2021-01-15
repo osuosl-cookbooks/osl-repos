@@ -9,7 +9,7 @@ property :epel, [true, false], default: true
 # This property indicates whether or not the epel repo should be enabled
 property :epel_enabled, [true, false], default: true
 
-# This is the default and only action, It will add all availible repos, unless specified in properties above
+# This is the default and only action, It will add all available repos, unless specified in properties above
 action :add do
   node.default['yum']['epel']['mirrorlist'] = nil
   node.default['yum']['epel']['baseurl'] = epel_baseurl
