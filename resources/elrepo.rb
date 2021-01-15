@@ -16,7 +16,7 @@ action :add do
   node.default['yum']['elrepo']['enabled'] = new_resource.elrepo
 
   # Include the yum-elrepo recipe, which will install the elrepo repository and apply our configuration
-  # Note: the elrpo repository is only availible for x86_64
+  # Note: the elrepo repository is only availible for x86_64
   if new_resource.elrepo && platform?('centos') && node['kernel']['machine'] == 'x86_64'
     include_recipe 'yum-elrepo'
   end
