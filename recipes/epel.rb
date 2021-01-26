@@ -1,8 +1,8 @@
 #
 # Cookbook:: osl-repos
-# Spec:: default
+# Recipe:: epel
 #
-# Copyright:: 2020, Oregon State University
+# Copyright:: 2020-2021, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,17 +16,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require_relative '../../spec_helper'
-
-describe 'osl-repos::default' do
-  ALL_PLATFORMS.each do |p|
-    context "#{p[:platform]} #{p[:version]}" do
-      cached(:chef_run) do
-        ChefSpec::SoloRunner.new(p).converge(described_recipe)
-      end
-      it 'converges successfully' do
-        expect { chef_run }.to_not raise_error
-      end
-    end
-  end
-end
+osl_repos_epel 'default'
