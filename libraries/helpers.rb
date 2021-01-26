@@ -27,14 +27,13 @@ module OslRepos
         if node['platform_version'].to_i == 7
           case node['kernel']['machine']
           when 'aarch64', 'ppc64le', 's390x'
-            url = 'https://centos-altarch.osuosl.org'
+            'https://centos-altarch.osuosl.org'
           else
-            url = 'https://centos.osuosl.org'
+            'https://centos.osuosl.org'
           end
         else
-          url = 'https://centos.osuosl.org'
+          'https://centos.osuosl.org'
         end
-        url
       end
 
       # power9 replaces $basearch in power9 repositories
