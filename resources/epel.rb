@@ -25,7 +25,7 @@ action :add do
   if repo_resource_exist?('epel')
     node['yum-epel']['repos'].each do |repo|
       next unless node['yum'][repo]['managed']
-      edit_resource!(:yum_repository, repo) do
+      edit_resource(:yum_repository, repo) do
         node['yum'][repo].each do |config, value|
           case config
           when 'managed' # rubocop: disable Lint/EmptyWhen

@@ -79,7 +79,7 @@ action :add do
   # 'yum' will apply our changes to the main config file
   # 'yum-centos' install the remaining repositories and apply our configuration
   if repo_resource_exist?('base')
-    edit_resource!(:yum_globalconfig, '/etc/yum.conf') do
+    edit_resource(:yum_globalconfig, '/etc/yum.conf') do
       node['yum']['main'].each do |config, value|
         send(config.to_sym, value)
       end
@@ -87,7 +87,7 @@ action :add do
 
     node['yum-centos']['repos'].each do |repo|
       next unless node['yum'][repo]['managed']
-      edit_resource!(:yum_repository, repo) do
+      edit_resource(:yum_repository, repo) do
         node['yum'][repo].each do |config, value|
           case config
           when 'managed' # rubocop: disable Lint/EmptyWhen
