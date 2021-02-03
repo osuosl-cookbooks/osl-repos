@@ -57,6 +57,12 @@ module OslRepos
           false
         end
       end
+
+      def repo_resource_exist?(resource)
+        !find_resource!(:yum_repository, resource).nil?
+      rescue Chef::Exceptions::ResourceNotFound
+        false
+      end
     end
   end
 end

@@ -78,6 +78,29 @@ action :add do
   # Include 'yum', and 'yum-centos' recipies
   # 'yum' will apply our changes to the main config file
   # 'yum-centos' install the remaining repositories and apply our configuration
-  include_recipe 'yum'
-  include_recipe 'yum-centos'
+  if repo_resource_exist?('base')
+    edit_resource!(:yum_globalconfig, '/etc/yum.conf') do
+      node['yum']['main'].each do |config, value|
+        send(config.to_sym, value)
+      end
+    end
+
+    node['yum-centos']['repos'].each do |repo|
+      next unless node['yum'][repo]['managed']
+      edit_resource!(:yum_repository, repo) do
+        node['yum'][repo].each do |config, value|
+          case config
+          when 'managed' # rubocop: disable Lint/EmptyWhen
+          when 'baseurl'
+            send(config.to_sym, lazy { value })
+          else
+            send(config.to_sym, value)
+          end
+        end
+      end
+    end
+  else
+    include_recipe 'yum'
+    include_recipe 'yum-centos'
+  end
 end
