@@ -18,6 +18,20 @@ action :add do
   # Include the yum-elrepo recipe, which will install the elrepo repository and apply our configuration
   # Note: the elrepo repository is only availible for x86_64
   if new_resource.elrepo && platform?('centos') && node['kernel']['machine'] == 'x86_64'
-    include_recipe 'yum-elrepo'
+    if repo_resource_exist?('elrepo')
+      edit_resource(:yum_repository, 'elrepo') do
+        node['yum']['elrepo'].each do |config, value|
+          case config
+          when 'managed' # rubocop: disable Lint/EmptyWhen
+          when 'baseurl'
+            send(config.to_sym, lazy { value })
+          else
+            send(config.to_sym, value)
+          end
+        end
+      end
+    else
+      include_recipe 'yum-elrepo'
+    end
   end
 end

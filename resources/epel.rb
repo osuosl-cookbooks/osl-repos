@@ -22,5 +22,22 @@ action :add do
   node.default['yum']['epel']['enabled'] = new_resource.epel
 
   # 'yum-epel' will install the epel repository and apply our configuration
-  include_recipe 'yum-epel'
+  if repo_resource_exist?('epel')
+    node['yum-epel']['repos'].each do |repo|
+      next unless node['yum'][repo]['managed']
+      edit_resource(:yum_repository, repo) do
+        node['yum'][repo].each do |config, value|
+          case config
+          when 'managed' # rubocop: disable Lint/EmptyWhen
+          when 'baseurl'
+            send(config.to_sym, lazy { value })
+          else
+            send(config.to_sym, value)
+          end
+        end
+      end
+    end
+  else
+    include_recipe 'yum-epel'
+  end
 end
