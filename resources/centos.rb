@@ -19,6 +19,7 @@ action :add do
   # Manage components of the main yum configuration file.
   node.default['yum']['main']['installonly_limit'] = '2'
   node.default['yum']['main']['installonlypkgs'] = 'kernel kernel-osuosl'
+  node.default['yum']['main']['clean_requirements_on_remove'] = true
 
   # Initialize all repo mirrorlists to nil
   node.default['yum']['appstream']['mirrorlist'] = nil

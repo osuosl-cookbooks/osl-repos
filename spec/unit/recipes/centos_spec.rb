@@ -39,7 +39,8 @@ describe 'osl-repos::centos' do
       it do
         expect(chef_run).to create_yum_globalconfig('/etc/yum.conf').with(
           installonly_limit: '2',
-          installonlypkgs: 'kernel kernel-osuosl'
+          installonlypkgs: 'kernel kernel-osuosl',
+          clean_requirements_on_remove: true
         )
       end
 
