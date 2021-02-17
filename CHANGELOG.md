@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+1.0.2 (2021-02-17)
+------------------
+- Automatically remove pkg deps
+
 1.0.1 (2021-02-04)
 ------------------
 - Use edit_resource on yum repos if they exist
