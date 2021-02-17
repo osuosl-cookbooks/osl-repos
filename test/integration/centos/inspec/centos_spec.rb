@@ -2,6 +2,7 @@
 describe ini('/etc/yum.conf') do
   its('main.installonlypkgs') { should eq 'kernel kernel-osuosl' }
   its('main.installonly_limit') { should eq '2' }
+  its('main.clean_requirements_on_remove') { should eq 'true' }
 end
 
 arch = File.readlines('/proc/cpuinfo').grep(/POWER9/).any? ? 'power9' : os.arch
