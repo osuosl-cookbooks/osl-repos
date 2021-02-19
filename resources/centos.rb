@@ -17,9 +17,16 @@ property :highavailability, [true, false], default: false
 # This is the default and only action it will manage all repos listed above and enable them as indicated
 action :add do
   # Manage components of the main yum configuration file.
-  node.default['yum']['main']['installonly_limit'] = '2'
-  node.default['yum']['main']['installonlypkgs'] = 'kernel kernel-osuosl'
-  node.default['yum']['main']['clean_requirements_on_remove'] = true
+  yum_globalconfig '/etc/yum.conf' do
+    if node['platform_version'].to_i < 8
+      distroverpkg 'centos-release'
+    else
+      cachedir '/var/cache/dnf'
+    end
+    installonly_limit '2'
+    installonlypkgs 'kernel kernel-osuosl'
+    clean_requirements_on_remove true
+  end
 
   # Initialize all repo mirrorlists to nil
   node.default['yum']['appstream']['mirrorlist'] = nil
@@ -101,7 +108,6 @@ action :add do
       end
     end
   else
-    include_recipe 'yum'
     include_recipe 'yum-centos'
   end
 end
