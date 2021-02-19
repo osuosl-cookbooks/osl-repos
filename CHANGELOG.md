@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+1.0.3 (2021-02-19)
+------------------
+- Directly use yum_globalconfig resource
+
 1.0.2 (2021-02-17)
 ------------------
 - Automatically remove pkg deps
