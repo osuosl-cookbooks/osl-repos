@@ -35,17 +35,16 @@ describe 'osl-repos::centos' do
         expect { chef_run }.to_not raise_error
       end
 
-      # Test for the main configuration file ('/etc/yum.conf'cookstyle)
-      it do
-        expect(chef_run).to create_yum_globalconfig('/etc/yum.conf').with(
-          installonly_limit: '2',
-          installonlypkgs: 'kernel kernel-osuosl',
-          clean_requirements_on_remove: true
-        )
-      end
-
       case p[:version].to_i
       when 7
+        it do
+          expect(chef_run).to create_yum_globalconfig('/etc/yum.conf').with(
+            distroverpkg: 'centos-release',
+            installonly_limit: '2',
+            installonlypkgs: 'kernel kernel-osuosl',
+            clean_requirements_on_remove: true
+          )
+        end
 
         # We need to test each supported architecture
         # This loop creates a context for each architecture and applies its tests.
@@ -180,6 +179,14 @@ describe 'osl-repos::centos' do
         end
 
       when 8
+        it do
+          expect(chef_run).to create_yum_globalconfig('/etc/yum.conf').with(
+            cachedir: '/var/cache/dnf',
+            installonly_limit: '2',
+            installonlypkgs: 'kernel kernel-osuosl',
+            clean_requirements_on_remove: true
+          )
+        end
 
         # We need to test each supported architecture
         # This loop creates a context for each architecture and applies its tests.

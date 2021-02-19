@@ -1,14 +1,14 @@
-# Test for the main configuration file ('/etc/yum.conf'cookstyle)
-describe ini('/etc/yum.conf') do
-  its('main.installonlypkgs') { should eq 'kernel kernel-osuosl' }
-  its('main.installonly_limit') { should eq '2' }
-  its('main.clean_requirements_on_remove') { should eq 'true' }
-end
-
 arch = File.readlines('/proc/cpuinfo').grep(/POWER9/).any? ? 'power9' : os.arch
 case os.release.to_i
 
 when 7
+  describe ini('/etc/yum.conf') do
+    its('main.distroverpkg') { should eq 'centos-release' }
+    its('main.cachedir') { should eq '/var/cache/yum/$basearch/$releasever' }
+    its('main.installonlypkgs') { should eq 'kernel kernel-osuosl' }
+    its('main.installonly_limit') { should eq '2' }
+    its('main.clean_requirements_on_remove') { should eq 'true' }
+  end
 
   centos_url = arch == 'x86_64' ? 'https://centos.osuosl.org' : 'https://centos-altarch.osuosl.org'
 
@@ -37,6 +37,13 @@ when 7
   end
 
 when 8
+  describe ini('/etc/yum.conf') do
+    its('main.distroverpkg') { should eq nil }
+    its('main.cachedir') { should eq '/var/cache/dnf' }
+    its('main.installonlypkgs') { should eq 'kernel kernel-osuosl' }
+    its('main.installonly_limit') { should eq '2' }
+    its('main.clean_requirements_on_remove') { should eq 'true' }
+  end
 
   # Test the appstream repository
   describe yum.repo('appstream') do
