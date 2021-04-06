@@ -5,7 +5,7 @@ license           'All Rights Reserved'
 description       'Installs/Configures osl-repos'
 issues_url        'https://github.com/osuosl-cookbooks/osl-repos/issues'
 source_url        'https://github.com/osuosl-cookbooks/osl-repos'
-chef_version      '>= 15.0'
+chef_version      '>= 16.0'
 version           '1.0.3'
 
 depends           'yum',          '~> 5.1.0'
