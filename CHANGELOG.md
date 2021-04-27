@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+1.1.1 (2021-04-27)
+------------------
+- Fix issues with yum_repository resources not working
+
 1.1.0 (2021-04-07)
 ------------------
 - Update Chef dependency to >= 16
