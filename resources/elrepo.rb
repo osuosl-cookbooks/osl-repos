@@ -19,7 +19,7 @@ action :add do
   # Note: the elrepo repository is only availible for x86_64
   if new_resource.elrepo && platform?('centos') && node['kernel']['machine'] == 'x86_64'
     if repo_resource_exist?('elrepo')
-      edit_resource(:yum_repository, 'elrepo') do
+      declare_resource(:yum_repository, 'elrepo') do
         node['yum']['elrepo'].each do |config, value|
           case config
           when 'managed' # rubocop: disable Lint/EmptyWhen
