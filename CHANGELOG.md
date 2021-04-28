@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+1.1.2 (2021-04-28)
+------------------
+- Use declare_resource correctly
+
 1.1.1 (2021-04-27)
 ------------------
 - Fix issues with yum_repository resources not working
