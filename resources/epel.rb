@@ -1,5 +1,6 @@
 resource_name :osl_repos_epel
 provides :osl_repos_epel
+unified_mode true
 
 default_action :add
 

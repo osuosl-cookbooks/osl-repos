@@ -1,5 +1,6 @@
 resource_name :osl_repos_elrepo
 provides :osl_repos_elrepo
+unified_mode true
 
 default_action :add
 
