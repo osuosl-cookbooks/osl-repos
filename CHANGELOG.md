@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+1.2.0 (2021-06-16)
+------------------
+- Set unified_mode for custom resources
+
 1.1.2 (2021-04-28)
 ------------------
 - Use declare_resource correctly
