@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+1.3.0 (2021-10-05)
+------------------
+- Update `yum` version pin to support Chef 17
+
 1.2.0 (2021-06-16)
 ------------------
 - Set unified_mode for custom resources
