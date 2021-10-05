@@ -3,9 +3,9 @@ verifier:
   name: inspec
 
 provisioner:
-  name: chef_zero
-  enforce_idempotency: true
+  name: chef_infra
   multiple_converge: 2
+  enforce_idempotency: true
   deprecations_as_errors: true
 
 suites:

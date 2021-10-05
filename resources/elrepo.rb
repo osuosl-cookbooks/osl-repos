@@ -4,10 +4,10 @@ unified_mode true
 
 default_action :add
 
-# This property indicates whether the elrepo repo should be enabled
+# whether the elrepo repo should be enabled
 property :elrepo, [true, false], default: true
 
-# This is the default and only action, It will add all available repos, unless specified in properties above
+# add all available repos, unless specified in properties above
 action :add do
   # Initialize run state attributes
   node.run_state['elrepo'] ||= {}

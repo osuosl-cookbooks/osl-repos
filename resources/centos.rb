@@ -7,7 +7,7 @@ default_action :add
 # These properties indicate whether or not a repo should be enabled
 # appstream, highavailability, and powertools are only available on centos 8
 # updates is only available on centos 7
-# if a repo is not supported for the target os it's options will simply be ignored
+# if a repo is not supported for the target os, it'll simply be ignored
 property :base, [true, false], default: true
 property :extras, [true, false], default: true
 property :updates, [true, false], default: true
@@ -15,7 +15,7 @@ property :appstream, [true, false], default: true
 property :powertools, [true, false], default: true
 property :highavailability, [true, false], default: false
 
-# This is the default and only action it will manage all repos listed above and enable them as indicated
+# manage all repos listed above and enable them as indicated
 action :add do
   # Manage components of the main yum configuration file.
   yum_globalconfig '/etc/yum.conf' do
@@ -48,7 +48,6 @@ action :add do
 
   case node['platform_version'].to_i
   when 7
-
     node.run_state['centos']['base']['baseurl'] = "#{centos_url}/$releasever/os/#{base_arch}/"
     node.run_state['centos']['updates']['baseurl'] = "#{centos_url}/$releasever/updates/#{base_arch}/"
     node.run_state['centos']['extras']['baseurl'] = "#{centos_url}/$releasever/extras/#{base_arch}/"
@@ -66,7 +65,6 @@ action :add do
     node.run_state['centos']['updates']['enabled'] = new_resource.updates
 
   when 8
-
     node.run_state['centos']['appstream']['baseurl'] = "#{centos_url}/$releasever/AppStream/#{base_arch}/os/"
     node.run_state['centos']['base']['baseurl'] = "#{centos_url}/$releasever/BaseOS/#{base_arch}/os/"
     node.run_state['centos']['extras']['baseurl'] = "#{centos_url}/$releasever/extras/#{base_arch}/os/"

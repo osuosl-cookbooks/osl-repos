@@ -4,13 +4,13 @@ unified_mode true
 
 default_action :add
 
-# This property indicates whether the epel repo should be managed
+# whether the epel repo should be managed
 property :epel, [true, false], default: true
 
-# This property indicates whether or not the epel repo should be enabled
+# whether or not the epel repo should be enabled
 property :epel_enabled, [true, false], default: true
 
-# This is the default and only action, It will add all available repos, unless specified in properties above
+# add all available repos, unless specified in properties above
 action :add do
   # Initialize run state attributes
   node.run_state['epel'] ||= {}
