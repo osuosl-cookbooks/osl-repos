@@ -1,6 +1,14 @@
 module OslRepos
   module Cookbook
     module Helpers
+      def release_var
+        if centos_stream_platform?
+          '$stream'
+        else
+          '$releasever'
+        end
+      end
+
       # Select the gpg key for use in centos 7
       # This ensures that the AltArch gpg key is included in any non x86_64 architecture
       def centos_7_gpgkey
@@ -19,6 +27,10 @@ module OslRepos
         when 8
           'https://epel.osuosl.org/$releasever/Everything/$basearch/'
         end
+      end
+
+      def epel_next_baseurl
+        'https://epel.osuosl.org/next/$releasever/Everything/$basearch/'
       end
 
       # Define variables to use in repo urls

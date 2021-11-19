@@ -179,131 +179,140 @@ describe 'osl-repos::centos' do
         end
 
       when 8
-        it do
-          expect(chef_run).to create_yum_globalconfig('/etc/yum.conf').with(
-            cachedir: '/var/cache/dnf',
-            installonly_limit: '2',
-            installonlypkgs: 'kernel kernel-osuosl',
-            clean_requirements_on_remove: true
-          )
-        end
+        [
+          'CentOS Linux',
+          'CentOS Stream',
+        ].each do |os_release|
+          it do
+            expect(chef_run).to create_yum_globalconfig('/etc/yum.conf').with(
+              cachedir: '/var/cache/dnf',
+              installonly_limit: '2',
+              installonlypkgs: 'kernel kernel-osuosl',
+              clean_requirements_on_remove: true
+            )
+          end
 
-        # We need to test each supported architecture
-        # This loop creates a context for each architecture and applies its tests.
-        %w(x86_64 aarch64 s390x).each do |arch|
-          context "arch #{arch}" do
-            cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
-                node.automatic['kernel']['machine'] = arch
-              end.converge(described_recipe)
-            end
+          rel = os_release.match?('Stream') ? '$stream' : '$releasever'
 
-            # The following will test for the correct settings being applied to each Centos 8 repository
-            # ( Based on the default values for managed and enabled being set to true )
+          # We need to test each supported architecture
+          # This loop creates a context for each architecture and applies its tests.
+          %w(x86_64 aarch64 s390x).each do |arch|
+            context "#{os_release}: arch #{arch}" do
+              cached(:chef_run) do
+                ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
+                  node.automatic['kernel']['machine'] = arch
+                  node.automatic['os_release']['name'] = os_release
+                end.converge(described_recipe)
+              end
 
-            # Test the appstream repository
-            it do
-              expect(chef_run).to create_yum_repository('appstream').with(
-                mirrorlist: nil,
-                baseurl: 'https://centos.osuosl.org/$releasever/AppStream/$basearch/os/',
-                enabled: true
-              )
-            end
+              # The following will test for the correct settings being applied to each Centos 8 repository
+              # ( Based on the default values for managed and enabled being set to true )
 
-            # Test the base repository
-            it do
-              expect(chef_run).to create_yum_repository('base').with(
-                mirrorlist: nil,
-                baseurl: 'https://centos.osuosl.org/$releasever/BaseOS/$basearch/os/',
-                enabled: true
-              )
-            end
+              # Test the appstream repository
+              it do
+                expect(chef_run).to create_yum_repository('appstream').with(
+                  mirrorlist: nil,
+                  baseurl: "https://centos.osuosl.org/#{rel}/AppStream/$basearch/os/",
+                  enabled: true
+                )
+              end
 
-            # Test the extras repository
-            it do
-              expect(chef_run).to create_yum_repository('extras').with(
-                mirrorlist: nil,
-                baseurl: 'https://centos.osuosl.org/$releasever/extras/$basearch/os/',
-                enabled: true
-              )
-            end
+              # Test the base repository
+              it do
+                expect(chef_run).to create_yum_repository('base').with(
+                  mirrorlist: nil,
+                  baseurl: "https://centos.osuosl.org/#{rel}/BaseOS/$basearch/os/",
+                  enabled: true
+                )
+              end
 
-            # Test the highavailability repository
-            it do
-              expect(chef_run).to create_yum_repository('highavailability').with(
-                mirrorlist: nil,
-                baseurl: 'https://centos.osuosl.org/$releasever/HighAvailability/$basearch/os/',
-                enabled: false
-              )
-            end
+              # Test the extras repository
+              it do
+                expect(chef_run).to create_yum_repository('extras').with(
+                  mirrorlist: nil,
+                  baseurl: "https://centos.osuosl.org/#{rel}/extras/$basearch/os/",
+                  enabled: true
+                )
+              end
 
-            # Test the powertools repository
-            it do
-              expect(chef_run).to create_yum_repository('powertools').with(
-                mirrorlist: nil,
-                baseurl: 'https://centos.osuosl.org/$releasever/PowerTools/$basearch/os/',
-                enabled: true
-              )
+              # Test the highavailability repository
+              it do
+                expect(chef_run).to create_yum_repository('highavailability').with(
+                  mirrorlist: nil,
+                  baseurl: "https://centos.osuosl.org/#{rel}/HighAvailability/$basearch/os/",
+                  enabled: false
+                )
+              end
+
+              # Test the powertools repository
+              it do
+                expect(chef_run).to create_yum_repository('powertools').with(
+                  mirrorlist: nil,
+                  baseurl: "https://centos.osuosl.org/#{rel}/PowerTools/$basearch/os/",
+                  enabled: true
+                )
+              end
             end
           end
-        end
 
-        # ppc64le can either be power8 or power9 architecture, we will test for both cases
-        # This is the same url as above but we test for 8 vs 9 differently than x86_64 vs ppc64le
-        %w(power8 power9).each do |arch|
-          context "arch #{arch}" do
-            cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
-                node.automatic['kernel']['machine'] = 'ppc64le'
+          # ppc64le can either be power8 or power9 architecture, we will test for both cases
+          # This is the same url as above but we test for 8 vs 9 differently than x86_64 vs ppc64le
+          %w(power8 power9).each do |arch|
+            context "#{os_release}: arch #{arch}" do
+              cached(:chef_run) do
+                ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
+                  node.automatic['os_release']['name'] = os_release
+                  node.automatic['kernel']['machine'] = 'ppc64le'
 
-                # Set cpu_model to either power8 or power9
-                node.automatic['ibm_power']['cpu']['cpu_model'] = arch
-              end.converge(described_recipe)
-            end
+                  # Set cpu_model to either power8 or power9
+                  node.automatic['ibm_power']['cpu']['cpu_model'] = arch
+                end.converge(described_recipe)
+              end
 
-            # Test the appstream repository
-            it do
-              expect(chef_run).to create_yum_repository('appstream').with(
-                mirrorlist: nil,
-                baseurl: 'https://centos.osuosl.org/$releasever/AppStream/$basearch/os/',
-                enabled: true
-              )
-            end
+              # Test the appstream repository
+              it do
+                expect(chef_run).to create_yum_repository('appstream').with(
+                  mirrorlist: nil,
+                  baseurl: "https://centos.osuosl.org/#{rel}/AppStream/$basearch/os/",
+                  enabled: true
+                )
+              end
 
-            # Test the base repository
-            it do
-              expect(chef_run).to create_yum_repository('base').with(
-                mirrorlist: nil,
-                baseurl: 'https://centos.osuosl.org/$releasever/BaseOS/$basearch/os/',
-                enabled: true
-              )
-            end
+              # Test the base repository
+              it do
+                expect(chef_run).to create_yum_repository('base').with(
+                  mirrorlist: nil,
+                  baseurl: "https://centos.osuosl.org/#{rel}/BaseOS/$basearch/os/",
+                  enabled: true
+                )
+              end
 
-            # Test the extras repository
-            it do
-              expect(chef_run).to create_yum_repository('extras').with(
-                mirrorlist: nil,
-                baseurl: 'https://centos.osuosl.org/$releasever/extras/$basearch/os/',
-                enabled: true
-              )
-            end
+              # Test the extras repository
+              it do
+                expect(chef_run).to create_yum_repository('extras').with(
+                  mirrorlist: nil,
+                  baseurl: "https://centos.osuosl.org/#{rel}/extras/$basearch/os/",
+                  enabled: true
+                )
+              end
 
-            # Test the highavailability repository
-            it do
-              expect(chef_run).to create_yum_repository('highavailability').with(
-                mirrorlist: nil,
-                baseurl: 'https://centos.osuosl.org/$releasever/HighAvailability/$basearch/os/',
-                enabled: false
-              )
-            end
+              # Test the highavailability repository
+              it do
+                expect(chef_run).to create_yum_repository('highavailability').with(
+                  mirrorlist: nil,
+                  baseurl: "https://centos.osuosl.org/#{rel}/HighAvailability/$basearch/os/",
+                  enabled: false
+                )
+              end
 
-            # Test the powertools repository
-            it do
-              expect(chef_run).to create_yum_repository('powertools').with(
-                mirrorlist: nil,
-                baseurl: 'https://centos.osuosl.org/$releasever/PowerTools/$basearch/os/',
-                enabled: true
-              )
+              # Test the powertools repository
+              it do
+                expect(chef_run).to create_yum_repository('powertools').with(
+                  mirrorlist: nil,
+                  baseurl: "https://centos.osuosl.org/#{rel}/PowerTools/$basearch/os/",
+                  enabled: true
+                )
+              end
             end
           end
         end
