@@ -1,5 +1,5 @@
 arch = File.readlines('/proc/cpuinfo').grep(/POWER9/).any? ? 'power9' : os.arch
-# Test the elrepo repository
+
 describe yum.repo('elrepo') do
   if arch == 'x86_64'
     it { should exist }

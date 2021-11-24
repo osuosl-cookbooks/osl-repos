@@ -55,6 +55,22 @@ describe 'osl-repos::epel' do
           )
         end
 
+        context 'stream' do
+          cached(:chef_run) do
+            ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_epel])) do |node|
+              node.automatic['os_release']['name'] = 'CentOS Stream'
+            end.converge(described_recipe)
+          end
+
+          it do
+            expect(chef_run).to create_yum_repository('epel-next').with(
+              mirrorlist: nil,
+              baseurl: 'https://epel.osuosl.org/next/$releasever/Everything/$basearch/',
+              gpgkey: 'https://epel.osuosl.org/RPM-GPG-KEY-EPEL-8',
+              enabled: true
+            )
+          end
+        end
       end # End Centos Version Switchcase
     end
   end

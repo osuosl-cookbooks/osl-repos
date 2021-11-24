@@ -9,9 +9,10 @@ chef_version      '>= 16.0'
 version           '1.3.0'
 
 depends           'yum',          '~> 7.2.0'
-depends           'yum-centos',   '~> 4.0'
-depends           'yum-epel',     '~> 3.3.0'
+depends           'yum-centos',   '~> 5.2.0'
+depends           'yum-epel',     '~> 4.2.3'
 depends           'yum-elrepo',   '~> 2.0.0'
 
 supports          'centos', '~> 7.0'
 supports          'centos', '~> 8.0'
+supports          'centos_stream', '~> 8.0'

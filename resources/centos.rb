@@ -67,11 +67,11 @@ action :add do
 
   when 8
 
-    node.run_state['centos']['appstream']['baseurl'] = "#{centos_url}/$releasever/AppStream/#{base_arch}/os/"
-    node.run_state['centos']['base']['baseurl'] = "#{centos_url}/$releasever/BaseOS/#{base_arch}/os/"
-    node.run_state['centos']['extras']['baseurl'] = "#{centos_url}/$releasever/extras/#{base_arch}/os/"
-    node.run_state['centos']['highavailability']['baseurl'] = "#{centos_url}/$releasever/HighAvailability/#{base_arch}/os/"
-    node.run_state['centos']['powertools']['baseurl'] = "#{centos_url}/$releasever/PowerTools/#{base_arch}/os/"
+    node.run_state['centos']['appstream']['baseurl'] = "#{centos_url}/#{release_var}/AppStream/#{base_arch}/os/"
+    node.run_state['centos']['base']['baseurl'] = "#{centos_url}/#{release_var}/BaseOS/#{base_arch}/os/"
+    node.run_state['centos']['extras']['baseurl'] = "#{centos_url}/#{release_var}/extras/#{base_arch}/os/"
+    node.run_state['centos']['highavailability']['baseurl'] = "#{centos_url}/#{release_var}/HighAvailability/#{base_arch}/os/"
+    node.run_state['centos']['powertools']['baseurl'] = "#{centos_url}/#{release_var}/PowerTools/#{base_arch}/os/"
 
     # appstream, highavailibility, and powertools are only available for Centos 8 so we set their properties here
     node.default['yum']['appstream']['managed'] = true
