@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+2.0.0 (2021-11-24)
+------------------
+- CentOS Stream 8 support
+
 1.3.0 (2021-10-05)
 ------------------
 - Update `yum` version pin to support Chef 17
