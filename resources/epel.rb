@@ -32,7 +32,7 @@ action :add do
   node.run_state['epel-next']['gpgkey'] = "https://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{node['platform_version'].to_i}"
 
   # Determine if the repository is managed
-  node.default['yum']['epel']['managed'] = true unless node['kernel']['machine'] == 's390x'
+  node.default['yum']['epel']['managed'] = true
 
   # Determine if the repository is enabled
   node.run_state['epel']['enabled'] = new_resource.epel
