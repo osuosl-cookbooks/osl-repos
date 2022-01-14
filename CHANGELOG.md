@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+2.0.2 (2022-01-14)
+------------------
+- Enable EPEL on s390x
+
 2.0.1 (2022-01-11)
 ------------------
 - Update yum pin to 7.3
