@@ -9,6 +9,7 @@ property :epel, [true, false], default: true
 
 # This property indicates whether or not the epel repo should be enabled
 property :epel_enabled, [true, false], default: true
+property :exclude, Array, default: []
 
 # This is the default and only action, It will add all available repos, unless specified in properties above
 action :add do
@@ -21,6 +22,7 @@ action :add do
   node.run_state['epel']['mirrorlist'] = nil
   node.run_state['epel']['baseurl'] = epel_baseurl
   node.run_state['epel']['gpgkey'] = "https://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{node['platform_version'].to_i}"
+  node.run_state['epel']['exclude'] = new_resource.exclude.join(' ') unless new_resource.exclude.empty?
 
   # CentOS Stream
   node.run_state['epel-next'] ||= {}

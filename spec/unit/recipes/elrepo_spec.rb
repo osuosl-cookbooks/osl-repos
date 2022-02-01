@@ -50,6 +50,7 @@ describe 'osl-repos::elrepo' do
               it do
                 expect(chef_run).to create_yum_repository('elrepo').with(
                   mirrorlist: nil,
+                  exclude: nil,
                   baseurl: 'https://ftp.osuosl.org/pub/elrepo/elrepo/el$releasever/$basearch/',
                   enabled: true
                 )
@@ -101,6 +102,7 @@ describe 'osl-repos::elrepo' do
               it do
                 expect(chef_run).to create_yum_repository('elrepo').with(
                   mirrorlist: nil,
+                  exclude: nil,
                   baseurl: 'https://ftp.osuosl.org/pub/elrepo/elrepo/el$releasever/$basearch/',
                   enabled: true
                 )

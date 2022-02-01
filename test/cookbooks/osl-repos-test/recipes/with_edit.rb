@@ -24,4 +24,5 @@ edit_resource(:osl_repos_centos, 'default') do
   extras false
   powertools false
   updates false
+  exclude %w(foo bar)
 end

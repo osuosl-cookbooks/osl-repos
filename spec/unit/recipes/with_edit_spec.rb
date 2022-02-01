@@ -70,6 +70,7 @@ describe 'osl-repos-test::with_edit' do
               it do
                 expect(chef_run).to create_yum_repository('base').with(
                   mirrorlist: nil,
+                  exclude: 'foo bar',
                   baseurl: 'https://centos-altarch.osuosl.org/$releasever/os/$basearch/',
                   gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch',
                   enabled: true
@@ -80,6 +81,7 @@ describe 'osl-repos-test::with_edit' do
               it do
                 expect(chef_run).to create_yum_repository('extras').with(
                   mirrorlist: nil,
+                  exclude: 'foo bar',
                   baseurl: 'https://centos-altarch.osuosl.org/$releasever/extras/$basearch/',
                   gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch',
                   enabled: false
@@ -90,6 +92,7 @@ describe 'osl-repos-test::with_edit' do
               it do
                 expect(chef_run).to create_yum_repository('updates').with(
                   mirrorlist: nil,
+                  exclude: 'foo bar',
                   baseurl: 'https://centos-altarch.osuosl.org/$releasever/updates/$basearch/',
                   gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch',
                   enabled: false
@@ -104,6 +107,7 @@ describe 'osl-repos-test::with_edit' do
               it do
                 expect(chef_run).to create_yum_repository('base').with(
                   mirrorlist: nil,
+                  exclude: 'foo bar',
                   baseurl: 'https://centos.osuosl.org/$releasever/os/$basearch/',
                   gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7',
                   enabled: true
@@ -114,6 +118,7 @@ describe 'osl-repos-test::with_edit' do
               it do
                 expect(chef_run).to create_yum_repository('extras').with(
                   mirrorlist: nil,
+                  exclude: 'foo bar',
                   baseurl: 'https://centos.osuosl.org/$releasever/extras/$basearch/',
                   gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7',
                   enabled: false
@@ -124,6 +129,7 @@ describe 'osl-repos-test::with_edit' do
               it do
                 expect(chef_run).to create_yum_repository('updates').with(
                   mirrorlist: nil,
+                  exclude: 'foo bar',
                   baseurl: 'https://centos.osuosl.org/$releasever/updates/$basearch/',
                   gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7',
                   enabled: false
@@ -152,6 +158,7 @@ describe 'osl-repos-test::with_edit' do
             it do
               expect(chef_run).to create_yum_repository('base').with(
                 mirrorlist: nil,
+                exclude: 'foo bar',
                 baseurl: "https://centos-altarch.osuosl.org/$releasever/os/#{base_arch}/",
                 gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch',
                 enabled: true
@@ -162,6 +169,7 @@ describe 'osl-repos-test::with_edit' do
             it do
               expect(chef_run).to create_yum_repository('extras').with(
                 mirrorlist: nil,
+                exclude: 'foo bar',
                 baseurl: "https://centos-altarch.osuosl.org/$releasever/extras/#{base_arch}/",
                 gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch',
                 enabled: false
@@ -172,6 +180,7 @@ describe 'osl-repos-test::with_edit' do
             it do
               expect(chef_run).to create_yum_repository('updates').with(
                 mirrorlist: nil,
+                exclude: 'foo bar',
                 baseurl: "https://centos-altarch.osuosl.org/$releasever/updates/#{base_arch}/",
                 gpgkey: 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-AltArch-7-$basearch',
                 enabled: false
@@ -199,6 +208,7 @@ describe 'osl-repos-test::with_edit' do
             it do
               expect(chef_run).to create_yum_repository('appstream').with(
                 mirrorlist: nil,
+                exclude: 'foo bar',
                 baseurl: 'https://centos.osuosl.org/$releasever/AppStream/$basearch/os/',
                 enabled: false
               )
@@ -208,6 +218,7 @@ describe 'osl-repos-test::with_edit' do
             it do
               expect(chef_run).to create_yum_repository('base').with(
                 mirrorlist: nil,
+                exclude: 'foo bar',
                 baseurl: 'https://centos.osuosl.org/$releasever/BaseOS/$basearch/os/',
                 enabled: true
               )
@@ -217,6 +228,7 @@ describe 'osl-repos-test::with_edit' do
             it do
               expect(chef_run).to create_yum_repository('extras').with(
                 mirrorlist: nil,
+                exclude: 'foo bar',
                 baseurl: 'https://centos.osuosl.org/$releasever/extras/$basearch/os/',
                 enabled: false
               )
@@ -226,6 +238,7 @@ describe 'osl-repos-test::with_edit' do
             it do
               expect(chef_run).to create_yum_repository('highavailability').with(
                 mirrorlist: nil,
+                exclude: 'foo bar',
                 baseurl: 'https://centos.osuosl.org/$releasever/HighAvailability/$basearch/os/',
                 enabled: false
               )
@@ -235,6 +248,7 @@ describe 'osl-repos-test::with_edit' do
             it do
               expect(chef_run).to create_yum_repository('powertools').with(
                 mirrorlist: nil,
+                exclude: 'foo bar',
                 baseurl: 'https://centos.osuosl.org/$releasever/PowerTools/$basearch/os/',
                 enabled: false
               )
@@ -258,6 +272,7 @@ describe 'osl-repos-test::with_edit' do
             it do
               expect(chef_run).to create_yum_repository('appstream').with(
                 mirrorlist: nil,
+                exclude: 'foo bar',
                 baseurl: 'https://centos.osuosl.org/$releasever/AppStream/$basearch/os/',
                 enabled: false
               )
@@ -267,6 +282,7 @@ describe 'osl-repos-test::with_edit' do
             it do
               expect(chef_run).to create_yum_repository('base').with(
                 mirrorlist: nil,
+                exclude: 'foo bar',
                 baseurl: 'https://centos.osuosl.org/$releasever/BaseOS/$basearch/os/',
                 enabled: true
               )
@@ -276,6 +292,7 @@ describe 'osl-repos-test::with_edit' do
             it do
               expect(chef_run).to create_yum_repository('extras').with(
                 mirrorlist: nil,
+                exclude: 'foo bar',
                 baseurl: 'https://centos.osuosl.org/$releasever/extras/$basearch/os/',
                 enabled: false
               )
@@ -285,6 +302,7 @@ describe 'osl-repos-test::with_edit' do
             it do
               expect(chef_run).to create_yum_repository('highavailability').with(
                 mirrorlist: nil,
+                exclude: 'foo bar',
                 baseurl: 'https://centos.osuosl.org/$releasever/HighAvailability/$basearch/os/',
                 enabled: false
               )
@@ -294,6 +312,7 @@ describe 'osl-repos-test::with_edit' do
             it do
               expect(chef_run).to create_yum_repository('powertools').with(
                 mirrorlist: nil,
+                exclude: 'foo bar',
                 baseurl: 'https://centos.osuosl.org/$releasever/PowerTools/$basearch/os/',
                 enabled: false
               )
