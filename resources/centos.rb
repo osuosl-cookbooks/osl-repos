@@ -14,6 +14,7 @@ property :updates, [true, false], default: true
 property :appstream, [true, false], default: true
 property :powertools, [true, false], default: true
 property :highavailability, [true, false], default: false
+property :exclude, Array, default: []
 
 # This is the default and only action it will manage all repos listed above and enable them as indicated
 action :add do
@@ -57,6 +58,7 @@ action :add do
     # This ensures that the AltArch gpg key is included in any non x86_64 architecture
     %w(base updates extras).each do |r|
       node.run_state['centos'][r]['gpgkey'] = centos_7_gpgkey
+      node.run_state['centos'][r]['exclude'] = new_resource.exclude.join(' ') unless new_resource.exclude.empty?
     end
 
     # Updates is only installed on Centos 7
@@ -74,9 +76,13 @@ action :add do
     node.run_state['centos']['powertools']['baseurl'] = "#{centos_url}/#{release_var}/PowerTools/#{base_arch}/os/"
 
     # appstream, highavailibility, and powertools are only available for Centos 8 so we set their properties here
-    node.default['yum']['appstream']['managed'] = true
-    node.default['yum']['highavailability']['managed'] = true
-    node.default['yum']['powertools']['managed'] = true
+    %w(appstream highavailability powertools).each do |r|
+      node.default['yum'][r]['managed'] = true
+      node.default['yum'][r]['exclude'] = new_resource.exclude.join(' ') unless new_resource.exclude.empty?
+    end
+
+    node.default['yum']['base']['exclude'] = new_resource.exclude.join(' ') unless new_resource.exclude.empty?
+    node.default['yum']['extras']['exclude'] = new_resource.exclude.join(' ') unless new_resource.exclude.empty?
 
     # Determine if appstream, highavailibility, and powertools are enabled
     node.run_state['centos']['appstream']['enabled'] = new_resource.appstream

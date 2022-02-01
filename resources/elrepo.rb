@@ -6,6 +6,7 @@ default_action :add
 
 # This property indicates whether the elrepo repo should be enabled
 property :elrepo, [true, false], default: true
+property :exclude, Array, default: []
 
 # This is the default and only action, It will add all available repos, unless specified in properties above
 action :add do
@@ -16,6 +17,7 @@ action :add do
 
   node.run_state['elrepo']['mirrorlist'] = nil
   node.run_state['elrepo']['baseurl'] = 'https://ftp.osuosl.org/pub/elrepo/elrepo/el$releasever/$basearch/'
+  node.run_state['elrepo']['exclude'] = new_resource.exclude.join(' ') unless new_resource.exclude.empty?
 
   node.default['yum']['elrepo']['managed'] = true
 
