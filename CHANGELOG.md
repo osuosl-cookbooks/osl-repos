@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+2.2.0 (2022-08-26)
+------------------
+- Migrate base::oslrepo into this cookbook
+
 2.1.0 (2022-02-01)
 ------------------
 - Add exclude property to resources
