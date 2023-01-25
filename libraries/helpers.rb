@@ -33,6 +33,11 @@ module OslRepos
         'https://epel.osuosl.org/next/$releasever/Everything/$basearch/'
       end
 
+      # Define variables to use in alma repo urls
+      def alma_url
+        'https://almalinux.osuosl.org'
+      end
+
       # Define variables to use in repo urls
       # CentOS 7 splits up ppc64 and aarch64 into a secondary architecture repo.
       def centos_url
