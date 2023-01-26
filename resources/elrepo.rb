@@ -26,7 +26,7 @@ action :add do
 
   # Include the yum-elrepo recipe, which will install the elrepo repository and apply our configuration
   # Note: the elrepo repository is only availible for x86_64
-  if new_resource.elrepo && platform?('centos') && node['kernel']['machine'] == 'x86_64'
+  if new_resource.elrepo && platform_family?('rhel') && node['kernel']['machine'] == 'x86_64'
     if repo_resource_exist?('elrepo')
       # Find the resource and update each parameter we need changed
       r = resources(yum_repository: 'elrepo')
