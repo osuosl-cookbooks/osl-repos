@@ -10,34 +10,34 @@ end
 describe yum.repo('appstream') do
   it { should exist }
   it { should be_enabled }
-  its('baseurl') { should eq "https://almalinux.osuosl.org/8/AppStream/x86_64/os/" }
+  its('baseurl') { should eq 'https://almalinux.osuosl.org/8/AppStream/x86_64/os/' }
   its('mirrors') { should eq nil }
 end
 
 describe yum.repo('baseos') do
   it { should exist }
   it { should be_enabled }
-  its('baseurl') { should eq "https://almalinux.osuosl.org/8/BaseOS/x86_64/os/" }
+  its('baseurl') { should eq 'https://almalinux.osuosl.org/8/BaseOS/x86_64/os/' }
   its('mirrors') { should eq nil }
 end
 
 describe yum.repo('extras') do
   it { should exist }
   it { should be_enabled }
-  its('baseurl') { should eq "https://almalinux.osuosl.org/8/extras/x86_64/os/" }
+  its('baseurl') { should eq 'https://almalinux.osuosl.org/8/extras/x86_64/os/' }
   its('mirrors') { should eq nil }
 end
 
 describe yum.repo('highavailability') do
   it { should exist }
   it { should_not be_enabled }
-  its('baseurl') { should eq "https://almalinux.osuosl.org/8/HighAvailability/x86_64/os/" }
+  its('baseurl') { should eq 'https://almalinux.osuosl.org/8/HighAvailability/x86_64/os/' }
   its('mirrors') { should eq nil }
 end
 
 describe yum.repo('powertools') do
   it { should exist }
   it { should be_enabled }
-  its('baseurl') { should eq "https://almalinux.osuosl.org/8/PowerTools/x86_64/os/" }
+  its('baseurl') { should eq 'https://almalinux.osuosl.org/8/PowerTools/x86_64/os/' }
   its('mirrors') { should eq nil }
 end
