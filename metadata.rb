@@ -11,7 +11,7 @@ version           '2.2.0'
 depends           'yum', '~> 7.3.0'
 depends           'yum-almalinux'
 depends           'yum-centos',   '~> 5.2.0'
-depends           'yum-epel',     '~> 4.2.3'
+depends           'yum-epel',     '~> 4.5.0'
 depends           'yum-elrepo',   '~> 2.0.0'
 
 supports          'almalinux', '~> 8.0'
