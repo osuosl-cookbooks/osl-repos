@@ -8,6 +8,9 @@ provisioner:
   multiple_converge: 2
   deprecations_as_errors: true
 
+driver:
+  flavor_ref: 'm1.medium'
+
 suites:
   - name: alma
     run_list:
