@@ -20,7 +20,7 @@ require_relative '../../spec_helper'
 
 # Begin Spec Tests
 describe 'osl-repos::centos' do
-  ALL_PLATFORMS.each do |p|
+  [CENTOS_7, CENTOS_8].each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
         # Here we step into our :osl_repos_centos resource, this enables us to test the resources created within it

@@ -31,7 +31,7 @@ describe 'osl-repos::oslrepo' do
         expect(chef_run).to create_yum_repository('osl').with(
           repositoryid: 'osl',
           description: 'OSL repo $releasever - $basearch',
-          url: 'http://packages.osuosl.org/repositories/centos-$releasever/osl/$basearch',
+          url: "http://packages.osuosl.org/repositories/#{p[:platform]}-$releasever/osl/$basearch",
           gpgcheck: false
         )
       end

@@ -24,7 +24,7 @@ describe 'osl-repos-test::with_edit' do
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
         # Here we step into our :osl_repos_centos resource, this enables us to test the resources created within it
-        ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
+        ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALL_RESOURCES)) do |node|
           # This sets the base architecture to 'x86_64'
           node.default['kernel']['machine'] = 'x86_64'
         end.converge(described_recipe)
@@ -190,13 +190,15 @@ describe 'osl-repos-test::with_edit' do
         end
 
       when 8
+        centos = p[:platform] == 'centos'
+        url = centos ? 'centos.osuosl.org' : 'almalinux.osuosl.org'
 
         # We need to test each supported architecture
         # This loop creates a context for each architecture and applies its tests.
         %w(x86_64 aarch64 s390x).each do |arch|
           context "arch #{arch}" do
             cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
+              ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALL_RESOURCES)) do |node|
                 node.automatic['kernel']['machine'] = arch
               end.converge(described_recipe)
             end
@@ -209,17 +211,17 @@ describe 'osl-repos-test::with_edit' do
               expect(chef_run).to create_yum_repository('appstream').with(
                 mirrorlist: nil,
                 exclude: 'foo bar',
-                baseurl: 'https://centos.osuosl.org/$releasever/AppStream/$basearch/os/',
+                baseurl: "https://#{url}/$releasever/AppStream/$basearch/os/",
                 enabled: false
               )
             end
 
             # Test the base repository
             it do
-              expect(chef_run).to create_yum_repository('base').with(
+              expect(chef_run).to create_yum_repository(centos ? 'base' : 'baseos').with(
                 mirrorlist: nil,
                 exclude: 'foo bar',
-                baseurl: 'https://centos.osuosl.org/$releasever/BaseOS/$basearch/os/',
+                baseurl: "https://#{url}/$releasever/BaseOS/$basearch/os/",
                 enabled: true
               )
             end
@@ -229,7 +231,7 @@ describe 'osl-repos-test::with_edit' do
               expect(chef_run).to create_yum_repository('extras').with(
                 mirrorlist: nil,
                 exclude: 'foo bar',
-                baseurl: 'https://centos.osuosl.org/$releasever/extras/$basearch/os/',
+                baseurl: "https://#{url}/$releasever/extras/$basearch/os/",
                 enabled: false
               )
             end
@@ -239,7 +241,7 @@ describe 'osl-repos-test::with_edit' do
               expect(chef_run).to create_yum_repository('highavailability').with(
                 mirrorlist: nil,
                 exclude: 'foo bar',
-                baseurl: 'https://centos.osuosl.org/$releasever/HighAvailability/$basearch/os/',
+                baseurl: "https://#{url}/$releasever/HighAvailability/$basearch/os/",
                 enabled: false
               )
             end
@@ -249,7 +251,7 @@ describe 'osl-repos-test::with_edit' do
               expect(chef_run).to create_yum_repository('powertools').with(
                 mirrorlist: nil,
                 exclude: 'foo bar',
-                baseurl: 'https://centos.osuosl.org/$releasever/PowerTools/$basearch/os/',
+                baseurl: "https://#{url}/$releasever/PowerTools/$basearch/os/",
                 enabled: false
               )
             end
@@ -260,7 +262,7 @@ describe 'osl-repos-test::with_edit' do
         %w(power8 power9).each do |arch|
           context "arch #{arch}" do
             cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
+              ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALL_RESOURCES)) do |node|
                 node.automatic['kernel']['machine'] = 'ppc64le'
 
                 # Set cpu_model to either power8 or power9
@@ -273,17 +275,17 @@ describe 'osl-repos-test::with_edit' do
               expect(chef_run).to create_yum_repository('appstream').with(
                 mirrorlist: nil,
                 exclude: 'foo bar',
-                baseurl: 'https://centos.osuosl.org/$releasever/AppStream/$basearch/os/',
+                baseurl: "https://#{url}/$releasever/AppStream/$basearch/os/",
                 enabled: false
               )
             end
 
             # Test the base repository
             it do
-              expect(chef_run).to create_yum_repository('base').with(
+              expect(chef_run).to create_yum_repository(centos ? 'base' : 'baseos').with(
                 mirrorlist: nil,
                 exclude: 'foo bar',
-                baseurl: 'https://centos.osuosl.org/$releasever/BaseOS/$basearch/os/',
+                baseurl: "https://#{url}/$releasever/BaseOS/$basearch/os/",
                 enabled: true
               )
             end
@@ -293,7 +295,7 @@ describe 'osl-repos-test::with_edit' do
               expect(chef_run).to create_yum_repository('extras').with(
                 mirrorlist: nil,
                 exclude: 'foo bar',
-                baseurl: 'https://centos.osuosl.org/$releasever/extras/$basearch/os/',
+                baseurl: "https://#{url}/$releasever/extras/$basearch/os/",
                 enabled: false
               )
             end
@@ -303,7 +305,7 @@ describe 'osl-repos-test::with_edit' do
               expect(chef_run).to create_yum_repository('highavailability').with(
                 mirrorlist: nil,
                 exclude: 'foo bar',
-                baseurl: 'https://centos.osuosl.org/$releasever/HighAvailability/$basearch/os/',
+                baseurl: "https://#{url}/$releasever/HighAvailability/$basearch/os/",
                 enabled: false
               )
             end
@@ -313,7 +315,7 @@ describe 'osl-repos-test::with_edit' do
               expect(chef_run).to create_yum_repository('powertools').with(
                 mirrorlist: nil,
                 exclude: 'foo bar',
-                baseurl: 'https://centos.osuosl.org/$releasever/PowerTools/$basearch/os/',
+                baseurl: "https://#{url}/$releasever/PowerTools/$basearch/os/",
                 enabled: false
               )
             end
