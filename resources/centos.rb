@@ -18,6 +18,8 @@ property :exclude, Array, default: []
 
 # This is the default and only action it will manage all repos listed above and enable them as indicated
 action :add do
+  raise 'CentOS repositories are for CentOS systems only' unless platform?('centos')
+
   # Manage components of the main yum configuration file.
   yum_globalconfig '/etc/yum.conf' do
     if node['platform_version'].to_i < 8

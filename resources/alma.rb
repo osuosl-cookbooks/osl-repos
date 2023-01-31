@@ -13,6 +13,8 @@ property :highavailability, [true, false], default: false
 property :exclude, Array, default: []
 
 action :add do
+  raise 'AlmaLinux repositories are for AlmaLinux systems only' unless platform?('almalinux')
+
   # Manage components of the main yum configuration file.
   yum_globalconfig '/etc/yum.conf' do
     cachedir '/var/cache/dnf'

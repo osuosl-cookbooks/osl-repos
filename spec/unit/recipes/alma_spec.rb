@@ -20,6 +20,7 @@ require_relative '../../spec_helper'
 
 # Begin Spec Tests
 describe 'osl-repos::alma' do
+  # TODO: Add AlmaLinux 9 testing when supported
   [ALMA_8].each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
@@ -169,6 +170,18 @@ describe 'osl-repos::alma' do
             end
           end
         end
+      end
+    end
+  end
+
+  [CENTOS_7, CENTOS_8].each do |p|
+    context "#{p[:platform]} #{p[:version]}" do
+      cached(:chef_run) do
+        ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALL_RESOURCES)).converge(described_recipe)
+      end
+
+      it 'raises error' do
+        expect { chef_run }.to raise_error(RuntimeError, /AlmaLinux repositories are for AlmaLinux systems only/)
       end
     end
   end

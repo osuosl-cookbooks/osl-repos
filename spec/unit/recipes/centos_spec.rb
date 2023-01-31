@@ -325,4 +325,15 @@ describe 'osl-repos::centos' do
       end
     end
   end
+
+  [ALMA_8].each do |p|
+    cached(:chef_run) do
+      ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])).converge(described_recipe)
+    end
+    context "#{p[:platform]} #{p[:version]}" do
+      it 'raises error' do
+        expect { chef_run }.to raise_error(RuntimeError, /CentOS repositories are for CentOS systems only/)
+      end
+    end
+  end
 end
