@@ -17,7 +17,7 @@ suites:
       - recipe[osl-repos::alma]
     excludes:
       - centos-7
-      - centos-stream-8
+      - centos_stream-8
 
   - name: centos
     run_list:

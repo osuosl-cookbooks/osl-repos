@@ -28,35 +28,35 @@ action :add do
   yum_alma_baseos 'default' do
     mirrorlist nil
     baseurl "#{alma_url}/#{release_var}/BaseOS/#{base_arch}/os/"
-    passthrough passthrough
+    extra_options passthrough
     enabled new_resource.base
   end
 
   yum_alma_appstream 'default' do
     mirrorlist nil
     baseurl "#{alma_url}/#{release_var}/AppStream/#{base_arch}/os/"
-    passthrough passthrough
+    extra_options passthrough
     enabled new_resource.appstream
   end
 
   yum_alma_extras 'default' do
     mirrorlist nil
     baseurl "#{alma_url}/#{release_var}/extras/#{base_arch}/os/"
-    passthrough passthrough
+    extra_options passthrough
     enabled new_resource.extras
   end
 
   yum_alma_powertools 'default' do
     mirrorlist nil
     baseurl "#{alma_url}/#{release_var}/PowerTools/#{base_arch}/os/"
-    passthrough passthrough
+    extra_options passthrough
     enabled new_resource.powertools
   end
 
   yum_alma_ha 'default' do
     mirrorlist nil
     baseurl "#{alma_url}/#{release_var}/HighAvailability/#{base_arch}/os/"
-    passthrough passthrough
+    extra_options passthrough
     enabled new_resource.highavailability
   end
 end
