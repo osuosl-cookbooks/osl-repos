@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+3.0.0 (2023-02-02)
+------------------
+- Add AlmaLinux support
+
 2.2.0 (2022-08-26)
 ------------------
 - Migrate base::oslrepo into this cookbook
