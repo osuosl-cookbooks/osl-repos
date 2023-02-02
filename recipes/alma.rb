@@ -1,6 +1,6 @@
 #
 # Cookbook:: osl-repos
-# Recipe:: centos
+# Recipe:: alma
 #
 # Copyright:: 2020-2023, Oregon State University
 #
@@ -16,4 +16,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-osl_repos_centos 'default'
+osl_repos_alma 'default'

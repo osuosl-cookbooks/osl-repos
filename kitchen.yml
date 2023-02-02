@@ -8,10 +8,21 @@ provisioner:
   multiple_converge: 2
   deprecations_as_errors: true
 
+driver:
+  flavor_ref: 'm1.medium'
+
 suites:
+  - name: alma
+    run_list:
+      - recipe[osl-repos::alma]
+    excludes:
+      - centos-7
+      - centos_stream-8
   - name: centos
     run_list:
       - recipe[osl-repos::centos]
+    excludes:
+      - almalinux-8
   - name: disable
     run_list:
       - recipe[osl-repos-test::disable]

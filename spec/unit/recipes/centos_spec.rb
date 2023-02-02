@@ -2,7 +2,7 @@
 # Cookbook:: osl-repos
 # Spec:: default
 #
-# Copyright:: 2020-2022, Oregon State University
+# Copyright:: 2020-2023, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ require_relative '../../spec_helper'
 
 # Begin Spec Tests
 describe 'osl-repos::centos' do
-  ALL_PLATFORMS.each do |p|
+  [CENTOS_7, CENTOS_8].each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
         # Here we step into our :osl_repos_centos resource, this enables us to test the resources created within it
@@ -322,6 +322,17 @@ describe 'osl-repos::centos' do
             end
           end
         end
+      end
+    end
+  end
+
+  [ALMA_8].each do |p|
+    cached(:chef_run) do
+      ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])).converge(described_recipe)
+    end
+    context "#{p[:platform]} #{p[:version]}" do
+      it 'raises error' do
+        expect { chef_run }.to raise_error(RuntimeError, /CentOS repositories are for CentOS systems only/)
       end
     end
   end

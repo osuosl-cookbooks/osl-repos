@@ -2,7 +2,7 @@
 # Cookbook:: osl-repos
 # Recipe:: highavailability
 #
-# Copyright:: 2020-2022, Oregon State University
+# Copyright:: 2020-2023, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,4 +20,10 @@
 # Note: This does not disable any other repos
 osl_repos_centos 'default' do
   highavailability true
+  only_if { platform?('centos') }
+end
+
+osl_repos_alma 'default' do
+  highavailability true
+  only_if { platform?('almalinux') }
 end

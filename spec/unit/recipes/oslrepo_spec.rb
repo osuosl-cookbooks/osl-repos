@@ -2,7 +2,7 @@
 # Cookbook:: osl-repos
 # Spec:: oslrepo
 #
-# Copyright:: 2022, Oregon State University
+# Copyright:: 2022-2023, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ describe 'osl-repos::oslrepo' do
         expect(chef_run).to create_yum_repository('osl').with(
           repositoryid: 'osl',
           description: 'OSL repo $releasever - $basearch',
-          url: 'http://packages.osuosl.org/repositories/centos-$releasever/osl/$basearch',
+          url: "http://packages.osuosl.org/repositories/#{p[:platform]}-$releasever/osl/$basearch",
           gpgcheck: false
         )
       end

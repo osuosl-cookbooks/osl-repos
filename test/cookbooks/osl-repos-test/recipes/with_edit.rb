@@ -2,7 +2,7 @@
 # Cookbook:: osl-repos
 # Recipe:: with_edit
 #
-# Copyright:: 2020-2022, Oregon State University
+# Copyright:: 2020-2023, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,12 +17,14 @@
 # limitations under the License.
 
 # This is an example of using the 'edit resource' function to modify the already included and enabled repos
-include_recipe 'osl-repos::centos'
+platform = platform?('centos') ? 'centos' : 'alma'
 
-edit_resource(:osl_repos_centos, 'default') do
+include_recipe "osl-repos::#{platform}"
+
+edit_resource("osl_repos_#{platform}".to_sym, 'default') do
   appstream false
   extras false
   powertools false
-  updates false
+  updates false if platform == 'centos'
   exclude %w(foo bar)
 end

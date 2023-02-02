@@ -2,7 +2,7 @@
 # Cookbook:: osl-repos
 # Recipe:: disable
 #
-# Copyright:: 2020-2022, Oregon State University
+# Copyright:: 2020-2023, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,14 @@
 # limitations under the License.
 
 # This is an example of directly using the resource to disable select repos
+
 osl_repos_centos 'default' do
   powertools false
   updates false
+  only_if { platform?('centos') }
+end
+
+osl_repos_alma 'default' do
+  powertools false
+  only_if { platform?('almalinux') }
 end
