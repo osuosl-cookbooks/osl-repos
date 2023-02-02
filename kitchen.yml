@@ -18,13 +18,11 @@ suites:
     excludes:
       - centos-7
       - centos_stream-8
-
   - name: centos
     run_list:
       - recipe[osl-repos::centos]
     excludes:
       - almalinux-8
-
   - name: disable
     run_list:
       - recipe[osl-repos-test::disable]
