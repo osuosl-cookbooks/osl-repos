@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+3.1.0 (2023-04-18)
+------------------
+- Bump to latest releases of upstream cookbooks
+
 3.0.0 (2023-02-02)
 ------------------
 - Add AlmaLinux support
