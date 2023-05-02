@@ -60,7 +60,7 @@ describe 'osl-repos::alma' do
               end.converge(described_recipe)
             end
 
-            # The following will test for the correct settings being applied to each Centos 8 repository
+            # The following will test for the correct settings being applied to each Alma 8 repository
             # ( Based on the default values for managed and enabled being set to true )
 
             # Test the appstream repository
@@ -174,7 +174,7 @@ describe 'osl-repos::alma' do
     end
   end
 
-  [CENTOS_7, CENTOS_8].each do |p|
+  [CENTOS_7].each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
         ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALL_RESOURCES)).converge(described_recipe)

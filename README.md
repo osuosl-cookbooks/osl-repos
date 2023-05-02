@@ -1,8 +1,7 @@
 osl-repos
 ================
 
-This cookbook manages the base, epel, extras, and updates repositories on Centos 7; and the appstream, base, elrepo,
-epel, and powertools repositories on Centos 8. This cookbook imports these repositories and points them at the osuosl
+This cookbook manages the base, epel, extras, and updates repositories on CentOS 7; and the appstream, base, highavailability, and powertools repositories on AlmaLinux 8. This cookbook imports these repositories and points them at the osuosl
 repositories.
 
 ## Repository:
@@ -22,6 +21,7 @@ https://github.com/osuosl-cookbooks/osl-repos
 - `osl_repos_centos` - Manages and configures the appstream, base, extras, highavailability, powertools, and updates repositories using the `yum-centos` cookbook
 - `osl_repos_elrepo` - Manages and configures the elrepo repository using the `yum-epel` cookbook
 - `osl_repos_epel`   - Manages and configures the epel repository using the `yum-elrepo` cookbook
+- `osl_repos_alma`   - Manages and configures the base, extras, appstream, highavailability, powertools
 
 ### Actions:
 
@@ -36,22 +36,22 @@ Note: All repositories controlled by a resource will be installed and configured
 ### osl_repos_centos:
 | Property          | Effect                            | Default  | Compatibility     |
 |-----------------  |---------------------------------  |--------  |-----------------  |
-| appstream         | Enable the appstream repo         | True     | Centos 8          |
-| base              | Enable the base repo              | True     | Centos 7 and 8    |
-| extras            | Enable the extras repo            | True     | Centos 7 and 8    |
-| highavailability  | Enable the highavailability repo  | False    | Centos 8          |
-| powertools        | Enable the powertools repo        | True     | Centos 8          |
+| appstream         | Enable the appstream repo         | True     | Alma 8            |
+| base              | Enable the base repo              | True     | Centos 7 & Alma 8 |
+| extras            | Enable the extras repo            | True     | Centos 7 & Alma 8 |
+| highavailability  | Enable the highavailability repo  | False    | Alma 8            |
+| powertools        | Enable the powertools repo        | True     | Alma 8            |
 | updates           | Enable the updates repo           | True     | Centos 7          |
 
 ### osl_repos_elrepo:
 | Property          | Effect                            | Default  | Compatibility     |
 |-----------------  |---------------------------------  |--------  |-----------------  |
-| elrepo            | Enable the elrepo repo            | True     | Centos 7 and 8    |
+| elrepo            | Enable the elrepo repo            | True     | Centos 7 & Alma 8 |
 
 ### osl_repos_epel:
 | Resource    | Property          | Effect                            | Default  | Compatibility     |
 |-----------  |-----------------  |---------------------------------  |--------  |-----------------  |
-| epel        | epel              | Enable the epel repo              | True     | Centos 7 and 8    |
+| epel        | epel              | Enable the epel repo              | True     | Centos 7 & Alma 8 |
 ## Examples:
 
 Configure the default suite of Centos repos:
@@ -81,6 +81,15 @@ include_recipe 'osl-repos::elrepo'
 osl_repos_elrepo 'default'
 ```
 
+Configure the default suite of Alma repos:
+```ruby
+# via recipe
+include_recipe 'osl-repos::alma'
+
+# or resource
+osl_repos_alma 'default'
+```
+
 Disable or enable a specific repo on *creation* (In this case PowerTools):
 ```ruby
 osl_repos_centos 'default' do
@@ -98,11 +107,11 @@ end
 ## Contributing:
 
 1. Fork the repository on Github
-1. Create a named feature branch (like `username/add_component_x`)
-1. Write tests for your change
-1. Write your change
-1. Run the tests, ensuring they all pass
-1. Submit a Pull Request using Github
+2. Create a named feature branch (like `username/add_component_x`)
+3. Write tests for your change
+4. Write your change
+5. Run the tests, ensuring they all pass
+6. Submit a Pull Request using Github
 
 ## License and Authors:
 

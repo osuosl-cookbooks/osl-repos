@@ -24,7 +24,7 @@ action :add do
   node.run_state['epel']['gpgkey'] = "https://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{node['platform_version'].to_i}"
   node.run_state['epel']['exclude'] = new_resource.exclude.join(' ') unless new_resource.exclude.empty?
 
-  # CentOS Stream
+  # Almalinux 
   node.run_state['epel-next'] ||= {}
   node.run_state['epel-next']['mirrorlist'] ||= {}
   node.run_state['epel-next']['baseurl'] ||= {}

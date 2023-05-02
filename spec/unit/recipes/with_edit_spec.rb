@@ -190,8 +190,7 @@ describe 'osl-repos-test::with_edit' do
         end
 
       when 8
-        centos = p[:platform] == 'centos'
-        url = centos ? 'centos.osuosl.org' : 'almalinux.osuosl.org'
+        url = 'almalinux.osuosl.org'
 
         # We need to test each supported architecture
         # This loop creates a context for each architecture and applies its tests.
@@ -203,7 +202,7 @@ describe 'osl-repos-test::with_edit' do
               end.converge(described_recipe)
             end
 
-            # The following will test for the correct settings being applied to each Centos 8 repository
+            # The following will test for the correct settings being applied to each Alma 8 repository
             # ( Based on the default values for managed and enabled being set to true )
 
             # Test the appstream repository
@@ -218,7 +217,7 @@ describe 'osl-repos-test::with_edit' do
 
             # Test the base repository
             it do
-              expect(chef_run).to create_yum_repository(centos ? 'base' : 'baseos').with(
+              expect(chef_run).to create_yum_repository('baseos').with(
                 mirrorlist: nil,
                 exclude: 'foo bar',
                 baseurl: "https://#{url}/$releasever/BaseOS/$basearch/os/",
@@ -282,7 +281,7 @@ describe 'osl-repos-test::with_edit' do
 
             # Test the base repository
             it do
-              expect(chef_run).to create_yum_repository(centos ? 'base' : 'baseos').with(
+              expect(chef_run).to create_yum_repository('baseos').with(
                 mirrorlist: nil,
                 exclude: 'foo bar',
                 baseurl: "https://#{url}/$releasever/BaseOS/$basearch/os/",

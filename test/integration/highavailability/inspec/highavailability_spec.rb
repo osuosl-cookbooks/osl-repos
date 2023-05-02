@@ -5,8 +5,7 @@ describe ini('/etc/yum.conf') do
 end
 
 arch = File.readlines('/proc/cpuinfo').grep(/POWER9/).any? ? 'power9' : os.arch
-stream = file('/etc/os-release').content.match?('Stream')
-rel = stream ? "#{os.release.to_i}-stream" : os.release.to_i
+rel = os.release.to_i
 
 case os.release.to_i
 when 7
@@ -33,8 +32,7 @@ when 7
     its('mirrors') { should eq nil }
   end
 when 8
-  centos = os.name == 'centos'
-  url = centos ? 'centos.osuosl.org' : 'almalinux.osuosl.org'
+  url = 'almalinux.osuosl.org'
 
   describe yum.repo('appstream') do
     it { should exist }
@@ -43,7 +41,7 @@ when 8
     its('mirrors') { should eq nil }
   end
 
-  describe yum.repo(centos ? 'base' : 'baseos') do
+  describe yum.repo('baseos') do
     it { should exist }
     it { should be_enabled }
     its('baseurl') { should eq "https://#{url}/#{rel}/BaseOS/#{arch}/os/" }

@@ -180,8 +180,7 @@ describe 'osl-repos-test::disable' do
 
       when 8
 
-        centos = p[:platform] == 'centos'
-        url = centos ? 'centos.osuosl.org' : 'almalinux.osuosl.org'
+        url = 'almalinux.osuosl.org'
 
         # We need to test each supported architecture
         # This loop creates a context for each architecture and applies its tests.
@@ -207,7 +206,7 @@ describe 'osl-repos-test::disable' do
 
             # Test the base repository
             it do
-              expect(chef_run).to create_yum_repository(centos ? 'base' : 'baseos').with(
+              expect(chef_run).to create_yum_repository('baseos').with(
                 mirrorlist: nil,
                 baseurl: "https://#{url}/$releasever/BaseOS/$basearch/os/",
                 enabled: true
@@ -266,7 +265,7 @@ describe 'osl-repos-test::disable' do
 
             # Test the base repository
             it do
-              expect(chef_run).to create_yum_repository(centos ? 'base' : 'baseos').with(
+              expect(chef_run).to create_yum_repository('baseos').with(
                 mirrorlist: nil,
                 baseurl: "https://#{url}/$releasever/BaseOS/$basearch/os/",
                 enabled: true

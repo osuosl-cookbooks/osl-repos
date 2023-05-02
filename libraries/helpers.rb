@@ -2,11 +2,7 @@ module OslRepos
   module Cookbook
     module Helpers
       def release_var
-        if centos_stream_platform?
-          '$stream'
-        else
-          '$releasever'
-        end
+        '$releasever'
       end
 
       # Select the gpg key for use in centos 7
@@ -24,8 +20,6 @@ module OslRepos
         case node['platform_version'].to_i
         when 7
           'https://epel.osuosl.org/$releasever/$basearch/'
-        when 8
-          'https://epel.osuosl.org/$releasever/Everything/$basearch/'
         end
       end
 

@@ -5,15 +5,9 @@ unified_mode true
 default_action :add
 
 # These properties indicate whether or not a repo should be enabled
-# appstream, highavailability, and powertools are only available on centos 8
-# updates is only available on centos 7
-# if a repo is not supported for the target os it's options will simply be ignored
 property :base, [true, false], default: true
 property :extras, [true, false], default: true
 property :updates, [true, false], default: true
-property :appstream, [true, false], default: true
-property :powertools, [true, false], default: true
-property :highavailability, [true, false], default: false
 property :exclude, Array, default: []
 
 # This is the default and only action it will manage all repos listed above and enable them as indicated
@@ -22,11 +16,7 @@ action :add do
 
   # Manage components of the main yum configuration file.
   yum_globalconfig '/etc/yum.conf' do
-    if node['platform_version'].to_i < 8
-      distroverpkg 'centos-release'
-    else
-      cachedir '/var/cache/dnf'
-    end
+    distroverpkg 'centos-release'
     installonly_limit '2'
     installonlypkgs 'kernel kernel-osuosl'
     clean_requirements_on_remove true
@@ -34,72 +24,35 @@ action :add do
 
   # Initialize run state attributes
   node.run_state['centos'] ||= {}
-  node.run_state['centos']['appstream'] ||= {}
   node.run_state['centos']['base'] ||= {}
   node.run_state['centos']['extras'] ||= {}
-  node.run_state['centos']['powertools'] ||= {}
   node.run_state['centos']['updates'] ||= {}
-  node.run_state['centos']['highavailability'] ||= {}
 
   # Initialize all repo mirrorlists to nil
-  node.run_state['centos']['appstream']['mirrorlist'] = nil
   node.run_state['centos']['base']['mirrorlist'] = nil
   node.run_state['centos']['extras']['mirrorlist'] = nil
-  node.run_state['centos']['powertools']['mirrorlist'] = nil
   node.run_state['centos']['updates']['mirrorlist'] = nil
-  node.run_state['centos']['highavailability']['mirrorlist'] = nil
 
-  case node['platform_version'].to_i
-  when 7
+  node.run_state['centos']['base']['baseurl'] = "#{centos_url}/$releasever/os/#{base_arch}/"
+  node.run_state['centos']['updates']['baseurl'] = "#{centos_url}/$releasever/updates/#{base_arch}/"
+  node.run_state['centos']['extras']['baseurl'] = "#{centos_url}/$releasever/extras/#{base_arch}/"
 
-    node.run_state['centos']['base']['baseurl'] = "#{centos_url}/$releasever/os/#{base_arch}/"
-    node.run_state['centos']['updates']['baseurl'] = "#{centos_url}/$releasever/updates/#{base_arch}/"
-    node.run_state['centos']['extras']['baseurl'] = "#{centos_url}/$releasever/extras/#{base_arch}/"
-
-    # Set the gpg key for each repo
-    # This ensures that the AltArch gpg key is included in any non x86_64 architecture
-    %w(base updates extras).each do |r|
-      node.run_state['centos'][r]['gpgkey'] = centos_7_gpgkey
-      node.run_state['centos'][r]['exclude'] = new_resource.exclude.join(' ') unless new_resource.exclude.empty?
-    end
-
-    # Updates is only installed on Centos 7
-    node.default['yum']['updates']['managed'] = true
-
-    # Determine if updates repo is enabled
-    node.run_state['centos']['updates']['enabled'] = new_resource.updates
-
-  when 8
-
-    node.run_state['centos']['appstream']['baseurl'] = "#{centos_url}/#{release_var}/AppStream/#{base_arch}/os/"
-    node.run_state['centos']['base']['baseurl'] = "#{centos_url}/#{release_var}/BaseOS/#{base_arch}/os/"
-    node.run_state['centos']['extras']['baseurl'] = "#{centos_url}/#{release_var}/extras/#{base_arch}/os/"
-    node.run_state['centos']['highavailability']['baseurl'] = "#{centos_url}/#{release_var}/HighAvailability/#{base_arch}/os/"
-    node.run_state['centos']['powertools']['baseurl'] = "#{centos_url}/#{release_var}/PowerTools/#{base_arch}/os/"
-
-    # appstream, highavailibility, and powertools are only available for Centos 8 so we set their properties here
-    %w(appstream highavailability powertools).each do |r|
-      node.default['yum'][r]['managed'] = true
-      node.default['yum'][r]['exclude'] = new_resource.exclude.join(' ') unless new_resource.exclude.empty?
-    end
-
-    node.default['yum']['base']['exclude'] = new_resource.exclude.join(' ') unless new_resource.exclude.empty?
-    node.default['yum']['extras']['exclude'] = new_resource.exclude.join(' ') unless new_resource.exclude.empty?
-
-    # Determine if appstream, highavailibility, and powertools are enabled
-    node.run_state['centos']['appstream']['enabled'] = new_resource.appstream
-    node.run_state['centos']['highavailability']['enabled'] = new_resource.highavailability
-    node.run_state['centos']['powertools']['enabled'] = new_resource.powertools
-
+  # Set the gpg key for each repo
+  # This ensures that the AltArch gpg key is included in any non x86_64 architecture
+  %w(base updates extras).each do |r|
+    node.run_state['centos'][r]['gpgkey'] = centos_7_gpgkey
+    node.run_state['centos'][r]['exclude'] = new_resource.exclude.join(' ') unless new_resource.exclude.empty?
   end
 
-  # These repositories are used by both Centos 7 and Centos 8, so we set their state outside of the switchcase
-  node.default['yum']['base']['managed'] = true
-  node.default['yum']['extras']['managed'] = true
-
-  # Determine if the base, epel, and extras repositories are enabled
+  # Determine if the base, extras, and updates repositories are enabled
   node.run_state['centos']['base']['enabled'] = new_resource.base
   node.run_state['centos']['extras']['enabled'] = new_resource.extras
+  node.run_state['centos']['updates']['enabled'] = new_resource.updates
+
+  node.default['yum']['base']['managed'] = true
+  node.default['yum']['extras']['managed'] = true
+  node.default['yum']['updates']['managed'] = true
+
 
   if repo_resource_exist?('base')
     node['yum-centos']['repos'].each do |repo|
