@@ -34,6 +34,7 @@ action :add do
   if repo_resource_exist?('epel')
     node['yum-epel']['repos'].each do |repo|
       # Find the resource and update each parameter we need changed
+      next unless node['yum'][repo]['managed']
       r = resources(yum_repository: repo)
       node.run_state[repo].each do |config, value|
         r.send(config.to_sym, value)
@@ -49,6 +50,7 @@ action :add do
   else
     # Copy all run state attributes to global node.default realm
     node['yum-epel']['repos'].each do |repo|
+      next unless node['yum'][repo]['managed']
       node.run_state[repo].each do |config, value|
         node.default['yum'][repo][config] = value
       end
