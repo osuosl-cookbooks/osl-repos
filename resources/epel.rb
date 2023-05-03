@@ -33,8 +33,8 @@ action :add do
   # 'yum-epel' will install the epel repository and apply our configuration
   if repo_resource_exist?('epel')
     node['yum-epel']['repos'].each do |repo|
-      # Find the resource and update each parameter we need changed
       next unless node['yum'][repo]['managed']
+      # Find the resource and update each parameter we need changed
       r = resources(yum_repository: repo)
       node.run_state[repo].each do |config, value|
         r.send(config.to_sym, value)
