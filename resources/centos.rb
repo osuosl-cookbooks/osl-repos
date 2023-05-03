@@ -53,11 +53,10 @@ action :add do
   node.default['yum']['extras']['managed'] = true
   node.default['yum']['updates']['managed'] = true
 
-
   if repo_resource_exist?('base')
     node['yum-centos']['repos'].each do |repo|
-      next unless node['yum'][repo]['managed']
       # Find the resource and update each parameter we need changed
+      next unless node['yum'][repo]['managed']
       r = resources(yum_repository: repo)
       node.run_state['centos'][repo].each do |config, value|
         r.send(config.to_sym, value)

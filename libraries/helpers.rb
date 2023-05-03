@@ -23,10 +23,6 @@ module OslRepos
         end
       end
 
-      def epel_next_baseurl
-        'https://epel.osuosl.org/next/$releasever/Everything/$basearch/'
-      end
-
       # Define variables to use in alma repo urls
       def alma_url
         'https://almalinux.osuosl.org'

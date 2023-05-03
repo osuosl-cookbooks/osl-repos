@@ -197,7 +197,7 @@ describe 'osl-repos-test::with_edit' do
         %w(x86_64 aarch64 s390x).each do |arch|
           context "arch #{arch}" do
             cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALL_RESOURCES)) do |node|
+              ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALMA_RESOURCES)) do |node|
                 node.automatic['kernel']['machine'] = arch
               end.converge(described_recipe)
             end
@@ -261,7 +261,7 @@ describe 'osl-repos-test::with_edit' do
         %w(power8 power9).each do |arch|
           context "arch #{arch}" do
             cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALL_RESOURCES)) do |node|
+              ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALMA_RESOURCES)) do |node|
                 node.automatic['kernel']['machine'] = 'ppc64le'
 
                 # Set cpu_model to either power8 or power9

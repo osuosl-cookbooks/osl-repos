@@ -26,6 +26,15 @@ ALL_RESOURCES = [
   :yum_alma_powertools,
 ].freeze
 
+ALMA_RESOURCES = [
+  :osl_repos_alma,
+  :yum_alma_baseos,
+  :yum_alma_appstream,
+  :yum_alma_extras,
+  :yum_alma_ha,
+  :yum_alma_powertools,
+].freeze
+
 RSpec.configure do |config|
   config.log_level = :warn
 end

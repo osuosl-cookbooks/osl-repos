@@ -19,7 +19,6 @@
 # This is an example of directly using the resource to disable select repos
 
 osl_repos_centos 'default' do
-  powertools false
   updates false
   only_if { platform?('centos') }
 end

@@ -24,15 +24,6 @@ action :add do
   node.run_state['epel']['gpgkey'] = "https://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{node['platform_version'].to_i}"
   node.run_state['epel']['exclude'] = new_resource.exclude.join(' ') unless new_resource.exclude.empty?
 
-  # Almalinux 
-  node.run_state['epel-next'] ||= {}
-  node.run_state['epel-next']['mirrorlist'] ||= {}
-  node.run_state['epel-next']['baseurl'] ||= {}
-  node.run_state['epel-next']['gpgkey'] ||= {}
-  node.run_state['epel-next']['mirrorlist'] = nil
-  node.run_state['epel-next']['baseurl'] = epel_next_baseurl
-  node.run_state['epel-next']['gpgkey'] = "https://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{node['platform_version'].to_i}"
-
   # Determine if the repository is managed
   node.default['yum']['epel']['managed'] = true
 
@@ -42,7 +33,6 @@ action :add do
   # 'yum-epel' will install the epel repository and apply our configuration
   if repo_resource_exist?('epel')
     node['yum-epel']['repos'].each do |repo|
-      next unless node['yum'][repo]['managed']
       # Find the resource and update each parameter we need changed
       r = resources(yum_repository: repo)
       node.run_state[repo].each do |config, value|
@@ -59,7 +49,6 @@ action :add do
   else
     # Copy all run state attributes to global node.default realm
     node['yum-epel']['repos'].each do |repo|
-      next unless node['yum'][repo]['managed']
       node.run_state[repo].each do |config, value|
         node.default['yum'][repo][config] = value
       end

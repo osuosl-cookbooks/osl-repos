@@ -54,7 +54,7 @@ describe 'osl-repos::alma' do
         %w(x86_64 aarch64 s390x).each do |arch|
           context "#arch #{arch}" do
             cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALL_RESOURCES)) do |node|
+              ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALMA_RESOURCES)) do |node|
                 node.automatic['kernel']['machine'] = arch
                 node.automatic['os_release']['name'] = 'almalinux'
               end.converge(described_recipe)
@@ -115,7 +115,7 @@ describe 'osl-repos::alma' do
         %w(power8 power9).each do |arch|
           context "#arch #{arch}" do
             cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALL_RESOURCES)) do |node|
+              ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALMA_RESOURCES)) do |node|
                 node.automatic['os_release']['name'] = 'almalinux'
                 node.automatic['kernel']['machine'] = 'ppc64le'
 

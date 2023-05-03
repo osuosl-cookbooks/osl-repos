@@ -8,29 +8,6 @@ arch = File.readlines('/proc/cpuinfo').grep(/POWER9/).any? ? 'power9' : os.arch
 rel = os.release.to_i
 
 case os.release.to_i
-when 7
-  centos_url = arch == 'x86_64' ? 'https://centos.osuosl.org' : 'https://centos-altarch.osuosl.org'
-
-  describe yum.repo('base') do
-    it { should exist }
-    it { should be_enabled }
-    its('baseurl') { should eq "#{centos_url}/7/os/#{arch}/" }
-    its('mirrors') { should eq nil }
-  end
-
-  describe yum.repo('extras') do
-    it { should exist }
-    it { should be_enabled }
-    its('baseurl') { should eq "#{centos_url}/7/extras/#{arch}/" }
-    its('mirrors') { should eq nil }
-  end
-
-  describe yum.repo('updates') do
-    it { should exist }
-    it { should be_enabled }
-    its('baseurl') { should eq "#{centos_url}/7/updates/#{arch}/" }
-    its('mirrors') { should eq nil }
-  end
 when 8
   url = 'almalinux.osuosl.org'
 
