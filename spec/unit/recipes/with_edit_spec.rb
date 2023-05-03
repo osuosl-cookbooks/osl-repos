@@ -23,7 +23,7 @@ describe 'osl-repos-test::with_edit' do
   ALL_PLATFORMS.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
-        # Here we step into our :osl_repos_centos resource, this enables us to test the resources created within it
+        # Here we step into each of our resources, this enables us to test the resources created within it
         ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALL_RESOURCES)) do |node|
           # This sets the base architecture to 'x86_64'
           node.default['kernel']['machine'] = 'x86_64'

@@ -179,7 +179,6 @@ describe 'osl-repos-test::disable' do
         end
 
       when 8
-
         url = 'almalinux.osuosl.org'
 
         # We need to test each supported architecture
