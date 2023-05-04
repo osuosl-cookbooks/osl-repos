@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+4.0.0 (2023-05-04)
+------------------
+- Remove references to CentOS Stream 8
+
 3.1.0 (2023-04-18)
 ------------------
 - Bump to latest releases of upstream cookbooks
