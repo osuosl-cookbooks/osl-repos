@@ -2,11 +2,7 @@ module OslRepos
   module Cookbook
     module Helpers
       def release_var
-        if centos_stream_platform?
-          '$stream'
-        else
-          '$releasever'
-        end
+        '$releasever'
       end
 
       # Select the gpg key for use in centos 7
@@ -27,10 +23,6 @@ module OslRepos
         when 8
           'https://epel.osuosl.org/$releasever/Everything/$basearch/'
         end
-      end
-
-      def epel_next_baseurl
-        'https://epel.osuosl.org/next/$releasever/Everything/$basearch/'
       end
 
       # Define variables to use in alma repo urls

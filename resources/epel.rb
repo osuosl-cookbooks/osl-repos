@@ -24,15 +24,6 @@ action :add do
   node.run_state['epel']['gpgkey'] = "https://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{node['platform_version'].to_i}"
   node.run_state['epel']['exclude'] = new_resource.exclude.join(' ') unless new_resource.exclude.empty?
 
-  # CentOS Stream
-  node.run_state['epel-next'] ||= {}
-  node.run_state['epel-next']['mirrorlist'] ||= {}
-  node.run_state['epel-next']['baseurl'] ||= {}
-  node.run_state['epel-next']['gpgkey'] ||= {}
-  node.run_state['epel-next']['mirrorlist'] = nil
-  node.run_state['epel-next']['baseurl'] = epel_next_baseurl
-  node.run_state['epel-next']['gpgkey'] = "https://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{node['platform_version'].to_i}"
-
   # Determine if the repository is managed
   node.default['yum']['epel']['managed'] = true
 

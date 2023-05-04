@@ -23,7 +23,7 @@ describe 'osl-repos-test::disable' do
   ALL_PLATFORMS.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
-        # Here we step into our :osl_repos_centos resource, this enables us to test the resources created within it
+        # Here we step into each of our resources, this enables us to test the resources created within them
         ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALL_RESOURCES)) do |node|
           # This sets the base architecture to 'x86_64'
           node.default['kernel']['machine'] = 'x86_64'
@@ -179,21 +179,19 @@ describe 'osl-repos-test::disable' do
         end
 
       when 8
-
-        centos = p[:platform] == 'centos'
-        url = centos ? 'centos.osuosl.org' : 'almalinux.osuosl.org'
+        url = 'almalinux.osuosl.org'
 
         # We need to test each supported architecture
         # This loop creates a context for each architecture and applies its tests.
         %w(x86_64 aarch64 s390x).each do |arch|
           context "arch #{arch}" do
             cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALL_RESOURCES)) do |node|
+              ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALMA_RESOURCES)) do |node|
                 node.automatic['kernel']['machine'] = arch
               end.converge(described_recipe)
             end
 
-            # The following will test for the correct settings being applied to each Centos/AlmaLinux 8 repository
+            # The following will test for the correct settings being applied to each Alma 8 repository
             # ( Based on the default values for managed and enabled being set to true )
 
             # Test the appstream repository
@@ -207,7 +205,7 @@ describe 'osl-repos-test::disable' do
 
             # Test the base repository
             it do
-              expect(chef_run).to create_yum_repository(centos ? 'base' : 'baseos').with(
+              expect(chef_run).to create_yum_repository('baseos').with(
                 mirrorlist: nil,
                 baseurl: "https://#{url}/$releasever/BaseOS/$basearch/os/",
                 enabled: true
@@ -247,7 +245,7 @@ describe 'osl-repos-test::disable' do
         %w(power8 power9).each do |arch|
           context "arch #{arch}" do
             cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALL_RESOURCES)) do |node|
+              ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALMA_RESOURCES)) do |node|
                 node.automatic['kernel']['machine'] = 'ppc64le'
 
                 # Set cpu_model to either power8 or power9
@@ -266,7 +264,7 @@ describe 'osl-repos-test::disable' do
 
             # Test the base repository
             it do
-              expect(chef_run).to create_yum_repository(centos ? 'base' : 'baseos').with(
+              expect(chef_run).to create_yum_repository('baseos').with(
                 mirrorlist: nil,
                 baseurl: "https://#{url}/$releasever/BaseOS/$basearch/os/",
                 enabled: true

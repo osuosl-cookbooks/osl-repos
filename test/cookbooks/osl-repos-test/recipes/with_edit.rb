@@ -21,10 +21,15 @@ platform = platform?('centos') ? 'centos' : 'alma'
 
 include_recipe "osl-repos::#{platform}"
 
-edit_resource("osl_repos_#{platform}".to_sym, 'default') do
-  appstream false
+edit_resource('osl_repos_centos'.to_sym, 'default') do
   extras false
-  powertools false
-  updates false if platform == 'centos'
+  updates false
   exclude %w(foo bar)
-end
+end if platform == 'centos'
+
+edit_resource('osl_repos_alma'.to_sym, 'default') do
+  appstream false if platform == 'alma'
+  extras false
+  powertools false if platform == 'alma'
+  exclude %w(foo bar)
+end if platform == 'alma'

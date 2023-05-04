@@ -5,36 +5,11 @@ describe ini('/etc/yum.conf') do
 end
 
 arch = File.readlines('/proc/cpuinfo').grep(/POWER9/).any? ? 'power9' : os.arch
-stream = file('/etc/os-release').content.match?('Stream')
-rel = stream ? "#{os.release.to_i}-stream" : os.release.to_i
+rel = os.release.to_i
 
 case os.release.to_i
-when 7
-  centos_url = arch == 'x86_64' ? 'https://centos.osuosl.org' : 'https://centos-altarch.osuosl.org'
-
-  describe yum.repo('base') do
-    it { should exist }
-    it { should be_enabled }
-    its('baseurl') { should eq "#{centos_url}/7/os/#{arch}/" }
-    its('mirrors') { should eq nil }
-  end
-
-  describe yum.repo('extras') do
-    it { should exist }
-    it { should be_enabled }
-    its('baseurl') { should eq "#{centos_url}/7/extras/#{arch}/" }
-    its('mirrors') { should eq nil }
-  end
-
-  describe yum.repo('updates') do
-    it { should exist }
-    it { should be_enabled }
-    its('baseurl') { should eq "#{centos_url}/7/updates/#{arch}/" }
-    its('mirrors') { should eq nil }
-  end
 when 8
-  centos = os.name == 'centos'
-  url = centos ? 'centos.osuosl.org' : 'almalinux.osuosl.org'
+  url = 'almalinux.osuosl.org'
 
   describe yum.repo('appstream') do
     it { should exist }
@@ -43,7 +18,7 @@ when 8
     its('mirrors') { should eq nil }
   end
 
-  describe yum.repo(centos ? 'base' : 'baseos') do
+  describe yum.repo('baseos') do
     it { should exist }
     it { should be_enabled }
     its('baseurl') { should eq "https://#{url}/#{rel}/BaseOS/#{arch}/os/" }

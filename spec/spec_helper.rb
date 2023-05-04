@@ -6,11 +6,6 @@ CENTOS_7 = {
   version: '7',
 }.freeze
 
-CENTOS_8 = {
-  platform: 'centos',
-  version: '8',
-}.freeze
-
 ALMA_8 = {
   platform: 'almalinux',
   version: '8',
@@ -19,11 +14,19 @@ ALMA_8 = {
 ALL_PLATFORMS = [
   ALMA_8,
   CENTOS_7,
-  CENTOS_8,
 ].freeze
 
 ALL_RESOURCES = [
   :osl_repos_centos,
+  :osl_repos_alma,
+  :yum_alma_baseos,
+  :yum_alma_appstream,
+  :yum_alma_extras,
+  :yum_alma_ha,
+  :yum_alma_powertools,
+].freeze
+
+ALMA_RESOURCES = [
   :osl_repos_alma,
   :yum_alma_baseos,
   :yum_alma_appstream,

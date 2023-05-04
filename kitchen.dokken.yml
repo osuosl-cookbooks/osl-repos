@@ -14,10 +14,6 @@ provisioner:
   install_strategy: once
 
 platforms:
-  - name: centos-8
-    driver:
-      image: dokken/centos-8
-      pid_one_command: /usr/lib/systemd/systemd
   - name: centos-7
     driver:
       image: dokken/centos-7

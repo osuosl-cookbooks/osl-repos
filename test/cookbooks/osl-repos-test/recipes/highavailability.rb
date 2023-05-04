@@ -18,10 +18,6 @@
 
 # This is an example of directly using the resource to enable highavailibility
 # Note: This does not disable any other repos
-osl_repos_centos 'default' do
-  highavailability true
-  only_if { platform?('centos') }
-end
 
 osl_repos_alma 'default' do
   highavailability true
