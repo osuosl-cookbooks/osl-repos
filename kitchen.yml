@@ -22,6 +22,7 @@ suites:
       - recipe[osl-repos::centos]
     excludes:
       - almalinux-8
+      - almalinux-9
   - name: disable
     run_list:
       - recipe[osl-repos-test::disable]

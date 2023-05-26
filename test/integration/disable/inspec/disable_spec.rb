@@ -31,7 +31,6 @@ when 7
     its('baseurl') { should eq "#{centos_url}/7/updates/#{arch}/" }
     its('mirrors') { should eq nil }
   end
-
 when 8
   url = 'almalinux.osuosl.org'
 
@@ -67,6 +66,43 @@ when 8
     it { should exist }
     it { should_not be_enabled }
     its('baseurl') { should eq "https://#{url}/#{rel}/PowerTools/#{arch}/os/" }
+    its('mirrors') { should eq nil }
+  end
+when 9
+  url = 'almalinux.osuosl.org'
+
+  describe yum.repo('appstream') do
+    it { should exist }
+    it { should be_enabled }
+    its('baseurl') { should eq "https://#{url}/#{rel}/AppStream/#{arch}/os/" }
+    its('mirrors') { should eq nil }
+  end
+
+  describe yum.repo('baseos') do
+    it { should exist }
+    it { should be_enabled }
+    its('baseurl') { should eq "https://#{url}/#{rel}/BaseOS/#{arch}/os/" }
+    its('mirrors') { should eq nil }
+  end
+
+  describe yum.repo('extras') do
+    it { should exist }
+    it { should be_enabled }
+    its('baseurl') { should eq "https://#{url}/#{rel}/extras/#{arch}/os/" }
+    its('mirrors') { should eq nil }
+  end
+
+  describe yum.repo('highavailability') do
+    it { should exist }
+    it { should_not be_enabled }
+    its('baseurl') { should eq "https://#{url}/#{rel}/HighAvailability/#{arch}/os/" }
+    its('mirrors') { should eq nil }
+  end
+
+  describe yum.repo('crb') do
+    it { should exist }
+    it { should_not be_enabled }
+    its('baseurl') { should eq "https://#{url}/#{rel}/CRB/#{arch}/os/" }
     its('mirrors') { should eq nil }
   end
 end

@@ -20,7 +20,7 @@ module OslRepos
         case node['platform_version'].to_i
         when 7
           'https://epel.osuosl.org/$releasever/$basearch/'
-        when 8
+        when 8, 9
           'https://epel.osuosl.org/$releasever/Everything/$basearch/'
         end
       end

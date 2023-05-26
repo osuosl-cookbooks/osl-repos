@@ -48,9 +48,11 @@ action :add do
     enabled new_resource.extras
   end
 
+  power_tools = node['platform_version'].to_i >= 9 ? 'CRB' : 'PowerTools'
+
   yum_alma_powertools 'default' do
     mirrorlist nil
-    baseurl "#{alma_url}/#{release_var}/PowerTools/#{base_arch}/os/"
+    baseurl "#{alma_url}/#{release_var}/#{power_tools}/#{base_arch}/os/"
     extra_options passthrough
     enabled new_resource.powertools
   end
