@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+4.1.0 (2023-05-26)
+------------------
+- Add Almalinux 9 support
+
 4.0.0 (2023-05-04)
 ------------------
 - Remove references to CentOS Stream 8
