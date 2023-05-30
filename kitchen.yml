@@ -26,6 +26,11 @@ suites:
   - name: disable
     run_list:
       - recipe[osl-repos-test::disable]
+  - name: elevate
+    run_list:
+      - recipe[osl-repos-test::elevate]
+    excludes:
+      - almalinux-9
   - name: elrepo
     run_list:
       - recipe[osl-repos::elrepo]

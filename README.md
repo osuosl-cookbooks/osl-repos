@@ -13,8 +13,10 @@ https://github.com/osuosl-cookbooks/osl-repos
 ## Recipes:
 
 - `osl-repos::centos`  - Configures and enables all repositories, with the exception of the 'elrepo' and 'epel' repos
+- `osl-repos::elevate` - Configures and enables the 'elevate' repository
 - `osl-repos::elrepo`  - Configures and enables the 'elrepo' repository
 - `osl-repos::epel`    - Configures and enables the 'epel' repository
+- `osl-repos::oslrepo` - Configures and enables the 'oslrepo' repository (legacy OSL repo)
 
 ## Resources:
 
