@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+4.2.0 (2023-05-30)
+------------------
+- ELevate repository recipe
+
 4.1.0 (2023-05-26)
 ------------------
 - Add Almalinux 9 support
