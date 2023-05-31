@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+4.2.1 (2023-05-31)
+------------------
+- Bump to yum-almalinux 1.1.0
+
 4.2.0 (2023-05-30)
 ------------------
 - ELevate repository recipe
