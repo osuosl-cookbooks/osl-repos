@@ -31,6 +31,7 @@ describe 'osl-repos::hashicorp' do
       when *ALL_RHEL
         it do
           expect(chef_run).to create_yum_repository('hashicorp').with(
+            description: 'Hashicorp',
             baseurl: 'https://rpm.releases.hashicorp.com/RHEL/$releasever/$basearch/stable',
             gpgkey: 'https://rpm.releases.hashicorp.com/gpg'
           )
