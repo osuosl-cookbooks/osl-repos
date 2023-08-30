@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+4.3.1 (2023-08-30)
+------------------
+- Set the description for the Hashicorp Yum repo
+
 4.3.0 (2023-08-30)
 ------------------
 - Hashicorp repository
