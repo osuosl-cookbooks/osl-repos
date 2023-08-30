@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+4.3.0 (2023-08-30)
+------------------
+- Hashicorp repository
+
 4.2.1 (2023-05-31)
 ------------------
 - Bump to yum-almalinux 1.1.0
