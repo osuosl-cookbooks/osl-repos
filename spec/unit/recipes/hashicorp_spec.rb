@@ -1,8 +1,8 @@
 #
 # Cookbook:: osl-repos
-# Spec:: oslrepo
+# Spec:: hashicorp
 #
-# Copyright:: 2022-2023, Oregon State University
+# Copyright:: 2023, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@
 
 require_relative '../../spec_helper'
 
-describe 'osl-repos::oslrepo' do
-  ALL_RHEL.each do |p|
+describe 'osl-repos::hashicorp' do
+  ALL_PLATFORMS.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
         ChefSpec::SoloRunner.new(p).converge(described_recipe)
@@ -27,13 +27,22 @@ describe 'osl-repos::oslrepo' do
       it 'converges successfully' do
         expect { chef_run }.to_not raise_error
       end
-      it 'creates yum repository: osl' do
-        expect(chef_run).to create_yum_repository('osl').with(
-          repositoryid: 'osl',
-          description: 'OSL repo $releasever - $basearch',
-          url: "http://packages.osuosl.org/repositories/#{p[:platform]}-$releasever/osl/$basearch",
-          gpgcheck: false
-        )
+      case p
+      when *ALL_RHEL
+        it do
+          expect(chef_run).to create_yum_repository('hashicorp').with(
+            baseurl: 'https://rpm.releases.hashicorp.com/RHEL/$releasever/$basearch/stable',
+            gpgkey: 'https://rpm.releases.hashicorp.com/gpg'
+          )
+        end
+      when *ALL_DEBIAN
+        it do
+          expect(chef_run).to add_apt_repository('hashicorp').with(
+            uri: 'https://apt.releases.hashicorp.com',
+            key: %w(https://apt.releases.hashicorp.com/gpg),
+            components: %w(main)
+          )
+        end
       end
     end
   end
