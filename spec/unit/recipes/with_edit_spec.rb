@@ -20,7 +20,7 @@ require_relative '../../spec_helper'
 
 # Begin Spec Tests
 describe 'osl-repos-test::with_edit' do
-  ALL_PLATFORMS.each do |p|
+  ALL_RHEL.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
         # Here we step into each of our resources, this enables us to test the resources created within it

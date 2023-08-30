@@ -19,7 +19,7 @@ require_relative '../../spec_helper'
 
 # Begin Spec Tests
 describe 'osl-repos::elrepo' do
-  ALL_PLATFORMS.each do |p|
+  ALL_RHEL.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
         # Here we step into our :osl_repos_elrepo resource, this enables us to test the resources created within it
