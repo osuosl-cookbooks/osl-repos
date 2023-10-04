@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+4.4.0 (2023-10-04)
+------------------
+- Add scl property to osl_repos_centos
+
 4.3.1 (2023-08-30)
 ------------------
 - Set the description for the Hashicorp Yum repo
