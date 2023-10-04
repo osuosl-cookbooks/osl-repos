@@ -27,6 +27,14 @@ suites:
       - almalinux-9
       - debian-11
       - debian-12
+  - name: centos-scl
+    run_list:
+      - recipe[osl-repos-test::centos_scl]
+    excludes:
+      - almalinux-8
+      - almalinux-9
+      - debian-11
+      - debian-12
   - name: disable
     run_list:
       - recipe[osl-repos-test::disable]

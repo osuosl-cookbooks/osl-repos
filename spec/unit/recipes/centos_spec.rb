@@ -60,6 +60,9 @@ describe 'osl-repos::centos' do
             # The following will test for the correct settings being applied to each Centos 7 repository
             # ( Based on the default values for managed and enabled being set to true )
 
+            it { expect(chef_run).to_not create_yum_repository('centos-sclo') }
+            it { expect(chef_run).to_not create_yum_repository('centos-sclo-rh') }
+
             case arch
             when 'aarch64', 's390x'
 

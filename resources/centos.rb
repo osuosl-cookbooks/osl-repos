@@ -8,6 +8,7 @@ default_action :add
 property :base, [true, false], default: true
 property :extras, [true, false], default: true
 property :updates, [true, false], default: true
+property :scl, [true, false], default: false
 property :exclude, Array, default: []
 
 # This is the default and only action it will manage all repos listed above and enable them as indicated
@@ -27,21 +28,34 @@ action :add do
   node.run_state['centos']['base'] ||= {}
   node.run_state['centos']['extras'] ||= {}
   node.run_state['centos']['updates'] ||= {}
+  node.run_state['centos']['centos-sclo'] ||= {}
+  node.run_state['centos']['centos-sclo-rh'] ||= {}
 
   # Initialize all repo mirrorlists to nil
   node.run_state['centos']['base']['mirrorlist'] = nil
   node.run_state['centos']['extras']['mirrorlist'] = nil
   node.run_state['centos']['updates']['mirrorlist'] = nil
+  node.run_state['centos']['centos-sclo']['mirrorlist'] = nil
+  node.run_state['centos']['centos-sclo-rh']['mirrorlist'] = nil
 
   node.run_state['centos']['base']['baseurl'] = "#{centos_url}/$releasever/os/#{base_arch}/"
   node.run_state['centos']['updates']['baseurl'] = "#{centos_url}/$releasever/updates/#{base_arch}/"
   node.run_state['centos']['extras']['baseurl'] = "#{centos_url}/$releasever/extras/#{base_arch}/"
+  node.run_state['centos']['centos-sclo']['baseurl'] = "#{centos_url}/$releasever/sclo/#{base_arch}/sclo"
+  node.run_state['centos']['centos-sclo-rh']['baseurl'] = "#{centos_url}/$releasever/sclo/#{base_arch}/rh"
 
   # Set the gpg key for each repo
   # This ensures that the AltArch gpg key is included in any non x86_64 architecture
   %w(base updates extras).each do |r|
     node.run_state['centos'][r]['gpgkey'] = centos_7_gpgkey
     node.run_state['centos'][r]['exclude'] = new_resource.exclude.join(' ') unless new_resource.exclude.empty?
+  end
+
+  if node['platform_version'].to_i == 7 && new_resource.scl
+    node.run_state['centos']['centos-sclo']['enabled'] = true
+    node.run_state['centos']['centos-sclo-rh']['enabled'] = true
+    node.default['yum']['centos-sclo']['managed'] = true
+    node.default['yum']['centos-sclo-rh']['managed'] = true
   end
 
   # Determine if the base, extras, and updates repositories are enabled
