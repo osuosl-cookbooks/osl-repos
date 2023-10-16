@@ -29,6 +29,7 @@ describe 'osl-repos-test::openstack' do
       end
       case p
       when ALMA_9
+        it { expect(chef_run).to_not install_package 'yum-plugin-priorities' }
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
             description: 'OpenStack RDO yoga',
@@ -38,6 +39,7 @@ describe 'osl-repos-test::openstack' do
           )
         end
       when ALMA_8
+        it { expect(chef_run).to_not install_package 'yum-plugin-priorities' }
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
             description: 'OpenStack RDO train',
@@ -47,6 +49,7 @@ describe 'osl-repos-test::openstack' do
           )
         end
       when CENTOS_7
+        it { expect(chef_run).to install_package 'yum-plugin-priorities' }
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
             description: 'OpenStack RDO stein',

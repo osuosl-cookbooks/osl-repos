@@ -9,6 +9,8 @@ property :version, String, default: lazy { openstack_release }
 action :add do
   include_recipe 'osl-repos::epel'
 
+  package 'yum-plugin-priorities' if node['platform_version'].to_i == 7
+
   yum_repository 'RDO-openstack' do
     description "OpenStack RDO #{new_resource.version}"
     baseurl "#{openstack_baseurl}/$basearch/openstack-#{new_resource.version}"

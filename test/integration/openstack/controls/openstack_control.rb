@@ -22,6 +22,14 @@ control 'openstack' do
     its('RDO-openstack.gpgkey') { should cmp 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud' }
   end
 
+  describe package 'yum-plugin-priorities' do
+    if rel == 7
+      it { should be_installed }
+    else
+      it { should_not be_installed }
+    end
+  end
+
   osc_pkg = rel == 7 ? 'python2-openstackclient' : 'python3-openstackclient'
 
   describe package osc_pkg do
