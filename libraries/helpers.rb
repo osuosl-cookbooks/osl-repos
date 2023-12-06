@@ -121,6 +121,29 @@ module OslRepos
           username
         )
       end
+
+      def openstack_release
+        case node['platform_version'].to_i
+        when 9
+          'yoga'
+        when 8
+          'train'
+        else
+          'stein'
+        end
+      end
+
+      def openstack_baseurl
+        case node['platform_version'].to_i
+        when 9
+          'https://centos-stream.osuosl.org/SIGs/$releasever-stream/cloud'
+        when 8
+          # TODO: Upstream has removed train from mirrors so this is a local mirror
+          'https://ftp.osuosl.org/pub/osl/rdo/$releasever'
+        else
+          'https://centos.osuosl.org/$releasever/cloud'
+        end
+      end
     end
   end
 end
