@@ -129,7 +129,7 @@ module OslRepos
         when 8
           'train'
         else
-          'stein'
+          'train'
         end
       end
 

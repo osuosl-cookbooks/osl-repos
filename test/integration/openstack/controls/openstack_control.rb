@@ -13,7 +13,7 @@ control 'openstack' do
     when 8
       its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/rdo/8/#{arch}/openstack-train" }
     when 7
-      its('baseurl') { should include "https://centos.osuosl.org/7/cloud/#{arch}/openstack-stein" }
+      its('baseurl') { should include "https://centos.osuosl.org/7/cloud/#{arch}/openstack-train" }
     end
   end
 
