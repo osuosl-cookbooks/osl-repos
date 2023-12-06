@@ -141,7 +141,12 @@ module OslRepos
           # TODO: Upstream has removed train from mirrors so this is a local mirror
           'https://ftp.osuosl.org/pub/osl/rdo/$releasever'
         else
-          'https://centos.osuosl.org/$releasever/cloud'
+          case node['kernel']['machine']
+          when 'x86_64'
+            'https://centos.osuosl.org/$releasever/cloud'
+          when 'aarch64', 'ppc64le'
+            'https://centos-altarch.osuosl.org/$releasever/cloud'
+          end
         end
       end
     end
