@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+4.5.1 (2023-12-06)
+------------------
+- Fix url for ppc64le/aarch64
+
 4.5.0 (2023-12-06)
 ------------------
 - Create osl_repos_openstack resource
