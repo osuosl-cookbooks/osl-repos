@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+4.5.0 (2023-12-06)
+------------------
+- Create osl_repos_openstack resource
+
 4.4.0 (2023-10-04)
 ------------------
 - Add scl property to osl_repos_centos
