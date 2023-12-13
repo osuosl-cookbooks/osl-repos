@@ -104,3 +104,88 @@ describe 'osl-repos-test::openstack' do
     end
   end
 end
+
+describe 'osl-repos::openstack' do
+  ALL_RHEL.each do |p|
+    context "#{p[:platform]} #{p[:version]}" do
+      cached(:chef_run) do
+        ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_openstack])).converge(described_recipe)
+      end
+      it 'converges successfully' do
+        expect { chef_run }.to_not raise_error
+      end
+      case p
+      when ALMA_9
+        it { expect(chef_run).to_not install_package 'yum-plugin-priorities' }
+        it do
+          expect(chef_run).to create_yum_repository('RDO-openstack').with(
+            description: 'OpenStack RDO yoga',
+            url: 'https://centos-stream.osuosl.org/SIGs/$releasever-stream/cloud/$basearch/openstack-yoga',
+            gpgcheck: true,
+            gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
+          )
+        end
+      when ALMA_8
+        it { expect(chef_run).to_not install_package 'yum-plugin-priorities' }
+        it do
+          expect(chef_run).to create_yum_repository('RDO-openstack').with(
+            description: 'OpenStack RDO train',
+            url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-train',
+            gpgcheck: true,
+            gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
+          )
+        end
+      when CENTOS_7
+        it { expect(chef_run).to install_package 'yum-plugin-priorities' }
+        it do
+          expect(chef_run).to create_yum_repository('RDO-openstack').with(
+            description: 'OpenStack RDO stein',
+            url: 'https://centos.osuosl.org/$releasever/cloud/$basearch/openstack-stein',
+            gpgcheck: true,
+            gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
+          )
+        end
+      end
+
+      context 'set attribute' do
+        cached(:chef_run) do
+          ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_openstack])) do |node|
+            node.normal['osl-repos']['openstack']['version'] = 'xena'
+          end.converge(described_recipe)
+        end
+        case p
+        when ALMA_9
+          it { expect(chef_run).to_not install_package 'yum-plugin-priorities' }
+          it do
+            expect(chef_run).to create_yum_repository('RDO-openstack').with(
+              description: 'OpenStack RDO xena',
+              url: 'https://centos-stream.osuosl.org/SIGs/$releasever-stream/cloud/$basearch/openstack-xena',
+              gpgcheck: true,
+              gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
+            )
+          end
+        when ALMA_8
+          it { expect(chef_run).to_not install_package 'yum-plugin-priorities' }
+          it do
+            expect(chef_run).to create_yum_repository('RDO-openstack').with(
+              description: 'OpenStack RDO xena',
+              url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-xena',
+              gpgcheck: true,
+              gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
+            )
+          end
+        when CENTOS_7
+          it { expect(chef_run).to install_package 'yum-plugin-priorities' }
+          it do
+            expect(chef_run).to create_yum_repository('RDO-openstack').with(
+              description: 'OpenStack RDO xena',
+              url: 'https://centos.osuosl.org/$releasever/cloud/$basearch/openstack-xena',
+              gpgcheck: true,
+              gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
+            )
+          end
+        end
+      end
+    end
+  end
+end
