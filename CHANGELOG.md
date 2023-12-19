@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+4.6.1 (2023-12-19)
+------------------
+- Update defaults to OpenStack Train for EL7
+
 4.6.0 (2023-12-13)
 ------------------
 - Create openstack recipe
