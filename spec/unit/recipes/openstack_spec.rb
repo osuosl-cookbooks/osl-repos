@@ -52,8 +52,8 @@ describe 'osl-repos-test::openstack' do
         it { expect(chef_run).to install_package 'yum-plugin-priorities' }
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
-            description: 'OpenStack RDO stein',
-            url: 'https://centos.osuosl.org/$releasever/cloud/$basearch/openstack-stein',
+            description: 'OpenStack RDO train',
+            url: 'https://centos.osuosl.org/$releasever/cloud/$basearch/openstack-train',
             gpgcheck: true,
             gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
           )
@@ -92,8 +92,8 @@ describe 'osl-repos-test::openstack' do
             it { expect(chef_run).to install_package 'yum-plugin-priorities' }
             it do
               expect(chef_run).to create_yum_repository('RDO-openstack').with(
-                description: 'OpenStack RDO stein',
-                url: 'https://centos-altarch.osuosl.org/$releasever/cloud/$basearch/openstack-stein',
+                description: 'OpenStack RDO train',
+                url: 'https://centos-altarch.osuosl.org/$releasever/cloud/$basearch/openstack-train',
                 gpgcheck: true,
                 gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
               )
@@ -139,8 +139,8 @@ describe 'osl-repos::openstack' do
         it { expect(chef_run).to install_package 'yum-plugin-priorities' }
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
-            description: 'OpenStack RDO stein',
-            url: 'https://centos.osuosl.org/$releasever/cloud/$basearch/openstack-stein',
+            description: 'OpenStack RDO train',
+            url: 'https://centos.osuosl.org/$releasever/cloud/$basearch/openstack-train',
             gpgcheck: true,
             gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
           )
