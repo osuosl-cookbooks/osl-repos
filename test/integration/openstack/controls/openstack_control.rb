@@ -12,8 +12,6 @@ control 'openstack' do
       its('baseurl') { should include "https://centos-stream.osuosl.org/SIGs/9-stream/cloud/#{arch}/openstack-yoga" }
     when 8
       its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/rdo/8/#{arch}/openstack-train" }
-    when 7
-      its('baseurl') { should include "https://centos.osuosl.org/7/cloud/#{arch}/openstack-train" }
     end
   end
 
@@ -22,17 +20,7 @@ control 'openstack' do
     its('RDO-openstack.gpgkey') { should cmp 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud' }
   end
 
-  describe package 'yum-plugin-priorities' do
-    if rel == 7
-      it { should be_installed }
-    else
-      it { should_not be_installed }
-    end
-  end
-
-  osc_pkg = rel == 7 ? 'python2-openstackclient' : 'python3-openstackclient'
-
-  describe package osc_pkg do
+  describe package 'python3-openstackclient' do
     it { should be_installed }
   end
 end
