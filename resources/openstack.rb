@@ -9,8 +9,6 @@ property :version, String, default: lazy { openstack_release }
 action :add do
   include_recipe 'osl-repos::epel'
 
-  package 'yum-plugin-priorities' if node['platform_version'].to_i == 7
-
   yum_repository 'RDO-openstack' do
     description "OpenStack RDO #{new_resource.version}"
     baseurl "#{openstack_baseurl}/$basearch/openstack-#{new_resource.version}"
@@ -18,11 +16,11 @@ action :add do
     priority '20'
   end
 
-  # TODO: Only needed on EL7
+  # NOTE: Only needed on POWER10
   yum_repository 'OSL-openstack' do
     description "OpenStack OSL #{new_resource.version}"
     baseurl "https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-#{new_resource.version}/$basearch"
     gpgkey 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl'
     priority '10'
-  end if node['platform_version'].to_i == 7
+  end if node.read('cpu', 'model_name').to_s.match?(/POWER10/)
 end

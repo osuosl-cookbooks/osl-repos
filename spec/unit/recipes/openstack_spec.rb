@@ -2,7 +2,7 @@
 # Cookbook:: osl-repos
 # Spec:: elevate
 #
-# Copyright:: 2023, Oregon State University
+# Copyright:: 2023-2024, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@ describe 'osl-repos-test::openstack' do
       end
       case p
       when ALMA_9
-        it { expect(chef_run).to_not install_package 'yum-plugin-priorities' }
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
             description: 'OpenStack RDO yoga',
@@ -38,8 +37,8 @@ describe 'osl-repos-test::openstack' do
             gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
           )
         end
+        it { is_expected.to_not create_yum_repository 'OSL-openstack' }
       when ALMA_8
-        it { expect(chef_run).to_not install_package 'yum-plugin-priorities' }
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
             description: 'OpenStack RDO train',
@@ -48,16 +47,7 @@ describe 'osl-repos-test::openstack' do
             gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
           )
         end
-      when CENTOS_7
-        it { expect(chef_run).to install_package 'yum-plugin-priorities' }
-        it do
-          expect(chef_run).to create_yum_repository('RDO-openstack').with(
-            description: 'OpenStack RDO train',
-            url: 'https://centos.osuosl.org/$releasever/cloud/$basearch/openstack-train',
-            gpgcheck: true,
-            gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
-          )
-        end
+        it { is_expected.to_not create_yum_repository 'OSL-openstack' }
       end
 
       %w(aarch64 ppc64le).each do |arch|
@@ -69,7 +59,6 @@ describe 'osl-repos-test::openstack' do
           end
           case p
           when ALMA_9
-            it { expect(chef_run).to_not install_package 'yum-plugin-priorities' }
             it do
               expect(chef_run).to create_yum_repository('RDO-openstack').with(
                 description: 'OpenStack RDO yoga',
@@ -78,8 +67,8 @@ describe 'osl-repos-test::openstack' do
                 gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
               )
             end
+            it { is_expected.to_not create_yum_repository 'OSL-openstack' }
           when ALMA_8
-            it { expect(chef_run).to_not install_package 'yum-plugin-priorities' }
             it do
               expect(chef_run).to create_yum_repository('RDO-openstack').with(
                 description: 'OpenStack RDO train',
@@ -88,16 +77,36 @@ describe 'osl-repos-test::openstack' do
                 gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
               )
             end
-          when CENTOS_7
-            it { expect(chef_run).to install_package 'yum-plugin-priorities' }
-            it do
-              expect(chef_run).to create_yum_repository('RDO-openstack').with(
-                description: 'OpenStack RDO train',
-                url: 'https://centos-altarch.osuosl.org/$releasever/cloud/$basearch/openstack-train',
-                gpgcheck: true,
-                gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
-              )
-            end
+            it { is_expected.to_not create_yum_repository 'OSL-openstack' }
+          end
+        end
+      end
+
+      context 'ppc64le POWER10' do
+        cached(:chef_run) do
+          ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_openstack])) do |node|
+            node.automatic['kernel']['machine'] = 'ppc64le'
+            node.automatic['cpu']['model_name'] = 'POWER10 (raw), altivec supported'
+          end.converge(described_recipe)
+        end
+        case p
+        when ALMA_9
+          it do
+            is_expected.to create_yum_repository('OSL-openstack').with(
+              description: 'OpenStack OSL yoga',
+              baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-yoga/$basearch',
+              gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
+              priority: '10'
+            )
+          end
+        when ALMA_8
+          it do
+            is_expected.to create_yum_repository('OSL-openstack').with(
+              description: 'OpenStack OSL train',
+              baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-train/$basearch',
+              gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
+              priority: '10'
+            )
           end
         end
       end
@@ -116,7 +125,6 @@ describe 'osl-repos::openstack' do
       end
       case p
       when ALMA_9
-        it { expect(chef_run).to_not install_package 'yum-plugin-priorities' }
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
             description: 'OpenStack RDO yoga',
@@ -126,21 +134,10 @@ describe 'osl-repos::openstack' do
           )
         end
       when ALMA_8
-        it { expect(chef_run).to_not install_package 'yum-plugin-priorities' }
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
             description: 'OpenStack RDO train',
             url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-train',
-            gpgcheck: true,
-            gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
-          )
-        end
-      when CENTOS_7
-        it { expect(chef_run).to install_package 'yum-plugin-priorities' }
-        it do
-          expect(chef_run).to create_yum_repository('RDO-openstack').with(
-            description: 'OpenStack RDO train',
-            url: 'https://centos.osuosl.org/$releasever/cloud/$basearch/openstack-train',
             gpgcheck: true,
             gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
           )
@@ -155,7 +152,6 @@ describe 'osl-repos::openstack' do
         end
         case p
         when ALMA_9
-          it { expect(chef_run).to_not install_package 'yum-plugin-priorities' }
           it do
             expect(chef_run).to create_yum_repository('RDO-openstack').with(
               description: 'OpenStack RDO xena',
@@ -165,21 +161,10 @@ describe 'osl-repos::openstack' do
             )
           end
         when ALMA_8
-          it { expect(chef_run).to_not install_package 'yum-plugin-priorities' }
           it do
             expect(chef_run).to create_yum_repository('RDO-openstack').with(
               description: 'OpenStack RDO xena',
               url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-xena',
-              gpgcheck: true,
-              gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
-            )
-          end
-        when CENTOS_7
-          it { expect(chef_run).to install_package 'yum-plugin-priorities' }
-          it do
-            expect(chef_run).to create_yum_repository('RDO-openstack').with(
-              description: 'OpenStack RDO xena',
-              url: 'https://centos.osuosl.org/$releasever/cloud/$basearch/openstack-xena',
               gpgcheck: true,
               gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
             )

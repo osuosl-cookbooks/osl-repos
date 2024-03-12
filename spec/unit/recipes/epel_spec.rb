@@ -1,7 +1,7 @@
 # Cookbook:: osl-repos
 # Spec:: epel
 #
-# Copyright:: 2020-2023, Oregon State University
+# Copyright:: 2020-2024, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
