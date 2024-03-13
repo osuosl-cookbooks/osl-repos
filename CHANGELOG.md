@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+4.7.1 (2024-03-13)
+------------------
+- Set module_hotfixes so qemu-kvm packages work properly against appstream
+
 4.7.0 (2024-03-12)
 ------------------
 - Add support for POWER10 on OpenStack
