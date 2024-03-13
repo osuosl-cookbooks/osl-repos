@@ -22,5 +22,6 @@ action :add do
     baseurl "https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-#{new_resource.version}/$basearch"
     gpgkey 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl'
     priority '10'
+    options(module_hotfixes: '1')
   end if node.read('cpu', 'model_name').to_s.match?(/POWER10/)
 end

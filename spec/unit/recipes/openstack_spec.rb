@@ -96,7 +96,8 @@ describe 'osl-repos-test::openstack' do
               description: 'OpenStack OSL yoga',
               baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-yoga/$basearch',
               gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
-              priority: '10'
+              priority: '10',
+              options: { module_hotfixes: '1' }
             )
           end
         when ALMA_8
@@ -105,7 +106,8 @@ describe 'osl-repos-test::openstack' do
               description: 'OpenStack OSL train',
               baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-train/$basearch',
               gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
-              priority: '10'
+              priority: '10',
+              options: { module_hotfixes: '1' }
             )
           end
         end
