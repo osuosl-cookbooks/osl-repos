@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+4.7.2 (2024-05-03)
+------------------
+- Remove support for Debian 11
+
 4.7.1 (2024-03-13)
 ------------------
 - Set module_hotfixes so qemu-kvm packages work properly against appstream
