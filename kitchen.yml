@@ -17,7 +17,6 @@ suites:
       - recipe[osl-repos::alma]
     excludes:
       - centos-7
-      - debian-11
       - debian-12
   - name: centos
     run_list:
@@ -25,7 +24,6 @@ suites:
     excludes:
       - almalinux-8
       - almalinux-9
-      - debian-11
       - debian-12
   - name: centos-scl
     run_list:
@@ -33,32 +31,27 @@ suites:
     excludes:
       - almalinux-8
       - almalinux-9
-      - debian-11
       - debian-12
   - name: disable
     run_list:
       - recipe[osl-repos-test::disable]
     excludes:
-      - debian-11
       - debian-12
   - name: elevate
     run_list:
       - recipe[osl-repos-test::elevate]
     excludes:
       - almalinux-9
-      - debian-11
       - debian-12
   - name: elrepo
     run_list:
       - recipe[osl-repos::elrepo]
     excludes:
-      - debian-11
       - debian-12
   - name: epel
     run_list:
       - recipe[osl-repos::epel]
     excludes:
-      - debian-11
       - debian-12
   - name: hashicorp
     run_list:
@@ -67,25 +60,21 @@ suites:
     run_list:
       - recipe[osl-repos::oslrepo]
     excludes:
-      - debian-11
       - debian-12
   - name: openstack
     run_list:
       - recipe[osl-repos-test::openstack]
     excludes:
       - centos-7
-      - debian-11
       - debian-12
   - name: highavailability
     run_list:
       - recipe[osl-repos-test::highavailability]
     excludes:
       - centos-7
-      - debian-11
       - debian-12
   - name: with_edit
     run_list:
       - recipe[osl-repos-test::with_edit]
     excludes:
-      - debian-11
       - debian-12
