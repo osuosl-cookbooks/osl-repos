@@ -40,7 +40,7 @@ action :add do
         r.send(config.to_sym, value)
       end
 
-      # Declare the resource with all parameters that are either used in yum-centos or we set in our cookbooks
+      # Declare the resource with all parameters that are either used in yum-almalinux or we set in our cookbooks
       declare_resource(:yum_repository, repo) do
         yum_repo_parameters.each do |p|
           send(p.to_sym, r.send(p.to_sym))

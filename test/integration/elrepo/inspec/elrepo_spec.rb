@@ -1,4 +1,4 @@
-arch = File.readlines('/proc/cpuinfo').grep(/POWER9/).any? ? 'power9' : os.arch
+arch = os.arch
 
 describe yum.repo('elrepo') do
   if arch == 'x86_64'

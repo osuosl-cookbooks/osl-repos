@@ -11,11 +11,6 @@ ALMA_9 = {
   version: '9',
 }.freeze
 
-CENTOS_7 = {
-  platform: 'centos',
-  version: '7',
-}.freeze
-
 DEBIAN_12 = {
   platform: 'debian',
   version: '12',
@@ -24,7 +19,6 @@ DEBIAN_12 = {
 ALL_PLATFORMS = [
   ALMA_8,
   ALMA_9,
-  CENTOS_7,
   DEBIAN_12,
 ].freeze
 
@@ -35,11 +29,9 @@ ALL_DEBIAN = [
 ALL_RHEL = [
   ALMA_8,
   ALMA_9,
-  CENTOS_7,
 ].freeze
 
 ALL_RESOURCES = [
-  :osl_repos_centos,
   :osl_repos_alma,
   :yum_alma_baseos,
   :yum_alma_appstream,

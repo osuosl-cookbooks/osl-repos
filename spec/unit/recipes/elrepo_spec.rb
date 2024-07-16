@@ -31,111 +31,35 @@ describe 'osl-repos::elrepo' do
         expect { chef_run }.to_not raise_error
       end
 
-      case p[:version].to_i
-      when 7
-
-        # We need to test each supported architecture
-        # This loop creates a context for each architecture and applies its tests.
-        %w(x86_64 aarch64 s390x).each do |arch|
-          context "arch #{arch}" do
-            cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_elrepo])) do |node|
-                # Here we set the architecture to match our current iteration of the loop
-                node.automatic['kernel']['machine'] = arch
-              end.converge(described_recipe)
-            end
-
-            # The elrepo repositorry should be installed on the x86_64 architecture
-            if arch == 'x86_64'
-              it do
-                expect(chef_run).to create_yum_repository('elrepo').with(
-                  mirrorlist: nil,
-                  exclude: nil,
-                  baseurl: 'https://ftp.osuosl.org/pub/elrepo/elrepo/el$releasever/$basearch/',
-                  enabled: true
-                )
-              end
-
-            # Non x86_64 architectures should not install the elrepo repository
-            else
-              it do
-                expect(chef_run).to_not create_yum_repository('elrepo')
-              end
-            end
+      # We need to test each supported architecture
+      # This loop creates a context for each architecture and applies its tests.
+      %w(x86_64 ppc64le aarch64 s390x).each do |arch|
+        context "arch #{arch}" do
+          cached(:chef_run) do
+            ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_elrepo])) do |node|
+              # Here we set the architecture to match our current iteration of the loop
+              node.automatic['kernel']['machine'] = arch
+            end.converge(described_recipe)
           end
-        end
 
-        # ppc64le can either be power8 or power9 architecture, we will test for both cases
-        %w(power8 power9).each do |arch|
-          context "arch #{arch}" do
-            cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
-                node.automatic['kernel']['machine'] = 'ppc64le'
-
-                # Set cpu_model to either power8 or power9
-                node.automatic['ibm_power']['cpu']['cpu_model'] = arch
-              end.converge(described_recipe)
+          # The elrepo repositorry should be installed on the x86_64 architecture
+          if arch == 'x86_64'
+            it do
+              expect(chef_run).to create_yum_repository('elrepo').with(
+                mirrorlist: nil,
+                exclude: nil,
+                baseurl: 'https://ftp.osuosl.org/pub/elrepo/elrepo/el$releasever/$basearch/',
+                enabled: true
+              )
             end
 
-            # Non x86_64 architectures should not install the elrepo repository
+          # Non x86_64 architectures should not install the elrepo repository
+          else
             it do
               expect(chef_run).to_not create_yum_repository('elrepo')
             end
           end
         end
-
-      when 8
-
-        # We need to test each supported architecture
-        # This loop creates a context for each architecture and applies its tests.
-        %w(x86_64 aarch64 s390x).each do |arch|
-          context "arch #{arch}" do
-            cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_elrepo])) do |node|
-                # Here we set the architecture to match our current iteration of the loop
-                node.automatic['kernel']['machine'] = arch
-              end.converge(described_recipe)
-            end
-
-            # The elrepo repositorry should be installed on the x86_64 architecture
-            if arch == 'x86_64'
-              it do
-                expect(chef_run).to create_yum_repository('elrepo').with(
-                  mirrorlist: nil,
-                  exclude: nil,
-                  baseurl: 'https://ftp.osuosl.org/pub/elrepo/elrepo/el$releasever/$basearch/',
-                  enabled: true
-                )
-              end
-
-            # Non x86_64 architectures should not install the elrepo repository
-            else
-              it do
-                expect(chef_run).to_not create_yum_repository('elrepo')
-              end
-            end
-          end
-        end
-
-        # ppc64le can either be power8 or power9 architecture, we will test for both cases
-        %w(power8 power9).each do |arch|
-          context "arch #{arch}" do
-            cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_centos])) do |node|
-                node.automatic['kernel']['machine'] = 'ppc64le'
-
-                # Set cpu_model to either power8 or power9
-                node.automatic['ibm_power']['cpu']['cpu_model'] = arch
-              end.converge(described_recipe)
-            end
-
-            # Non x86_64 architectures should not install the elrepo repository
-            it do
-              expect(chef_run).to_not create_yum_repository('elrepo')
-            end
-          end
-        end
-
       end
     end
   end

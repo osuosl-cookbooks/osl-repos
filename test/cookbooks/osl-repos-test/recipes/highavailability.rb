@@ -21,5 +21,4 @@
 
 osl_repos_alma 'default' do
   highavailability true
-  only_if { platform?('almalinux') }
 end
