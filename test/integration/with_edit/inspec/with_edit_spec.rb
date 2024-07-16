@@ -4,68 +4,42 @@ describe ini('/etc/yum.conf') do
   its('main.installonly_limit') { should eq '2' }
 end
 
-arch = File.readlines('/proc/cpuinfo').grep(/POWER9/).any? ? 'power9' : os.arch
+arch = os.arch
 rel = os.release.to_i
+power_tools = os.release.to_i >= 9 ? 'CRB' : 'PowerTools'
+url = 'almalinux.osuosl.org'
 
-case os.release.to_i
-when 7
-  centos_url = arch == 'x86_64' ? 'https://centos.osuosl.org' : 'https://centos-altarch.osuosl.org'
+describe yum.repo('appstream') do
+  it { should exist }
+  it { should_not be_enabled }
+  its('baseurl') { should eq "https://#{url}/#{rel}/AppStream/#{arch}/os/" }
+  its('mirrors') { should eq nil }
+end
 
-  describe yum.repo('base') do
-    it { should exist }
-    it { should be_enabled }
-    its('baseurl') { should eq "#{centos_url}/7/os/#{arch}/" }
-    its('mirrors') { should eq nil }
-  end
+describe yum.repo('baseos') do
+  it { should exist }
+  it { should be_enabled }
+  its('baseurl') { should eq "https://#{url}/#{rel}/BaseOS/#{arch}/os/" }
+  its('mirrors') { should eq nil }
+end
 
-  describe yum.repo('extras') do
-    it { should exist }
-    it { should_not be_enabled }
-    its('baseurl') { should eq "#{centos_url}/7/extras/#{arch}/" }
-    its('mirrors') { should eq nil }
-  end
+describe yum.repo('extras') do
+  it { should exist }
+  it { should_not be_enabled }
+  its('baseurl') { should eq "https://#{url}/#{rel}/extras/#{arch}/os/" }
+  its('mirrors') { should eq nil }
+end
 
-  describe yum.repo('updates') do
-    it { should exist }
-    it { should_not be_enabled }
-    its('baseurl') { should eq "#{centos_url}/7/updates/#{arch}/" }
-    its('mirrors') { should eq nil }
-  end
-when 8
-  url = 'almalinux.osuosl.org'
+describe yum.repo('highavailability') do
+  it { should exist }
+  it { should_not be_enabled }
+  its('baseurl') { should eq "https://#{url}/#{rel}/HighAvailability/#{arch}/os/" }
+  its('mirrors') { should eq nil }
+end
 
-  describe yum.repo('appstream') do
-    it { should exist }
-    it { should_not be_enabled }
-    its('baseurl') { should eq "https://#{url}/#{rel}/AppStream/#{arch}/os/" }
-    its('mirrors') { should eq nil }
-  end
-
-  describe yum.repo('baseos') do
-    it { should exist }
-    it { should be_enabled }
-    its('baseurl') { should eq "https://#{url}/#{rel}/BaseOS/#{arch}/os/" }
-    its('mirrors') { should eq nil }
-  end
-
-  describe yum.repo('extras') do
-    it { should exist }
-    it { should_not be_enabled }
-    its('baseurl') { should eq "https://#{url}/#{rel}/extras/#{arch}/os/" }
-    its('mirrors') { should eq nil }
-  end
-
-  describe yum.repo('highavailability') do
-    it { should exist }
-    it { should_not be_enabled }
-    its('baseurl') { should eq "https://#{url}/#{rel}/HighAvailability/#{arch}/os/" }
-    its('mirrors') { should eq nil }
-  end
-
-  describe yum.repo('powertools') do
-    it { should exist }
-    it { should_not be_enabled }
-    its('baseurl') { should eq "https://#{url}/#{rel}/PowerTools/#{arch}/os/" }
-    its('mirrors') { should eq nil }
-  end
+describe yum.repo(power_tools.downcase) do
+  it { should exist }
+  it { should_not be_enabled }
+  its('baseurl') { should eq "https://#{url}/#{rel}/#{power_tools}/#{arch}/os/" }
+  its('mirrors') { should eq nil }
 end

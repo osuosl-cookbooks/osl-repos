@@ -16,21 +16,6 @@ suites:
     run_list:
       - recipe[osl-repos::alma]
     excludes:
-      - centos-7
-      - debian-12
-  - name: centos
-    run_list:
-      - recipe[osl-repos::centos]
-    excludes:
-      - almalinux-8
-      - almalinux-9
-      - debian-12
-  - name: centos-scl
-    run_list:
-      - recipe[osl-repos-test::centos_scl]
-    excludes:
-      - almalinux-8
-      - almalinux-9
       - debian-12
   - name: disable
     run_list:
@@ -65,13 +50,11 @@ suites:
     run_list:
       - recipe[osl-repos-test::openstack]
     excludes:
-      - centos-7
       - debian-12
   - name: highavailability
     run_list:
       - recipe[osl-repos-test::highavailability]
     excludes:
-      - centos-7
       - debian-12
   - name: with_edit
     run_list:

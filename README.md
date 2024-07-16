@@ -12,7 +12,6 @@ https://github.com/osuosl-cookbooks/osl-repos
 
 ## Recipes:
 
-- `osl-repos::centos`  - Configures and enables all repositories, with the exception of the 'elrepo' and 'epel' repos
 - `osl-repos::elevate` - Configures and enables the 'elevate' repository
 - `osl-repos::elrepo`  - Configures and enables the 'elrepo' repository
 - `osl-repos::epel`    - Configures and enables the 'epel' repository
@@ -20,50 +19,39 @@ https://github.com/osuosl-cookbooks/osl-repos
 
 ## Resources:
 
-- `osl_repos_centos` - Manages and configures the appstream, base, extras, highavailability, powertools, and updates repositories using the `yum-centos` cookbook
 - `osl_repos_elrepo` - Manages and configures the elrepo repository using the `yum-epel` cookbook
 - `osl_repos_epel`   - Manages and configures the epel repository using the `yum-elrepo` cookbook
 - `osl_repos_alma`   - Manages and configures the base, extras, appstream, highavailability, powertools
 
 ### Actions:
 
-| Action   | Description                                                              |
-|--------  |------------------------------------------------------------------------  |
-| add      | Configures all repositories managed by a given resource                  |
+| Action  | Description                                              |
+|-------- |--------------------------------------------------------- |
+| add     | Configures all repositories managed by a given resource  |
 
 ### Properties:
 
 Note: All repositories controlled by a resource will be installed and configured. These properties determine if said repos are **enabled**
 
-### osl_repos_centos:
-| Property          | Effect                            | Default  | Compatibility     |
-|-----------------  |---------------------------------  |--------  |-----------------  |
-| appstream         | Enable the appstream repo         | True     | Alma 8            |
-| base              | Enable the base repo              | True     | Centos 7 & Alma 8 |
-| extras            | Enable the extras repo            | True     | Centos 7 & Alma 8 |
-| highavailability  | Enable the highavailability repo  | False    | Alma 8            |
-| powertools        | Enable the powertools repo        | True     | Alma 8            |
-| updates           | Enable the updates repo           | True     | Centos 7          |
+### osl_repos_alma:
+| Property         | Effect                           | Default | Compatibility  |
+|----------------- |--------------------------------- |-------- |--------------- |
+| appstream        | Enable the appstream repo        | True    | Alma 8, 9      |
+| base             | Enable the base repo             | True    | Alma 8, 9      |
+| extras           | Enable the extras repo           | True    | Alma 8, 9      |
+| highavailability | Enable the highavailability repo | False   | Alma 8, 9      |
+| powertools       | Enable the powertools repo       | True    | Alma 8, 9      |
 
 ### osl_repos_elrepo:
-| Property          | Effect                            | Default  | Compatibility     |
-|-----------------  |---------------------------------  |--------  |-----------------  |
-| elrepo            | Enable the elrepo repo            | True     | Centos 7 & Alma 8 |
+| Property  | Effect                  | Default | Compatibility  |
+|---------- |------------------------ |-------- |--------------- |
+| elrepo    | Enable the elrepo repo  | True    | Alma 8, 9      |
 
 ### osl_repos_epel:
-| Resource    | Property          | Effect                            | Default  | Compatibility     |
-|-----------  |-----------------  |---------------------------------  |--------  |-----------------  |
-| epel        | epel              | Enable the epel repo              | True     | Centos 7 & Alma 8 |
+| Resource  | Property  | Effect                | Default | Compatibility  |
+|---------- |---------- |---------------------- |-------- |--------------- |
+| epel      | epel      | Enable the epel repo  | True    | Alma 8, 9      |
 ## Examples:
-
-Configure the default suite of Centos repos:
-```ruby
-# via recipe
-include_recipe 'osl-repos::centos'
-
-# or resource
-osl_repos_centos 'default'
-```
 
 Configure the EPEL repository:
 ```ruby
@@ -94,14 +82,14 @@ osl_repos_alma 'default'
 
 Disable or enable a specific repo on *creation* (In this case PowerTools):
 ```ruby
-osl_repos_centos 'default' do
+osl_repos_alma 'default' do
   powertools false
 end
 ```
 
 Disable or enable a specific repo *after including* the recipe or initializing the resource:
 ```ruby
-edit resource(:osl_repos_centos, 'default') do
+edit resource(:osl_repos_alma, 'default') do
   powertools false
 end
 ```

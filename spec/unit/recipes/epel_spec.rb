@@ -31,32 +31,16 @@ describe 'osl-repos::epel' do
         expect { chef_run }.to_not raise_error
       end
 
-      # However the epel repository is the same across all architectures, so we will only be testing x86_64
-      case p[:version].to_i
-      when 7
-        # Test the epel repository
-        it do
-          expect(chef_run).to create_yum_repository('epel').with(
-            mirrorlist: nil,
-            exclude: nil,
-            baseurl: 'https://epel.osuosl.org/$releasever/$basearch/',
-            gpgkey: 'https://epel.osuosl.org/RPM-GPG-KEY-EPEL-7',
-            enabled: true
-          )
-        end
-
-      when 8
-        # Test the epel repository
-        it do
-          expect(chef_run).to create_yum_repository('epel').with(
-            mirrorlist: nil,
-            exclude: nil,
-            baseurl: 'https://epel.osuosl.org/$releasever/Everything/$basearch/',
-            gpgkey: 'https://epel.osuosl.org/RPM-GPG-KEY-EPEL-8',
-            enabled: true
-          )
-        end
-      end # End Version Switchcase
+      # Test the epel repository
+      it do
+        expect(chef_run).to create_yum_repository('epel').with(
+          mirrorlist: nil,
+          exclude: nil,
+          baseurl: 'https://epel.osuosl.org/$releasever/Everything/$basearch/',
+          gpgkey: "https://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{p[:version].to_i}",
+          enabled: true
+        )
+      end
     end
   end
 end

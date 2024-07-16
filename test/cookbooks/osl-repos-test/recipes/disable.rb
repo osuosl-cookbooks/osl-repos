@@ -18,12 +18,6 @@
 
 # This is an example of directly using the resource to disable select repos
 
-osl_repos_centos 'default' do
-  updates false
-  only_if { platform?('centos') }
-end
-
 osl_repos_alma 'default' do
   powertools false
-  only_if { platform?('almalinux') }
 end

@@ -43,127 +43,64 @@ describe 'osl-repos-test::highavailability' do
         )
       end
 
-      case p[:version].to_i
-      when 8
-        url = 'almalinux.osuosl.org'
+      url = 'almalinux.osuosl.org'
 
-        # We need to test each supported architecture
-        # This loop creates a context for each architecture and applies its tests.
-        %w(x86_64 aarch64 s390x).each do |arch|
-          context "arch #{arch}" do
-            cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALMA_RESOURCES)) do |node|
-                node.automatic['kernel']['machine'] = arch
-              end.converge(described_recipe)
-            end
-
-            # The following will test for the correct settings being applied to each Alma 8 repository
-            # ( Based on the default values for managed and enabled being set to true )
-
-            # Test the appstream repository
-            it do
-              expect(chef_run).to create_yum_repository('appstream').with(
-                mirrorlist: nil,
-                baseurl: "https://#{url}/$releasever/AppStream/$basearch/os/",
-                enabled: true
-              )
-            end
-
-            # Test the base repository
-            it do
-              expect(chef_run).to create_yum_repository('baseos').with(
-                mirrorlist: nil,
-                baseurl: "https://#{url}/$releasever/BaseOS/$basearch/os/",
-                enabled: true
-              )
-            end
-
-            # Test the extras repository
-            it do
-              expect(chef_run).to create_yum_repository('extras').with(
-                mirrorlist: nil,
-                baseurl: "https://#{url}/$releasever/extras/$basearch/os/",
-                enabled: true
-              )
-            end
-
-            # Test the highavailability repository
-            it do
-              expect(chef_run).to create_yum_repository('highavailability').with(
-                mirrorlist: nil,
-                baseurl: "https://#{url}/$releasever/HighAvailability/$basearch/os/",
-                enabled: true
-              )
-            end
-
-            # Test the powertools repository
-            it do
-              expect(chef_run).to create_yum_repository('powertools').with(
-                mirrorlist: nil,
-                baseurl: "https://#{url}/$releasever/PowerTools/$basearch/os/",
-                enabled: true
-              )
-            end
+      # We need to test each supported architecture
+      # This loop creates a context for each architecture and applies its tests.
+      %w(x86_64 ppc64le aarch64 s390x).each do |arch|
+        context "arch #{arch}" do
+          cached(:chef_run) do
+            ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALMA_RESOURCES)) do |node|
+              node.automatic['kernel']['machine'] = arch
+            end.converge(described_recipe)
           end
-        end
 
-        # ppc64le can either be power8 or power9 architecture, we will test for both cases
-        # This is the same url as above but we test for 8 vs 9 differently than x86_64 vs ppc64le
-        %w(power8 power9).each do |arch|
-          context "arch #{arch}" do
-            cached(:chef_run) do
-              ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALMA_RESOURCES)) do |node|
-                node.automatic['kernel']['machine'] = 'ppc64le'
+          # The following will test for the correct settings being applied to each Alma 8 repository
+          # ( Based on the default values for managed and enabled being set to true )
 
-                # Set cpu_model to either power8 or power9
-                node.automatic['ibm_power']['cpu']['cpu_model'] = arch
-              end.converge(described_recipe)
-            end
+          # Test the appstream repository
+          it do
+            expect(chef_run).to create_yum_repository('appstream').with(
+              mirrorlist: nil,
+              baseurl: "https://#{url}/$releasever/AppStream/$basearch/os/",
+              enabled: true
+            )
+          end
 
-            # Test the appstream repository
-            it do
-              expect(chef_run).to create_yum_repository('appstream').with(
-                mirrorlist: nil,
-                baseurl: "https://#{url}/$releasever/AppStream/$basearch/os/",
-                enabled: true
-              )
-            end
+          # Test the base repository
+          it do
+            expect(chef_run).to create_yum_repository('baseos').with(
+              mirrorlist: nil,
+              baseurl: "https://#{url}/$releasever/BaseOS/$basearch/os/",
+              enabled: true
+            )
+          end
 
-            # Test the base repository
-            it do
-              expect(chef_run).to create_yum_repository('baseos').with(
-                mirrorlist: nil,
-                baseurl: "https://#{url}/$releasever/BaseOS/$basearch/os/",
-                enabled: true
-              )
-            end
+          # Test the extras repository
+          it do
+            expect(chef_run).to create_yum_repository('extras').with(
+              mirrorlist: nil,
+              baseurl: "https://#{url}/$releasever/extras/$basearch/os/",
+              enabled: true
+            )
+          end
 
-            # Test the extras repository
-            it do
-              expect(chef_run).to create_yum_repository('extras').with(
-                mirrorlist: nil,
-                baseurl: "https://#{url}/$releasever/extras/$basearch/os/",
-                enabled: true
-              )
-            end
+          # Test the highavailability repository
+          it do
+            expect(chef_run).to create_yum_repository('highavailability').with(
+              mirrorlist: nil,
+              baseurl: "https://#{url}/$releasever/HighAvailability/$basearch/os/",
+              enabled: true
+            )
+          end
 
-            # Test the highavailability repository
-            it do
-              expect(chef_run).to create_yum_repository('highavailability').with(
-                mirrorlist: nil,
-                baseurl: "https://#{url}/$releasever/HighAvailability/$basearch/os/",
-                enabled: true
-              )
-            end
-
-            # Test the powertools repository
-            it do
-              expect(chef_run).to create_yum_repository('powertools').with(
-                mirrorlist: nil,
-                baseurl: "https://#{url}/$releasever/PowerTools/$basearch/os/",
-                enabled: true
-              )
-            end
+          # Test the powertools repository
+          it do
+            expect(chef_run).to create_yum_repository('powertools').with(
+              mirrorlist: nil,
+              baseurl: "https://#{url}/$releasever/PowerTools/$basearch/os/",
+              enabled: true
+            )
           end
         end
       end

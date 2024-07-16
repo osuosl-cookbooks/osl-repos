@@ -16,20 +16,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This is an example of using the 'edit resource' function to modify the already included and enabled repos
-platform = platform?('centos') ? 'centos' : 'alma'
-
-include_recipe "osl-repos::#{platform}"
-
-edit_resource('osl_repos_centos'.to_sym, 'default') do
-  extras false
-  updates false
-  exclude %w(foo bar)
-end if platform == 'centos'
+include_recipe 'osl-repos::alma'
 
 edit_resource('osl_repos_alma'.to_sym, 'default') do
-  appstream false if platform == 'alma'
+  appstream false
   extras false
-  powertools false if platform == 'alma'
+  powertools false
   exclude %w(foo bar)
-end if platform == 'alma'
+end

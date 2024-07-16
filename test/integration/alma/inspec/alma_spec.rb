@@ -7,6 +7,7 @@ describe ini('/etc/yum.conf') do
 end
 
 rel = os.release.to_i
+power_tools = os.release.to_i >= 9 ? 'CRB' : 'PowerTools'
 
 describe yum.repo('appstream') do
   it { should exist }
@@ -36,16 +37,9 @@ describe yum.repo('highavailability') do
   its('mirrors') { should eq nil }
 end
 
-describe yum.repo('powertools') do
+describe yum.repo(power_tools.downcase) do
   it { should exist }
   it { should be_enabled }
-  its('baseurl') { should eq "https://almalinux.osuosl.org/#{rel}/PowerTools/x86_64/os/" }
+  its('baseurl') { should eq "https://almalinux.osuosl.org/#{rel}/#{power_tools}/x86_64/os/" }
   its('mirrors') { should eq nil }
-end if rel == 8
-
-describe yum.repo('crb') do
-  it { should exist }
-  it { should be_enabled }
-  its('baseurl') { should eq "https://almalinux.osuosl.org/#{rel}/CRB/x86_64/os/" }
-  its('mirrors') { should eq nil }
-end if rel >= 9
+end
