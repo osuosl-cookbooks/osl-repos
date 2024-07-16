@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.0.0 (2024-07-16)
+------------------
+- Remove support for CentOS 7
+
 4.7.2 (2024-05-03)
 ------------------
 - Remove support for Debian 11
