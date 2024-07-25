@@ -19,7 +19,7 @@
 require_relative '../../spec_helper'
 
 describe 'osl-repos::oslrepo' do
-  ALL_RHEL.each do |p|
+  ALL_PLATFORMS.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
         ChefSpec::SoloRunner.new(p).converge(described_recipe)
@@ -27,13 +27,25 @@ describe 'osl-repos::oslrepo' do
       it 'converges successfully' do
         expect { chef_run }.to_not raise_error
       end
-      it 'creates yum repository: osl' do
-        expect(chef_run).to create_yum_repository('osl').with(
-          repositoryid: 'osl',
-          description: 'OSL repo $releasever - $basearch',
-          url: "http://packages.osuosl.org/repositories/#{p[:platform]}-$releasever/osl/$basearch",
-          gpgcheck: false
-        )
+      case p
+      when *ALL_RHEL
+        it do
+          is_expected.to create_yum_repository('osl').with(
+            repositoryid: 'osl',
+            description: 'OSL repo $releasever - $basearch',
+            url: "http://packages.osuosl.org/repositories/#{p[:platform]}-$releasever/osl/$basearch",
+            gpgcheck: false
+          )
+        end
+      when *ALL_DEBIAN
+        it do
+          is_expected.to add_apt_repository('osl').with(
+            uri: 'http://packages.osuosl.org/repositories/apt-repo-osl/',
+            components: %w(main),
+            key: %w(http://packages.osuosl.org/repositories/apt-repo-osl/repo.gpg),
+            arch: 'amd64'
+          )
+        end
       end
     end
   end

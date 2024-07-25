@@ -5,18 +5,26 @@ control 'oslrepo' do
   arch = os[:arch]
   platform = os[:name]
 
-  describe yum.repo('osl') do
-    it { should exist }
-    it { should be_enabled }
-    its('baseurl') { should include "http://packages.osuosl.org/repositories/#{platform}-#{rel}/osl/#{arch}" }
-  end
+  case os.family
+  when 'redhat'
+    describe yum.repo('osl') do
+      it { should exist }
+      it { should be_enabled }
+      its('baseurl') { should include "http://packages.osuosl.org/repositories/#{platform}-#{rel}/osl/#{arch}" }
+    end
 
-  describe file('/etc/yum.repos.d/osl.repo') do
-    its('content') { should match /gpgcheck=0/ }
-  end
+    describe file('/etc/yum.repos.d/osl.repo') do
+      its('content') { should match /gpgcheck=0/ }
+    end
 
-  describe ini('/etc/yum.repos.d/osl.repo') do
-    its('osl.baseurl') { should cmp "http://packages.osuosl.org/repositories/#{platform}-$releasever/osl/$basearch" }
-    its('osl.gpgcheck') { should cmp '0' }
+    describe ini('/etc/yum.repos.d/osl.repo') do
+      its('osl.baseurl') { should cmp "http://packages.osuosl.org/repositories/#{platform}-$releasever/osl/$basearch" }
+      its('osl.gpgcheck') { should cmp '0' }
+    end
+  when 'debian'
+    describe apt('http://packages.osuosl.org/repositories/apt-repo-osl/') do
+      it { should exist }
+      it { should be_enabled }
+    end
   end
 end

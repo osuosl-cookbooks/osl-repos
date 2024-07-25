@@ -22,4 +22,11 @@ yum_repository 'osl' do
   description 'OSL repo $releasever - $basearch'
   baseurl "http://packages.osuosl.org/repositories/#{node['platform']}-$releasever/osl/$basearch"
   gpgcheck false
-end
+end if platform_family?('rhel')
+
+apt_repository 'osl' do
+  uri 'http://packages.osuosl.org/repositories/apt-repo-osl/'
+  components %w(main)
+  key 'http://packages.osuosl.org/repositories/apt-repo-osl/repo.gpg'
+  arch 'amd64'
+end if platform_family?('debian')
