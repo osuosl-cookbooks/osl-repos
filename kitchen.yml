@@ -44,8 +44,6 @@ suites:
   - name: oslrepo
     run_list:
       - recipe[osl-repos::oslrepo]
-    excludes:
-      - debian-12
   - name: openstack
     run_list:
       - recipe[osl-repos-test::openstack]
