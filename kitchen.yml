@@ -3,7 +3,7 @@ verifier:
   name: inspec
 
 provisioner:
-  name: chef_zero
+  name: chef_infra
   enforce_idempotency: true
   multiple_converge: 2
   deprecations_as_errors: true
@@ -17,27 +17,32 @@ suites:
       - recipe[osl-repos::alma]
     excludes:
       - debian-12
+      - ubuntu-24.04
   - name: disable
     run_list:
       - recipe[osl-repos-test::disable]
     excludes:
       - debian-12
+      - ubuntu-24.04
   - name: elevate
     run_list:
       - recipe[osl-repos-test::elevate]
     excludes:
       - almalinux-9
       - debian-12
+      - ubuntu-24.04
   - name: elrepo
     run_list:
       - recipe[osl-repos::elrepo]
     excludes:
       - debian-12
+      - ubuntu-24.04
   - name: epel
     run_list:
       - recipe[osl-repos::epel]
     excludes:
       - debian-12
+      - ubuntu-24.04
   - name: hashicorp
     run_list:
       - recipe[osl-repos-test::hashicorp]
@@ -49,13 +54,16 @@ suites:
       - recipe[osl-repos-test::openstack]
     excludes:
       - debian-12
+      - ubuntu-24.04
   - name: highavailability
     run_list:
       - recipe[osl-repos-test::highavailability]
     excludes:
       - debian-12
+      - ubuntu-24.04
   - name: with_edit
     run_list:
       - recipe[osl-repos-test::with_edit]
     excludes:
       - debian-12
+      - ubuntu-24.04
