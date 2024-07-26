@@ -16,14 +16,21 @@ DEBIAN_12 = {
   version: '12',
 }.freeze
 
+UBUNTU_2404 = {
+  platform: 'ubuntu',
+  version: '24.04',
+}.freeze
+
 ALL_PLATFORMS = [
   ALMA_8,
   ALMA_9,
   DEBIAN_12,
+  UBUNTU_2404,
 ].freeze
 
 ALL_DEBIAN = [
   DEBIAN_12,
+  UBUNTU_2404,
 ].freeze
 
 ALL_RHEL = [
