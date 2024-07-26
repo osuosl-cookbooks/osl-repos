@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.0.2 (2024-07-26)
+------------------
+- Add support for Ubuntu
+
 5.0.1 (2024-07-25)
 ------------------
 - Add Debian oslrepo
