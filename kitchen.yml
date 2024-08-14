@@ -15,34 +15,37 @@ suites:
   - name: alma
     run_list:
       - recipe[osl-repos::alma]
-    excludes:
+    includes:
+      - almalinux-8
+      - almalinux-9
+  - name: debian
+    run_list:
+      - recipe[osl-repos::debian]
+    includes:
       - debian-12
-      - ubuntu-24.04
   - name: disable
     run_list:
       - recipe[osl-repos-test::disable]
-    excludes:
-      - debian-12
-      - ubuntu-24.04
+    includes:
+      - almalinux-8
+      - almalinux-9
   - name: elevate
     run_list:
       - recipe[osl-repos-test::elevate]
-    excludes:
-      - almalinux-9
-      - debian-12
-      - ubuntu-24.04
+    includes:
+      - almalinux-8
   - name: elrepo
     run_list:
       - recipe[osl-repos::elrepo]
-    excludes:
-      - debian-12
-      - ubuntu-24.04
+    includes:
+      - almalinux-8
+      - almalinux-9
   - name: epel
     run_list:
       - recipe[osl-repos::epel]
-    excludes:
-      - debian-12
-      - ubuntu-24.04
+    includes:
+      - almalinux-8
+      - almalinux-9
   - name: hashicorp
     run_list:
       - recipe[osl-repos-test::hashicorp]
@@ -58,12 +61,12 @@ suites:
   - name: highavailability
     run_list:
       - recipe[osl-repos-test::highavailability]
-    excludes:
-      - debian-12
-      - ubuntu-24.04
+    includes:
+      - almalinux-8
+      - almalinux-9
   - name: with_edit
     run_list:
       - recipe[osl-repos-test::with_edit]
-    excludes:
-      - debian-12
-      - ubuntu-24.04
+    includes:
+      - almalinux-8
+      - almalinux-9
