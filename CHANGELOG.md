@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.1.0 (2024-08-14)
+------------------
+- Add debian recipe to centrally manage debian OS repos
+
 5.0.2 (2024-07-26)
 ------------------
 - Add support for Ubuntu
