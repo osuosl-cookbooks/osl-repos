@@ -1,0 +1,7 @@
+# sources.list file written by Chef
+deb https://debian.osuosl.org/debian <%= node['lsb']['codename'] %> main non-free non-free-firmware contrib
+deb https://debian.osuosl.org/debian <%= node['lsb']['codename'] %>-updates main non-free non-free-firmware contrib
+deb https://debian.osuosl.org/debian <%= node['lsb']['codename'] %>-backports main non-free non-free-firmware contrib
+<% unless node['lsb']['codename'] == 'trixie' -%>
+deb https://deb.debian.org/debian-security <%= node['lsb']['codename'] %>-security main non-free non-free-firmware contrib
+<% end -%>
