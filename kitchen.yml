@@ -18,6 +18,12 @@ suites:
     includes:
       - almalinux-8
       - almalinux-9
+  - name: centos-kmods
+    run_list:
+      - recipe[osl-repos-test::centos_kmods]
+    includes:
+      - almalinux-8
+      - almalinux-9
   - name: debian
     run_list:
       - recipe[osl-repos::debian]
