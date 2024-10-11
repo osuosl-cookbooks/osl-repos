@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.2.0 (2024-10-11)
+------------------
+- Add osl_repos_centos_kmods resource
+
 5.1.0 (2024-08-14)
 ------------------
 - Add debian recipe to centrally manage debian OS repos
