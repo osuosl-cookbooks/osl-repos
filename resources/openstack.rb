@@ -17,9 +17,9 @@ action :add do
   end
 
   # NOTE: Only needed on POWER10
-  yum_repository 'OSL-openstack' do
-    description "OpenStack OSL #{new_resource.version}"
-    baseurl "https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-#{new_resource.version}/$basearch"
+  yum_repository 'OSL-openstack-power10' do
+    description "OpenStack OSL #{new_resource.version} - POWER10"
+    baseurl "https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-#{new_resource.version}-power10/$basearch"
     gpgkey 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl'
     priority '10'
     options(module_hotfixes: '1')
