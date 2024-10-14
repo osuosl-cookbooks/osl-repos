@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.2.2 (2024-10-14)
+------------------
+- Add OSL-openstack repo globally
+
 5.2.1 (2024-10-14)
 ------------------
 - Rename POWER10 specific repo to it's own repo
