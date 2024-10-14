@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.2.1 (2024-10-14)
+------------------
+- Rename POWER10 specific repo to it's own repo
+
 5.2.0 (2024-10-11)
 ------------------
 - Add osl_repos_centos_kmods resource
