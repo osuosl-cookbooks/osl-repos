@@ -37,7 +37,15 @@ describe 'osl-repos-test::openstack' do
             gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
           )
         end
-        it { is_expected.to_not create_yum_repository 'OSL-openstack' }
+        it do
+          is_expected.to create_yum_repository('OSL-openstack').with(
+            description: 'OpenStack OSL yoga',
+            baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-yoga/$basearch',
+            gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
+            priority: '10'
+          )
+        end
+        it { is_expected.to_not create_yum_repository 'OSL-openstack-power10' }
       when ALMA_8
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
@@ -45,6 +53,14 @@ describe 'osl-repos-test::openstack' do
             url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-train',
             gpgcheck: true,
             gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
+          )
+        end
+        it do
+          is_expected.to create_yum_repository('OSL-openstack').with(
+            description: 'OpenStack OSL train',
+            baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-train/$basearch',
+            gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
+            priority: '10'
           )
         end
         it { is_expected.to_not create_yum_repository 'OSL-openstack-power10' }
@@ -67,7 +83,15 @@ describe 'osl-repos-test::openstack' do
                 gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
               )
             end
-            it { is_expected.to_not create_yum_repository 'OSL-openstack' }
+            it do
+              is_expected.to create_yum_repository('OSL-openstack').with(
+                description: 'OpenStack OSL yoga',
+                baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-yoga/$basearch',
+                gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
+                priority: '10'
+              )
+            end
+            it { is_expected.to_not create_yum_repository 'OSL-openstack-power10' }
           when ALMA_8
             it do
               expect(chef_run).to create_yum_repository('RDO-openstack').with(
@@ -77,7 +101,15 @@ describe 'osl-repos-test::openstack' do
                 gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
               )
             end
-            it { is_expected.to_not create_yum_repository 'OSL-openstack' }
+            it do
+              is_expected.to create_yum_repository('OSL-openstack').with(
+                description: 'OpenStack OSL train',
+                baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-train/$basearch',
+                gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
+                priority: '10'
+              )
+            end
+            it { is_expected.to_not create_yum_repository 'OSL-openstack-power10' }
           end
         end
       end
