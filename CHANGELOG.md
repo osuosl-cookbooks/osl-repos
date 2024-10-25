@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.3.0 (2024-10-25)
+------------------
+- Add property for using synergy repo in AlmaLinux
+
 5.2.2 (2024-10-14)
 ------------------
 - Add OSL-openstack repo globally
