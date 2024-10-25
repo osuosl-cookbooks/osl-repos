@@ -37,6 +37,13 @@ describe yum.repo('highavailability') do
   its('mirrors') { should eq nil }
 end
 
+describe yum.repo('synergy') do
+  it { should exist }
+  it { should_not be_enabled }
+  its('baseurl') { should eq "https://almalinux.osuosl.org/#{rel}/synergy/x86_64/os/" }
+  its('mirrors') { should eq nil }
+end
+
 describe yum.repo(power_tools.downcase) do
   it { should exist }
   it { should be_enabled }

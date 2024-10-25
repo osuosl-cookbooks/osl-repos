@@ -97,10 +97,19 @@ describe 'osl-repos::alma' do
             )
           end
 
+          # Test the synergy repository
+          it do
+            expect(chef_run).to create_yum_repository('synergy').with(
+              mirrorlist: nil,
+              baseurl: "https://almalinux.osuosl.org/#{rel}/synergy/$basearch/os/",
+              enabled: false
+            )
+          end
+
           # Test the powertools repository
           power_tools = p[:version].to_i >= 9 ? 'CRB' : 'PowerTools'
           it do
-            expect(chef_run).to create_yum_repository('powertools').with(
+            expect(chef_run).to create_yum_repository(power_tools.downcase).with(
               mirrorlist: nil,
               baseurl: "https://almalinux.osuosl.org/#{rel}/#{power_tools}/$basearch/os/",
               enabled: true

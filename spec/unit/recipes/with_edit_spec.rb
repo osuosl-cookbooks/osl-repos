@@ -101,7 +101,7 @@ describe 'osl-repos-test::with_edit' do
           # Test the powertools repository
           power_tools = p[:version].to_i >= 9 ? 'CRB' : 'PowerTools'
           it do
-            expect(chef_run).to create_yum_repository('powertools').with(
+            expect(chef_run).to create_yum_repository(power_tools.downcase).with(
               mirrorlist: nil,
               exclude: 'foo bar',
               baseurl: "https://#{url}/$releasever/#{power_tools}/$basearch/os/",
