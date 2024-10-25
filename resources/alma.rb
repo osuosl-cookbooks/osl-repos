@@ -10,6 +10,7 @@ property :extras, [true, false], default: true
 property :appstream, [true, false], default: true
 property :powertools, [true, false], default: true
 property :highavailability, [true, false], default: false
+property :synergy, [true, false], default: false
 property :exclude, Array, default: []
 
 action :add do
@@ -48,11 +49,9 @@ action :add do
     enabled new_resource.extras
   end
 
-  power_tools = node['platform_version'].to_i >= 9 ? 'CRB' : 'PowerTools'
-
   yum_alma_powertools 'default' do
     mirrorlist nil
-    baseurl "#{alma_url}/#{release_var}/#{power_tools}/$basearch/os/"
+    baseurl "#{alma_url}/#{release_var}/#{osl_repo_powertools_repo_name}/$basearch/os/"
     extra_options passthrough
     enabled new_resource.powertools
   end
@@ -62,5 +61,12 @@ action :add do
     baseurl "#{alma_url}/#{release_var}/HighAvailability/$basearch/os/"
     extra_options passthrough
     enabled new_resource.highavailability
+  end
+
+  yum_alma_synergy 'default' do
+    mirrorlist nil
+    baseurl "#{alma_url}/#{release_var}/synergy/$basearch/os/"
+    extra_options passthrough
+    enabled new_resource.synergy
   end
 end

@@ -45,6 +45,7 @@ ALL_RESOURCES = [
   :yum_alma_extras,
   :yum_alma_ha,
   :yum_alma_powertools,
+  :yum_alma_synergy,
 ].freeze
 
 ALMA_RESOURCES = [
@@ -54,6 +55,7 @@ ALMA_RESOURCES = [
   :yum_alma_extras,
   :yum_alma_ha,
   :yum_alma_powertools,
+  :yum_alma_synergy,
 ].freeze
 
 RSpec.configure do |config|

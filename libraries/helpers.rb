@@ -15,6 +15,10 @@ module OslRepos
         'https://almalinux.osuosl.org'
       end
 
+      def osl_repo_powertools_repo_name
+        node['platform_version'].to_i >= 9 ? 'CRB' : 'PowerTools'
+      end
+
       def repo_resource_exist?(resource)
         !find_resource!(:yum_repository, resource).nil?
       rescue Chef::Exceptions::ResourceNotFound
