@@ -11,7 +11,7 @@ control 'openstack' do
     when 9
       its('baseurl') { should include "https://centos-stream.osuosl.org/SIGs/9-stream/cloud/#{arch}/openstack-yoga" }
     when 8
-      its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/rdo/8/#{arch}/openstack-train" }
+      its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/rdo/8/#{arch}/openstack-ussuri" }
     end
   end
 
@@ -22,7 +22,7 @@ control 'openstack' do
     when 9
       its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/repos/yum/9/openstack-yoga/#{arch}" }
     when 8
-      its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/repos/yum/8/openstack-train/#{arch}" }
+      its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/repos/yum/8/openstack-ussuri/#{arch}" }
     end
   end
 
