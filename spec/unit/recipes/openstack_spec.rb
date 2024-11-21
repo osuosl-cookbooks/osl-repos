@@ -45,6 +45,13 @@ describe 'osl-repos-test::openstack' do
             priority: '10'
           )
         end
+        it do
+          is_expected.to create_yum_repository('centos-nfv').with(
+            description: 'CentOS $releasever - NFV',
+            baseurl: 'https://centos-stream.osuosl.org/SIGs/$releasever-stream/nfv/$basearch/openvswitch-2',
+            gpgkey: 'https://centos.org/keys/RPM-GPG-KEY-CentOS-SIG-NFV'
+          )
+        end
         it { is_expected.to_not create_yum_repository 'OSL-openstack-power10' }
       when ALMA_8
         it do
@@ -61,6 +68,13 @@ describe 'osl-repos-test::openstack' do
             baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-ussuri/$basearch',
             gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
             priority: '10'
+          )
+        end
+        it do
+          is_expected.to create_yum_repository('centos-nfv').with(
+            description: 'CentOS $releasever - NFV',
+            baseurl: 'https://ftp.osuosl.org/pub/osl/vault/$releasever-stream/nfv/$basearch/openvswitch-2',
+            gpgkey: 'https://centos.org/keys/RPM-GPG-KEY-CentOS-SIG-NFV'
           )
         end
         it { is_expected.to_not create_yum_repository 'OSL-openstack-power10' }
