@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.4.0 (2024-11-25)
+------------------
+- Switch to OpenStack Ussuri Release
+
 5.3.0 (2024-10-25)
 ------------------
 - Add property for using synergy repo in AlmaLinux
