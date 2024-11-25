@@ -35,6 +35,13 @@ suites:
     includes:
       - almalinux-8
       - almalinux-9
+  - name: elasticsearch
+    run_list:
+      - recipe[osl-repos::elasticsearch]
+      - recipe[osl-repos-test::elasticsearch]
+    includes:
+      - almalinux-8
+      - almalinux-9
   - name: elevate
     run_list:
       - recipe[osl-repos-test::elevate]
