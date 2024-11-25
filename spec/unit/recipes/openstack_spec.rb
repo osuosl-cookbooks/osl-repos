@@ -45,22 +45,36 @@ describe 'osl-repos-test::openstack' do
             priority: '10'
           )
         end
+        it do
+          is_expected.to create_yum_repository('centos-nfv').with(
+            description: 'CentOS $releasever - NFV',
+            baseurl: 'https://centos-stream.osuosl.org/SIGs/$releasever-stream/nfv/$basearch/openvswitch-2',
+            gpgkey: 'https://centos.org/keys/RPM-GPG-KEY-CentOS-SIG-NFV'
+          )
+        end
         it { is_expected.to_not create_yum_repository 'OSL-openstack-power10' }
       when ALMA_8
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
-            description: 'OpenStack RDO train',
-            url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-train',
+            description: 'OpenStack RDO ussuri',
+            url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-ussuri',
             gpgcheck: true,
             gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
           )
         end
         it do
           is_expected.to create_yum_repository('OSL-openstack').with(
-            description: 'OpenStack OSL train',
-            baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-train/$basearch',
+            description: 'OpenStack OSL ussuri',
+            baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-ussuri/$basearch',
             gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
             priority: '10'
+          )
+        end
+        it do
+          is_expected.to create_yum_repository('centos-nfv').with(
+            description: 'CentOS $releasever - NFV',
+            baseurl: 'https://ftp.osuosl.org/pub/osl/vault/$releasever-stream/nfv/$basearch/openvswitch-2',
+            gpgkey: 'https://centos.org/keys/RPM-GPG-KEY-CentOS-SIG-NFV'
           )
         end
         it { is_expected.to_not create_yum_repository 'OSL-openstack-power10' }
@@ -95,16 +109,16 @@ describe 'osl-repos-test::openstack' do
           when ALMA_8
             it do
               expect(chef_run).to create_yum_repository('RDO-openstack').with(
-                description: 'OpenStack RDO train',
-                url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-train',
+                description: 'OpenStack RDO ussuri',
+                url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-ussuri',
                 gpgcheck: true,
                 gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
               )
             end
             it do
               is_expected.to create_yum_repository('OSL-openstack').with(
-                description: 'OpenStack OSL train',
-                baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-train/$basearch',
+                description: 'OpenStack OSL ussuri',
+                baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-ussuri/$basearch',
                 gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
                 priority: '10'
               )
@@ -135,8 +149,8 @@ describe 'osl-repos-test::openstack' do
         when ALMA_8
           it do
             is_expected.to create_yum_repository('OSL-openstack-power10').with(
-              description: 'OpenStack OSL train - POWER10',
-              baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-train-power10/$basearch',
+              description: 'OpenStack OSL ussuri - POWER10',
+              baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-ussuri-power10/$basearch',
               gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
               priority: '10',
               options: { module_hotfixes: '1' }
@@ -170,8 +184,8 @@ describe 'osl-repos::openstack' do
       when ALMA_8
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
-            description: 'OpenStack RDO train',
-            url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-train',
+            description: 'OpenStack RDO ussuri',
+            url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-ussuri',
             gpgcheck: true,
             gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
           )

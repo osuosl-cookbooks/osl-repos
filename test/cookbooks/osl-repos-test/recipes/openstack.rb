@@ -1,5 +1,7 @@
+osl_repos_alma 'defualt' do
+  powertools true
+end if node['platform_version'].to_i <= 8
+
 osl_repos_openstack 'default'
 
-osc_pkg = node['platform_version'].to_i == 7 ? 'python2-openstackclient' : 'python3-openstackclient'
-
-package osc_pkg
+package %w(python3-openstackclient openstack-neutron)

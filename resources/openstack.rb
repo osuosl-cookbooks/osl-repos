@@ -31,4 +31,10 @@ action :add do
     priority '10'
     options(module_hotfixes: '1')
   end if node.read('cpu', 'model_name').to_s.match?(/POWER10/)
+
+  yum_repository 'centos-nfv' do
+    description 'CentOS $releasever - NFV'
+    baseurl openstack_nfv_baseurl
+    gpgkey 'https://centos.org/keys/RPM-GPG-KEY-CentOS-SIG-NFV'
+  end
 end
