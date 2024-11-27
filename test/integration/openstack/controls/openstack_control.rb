@@ -11,7 +11,7 @@ control 'openstack' do
     when 9
       its('baseurl') { should include "https://centos-stream.osuosl.org/SIGs/9-stream/cloud/#{arch}/openstack-yoga" }
     when 8
-      its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/rdo/8/#{arch}/openstack-ussuri" }
+      its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/rdo/8/#{arch}/openstack-victoria" }
     end
   end
 
@@ -22,7 +22,7 @@ control 'openstack' do
     when 9
       its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/repos/yum/9/openstack-yoga/#{arch}" }
     when 8
-      its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/repos/yum/8/openstack-ussuri/#{arch}" }
+      its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/repos/yum/8/openstack-victoria/#{arch}" }
     end
   end
 
@@ -42,14 +42,14 @@ control 'openstack' do
     its('RDO-openstack.gpgkey') { should cmp 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud' }
   end
 
-  describe ini('OSL-openstack') do
+  describe ini('/etc/yum.repos.d/OSL-openstack.repo') do
     its('OSL-openstack.gpgcheck') { should cmp '1' }
     its('OSL-openstack.gpgkey') { should cmp 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl' }
   end
 
-  describe ini('centos-nfv') do
-    its('OSL-openstack.gpgcheck') { should cmp '1' }
-    its('OSL-openstack.gpgkey') { should cmp 'https://centos.org/keys/RPM-GPG-KEY-CentOS-SIG-NFV' }
+  describe ini('/etc/yum.repos.d/centos-nfv.repo') do
+    its('centos-nfv.gpgcheck') { should cmp '1' }
+    its('centos-nfv.gpgkey') { should cmp 'https://centos.org/keys/RPM-GPG-KEY-CentOS-SIG-NFV' }
   end
 
   describe package 'python3-openstackclient' do
