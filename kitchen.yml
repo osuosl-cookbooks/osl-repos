@@ -65,6 +65,13 @@ suites:
   - name: oslrepo
     run_list:
       - recipe[osl-repos::oslrepo]
+  - name: opensearch
+    run_list:
+      - recipe[osl-repos::opensearch]
+      - recipe[osl-repos-test::opensearch]
+    includes:
+      - almalinux-8
+      - almalinux-9
   - name: openstack
     run_list:
       - recipe[osl-repos-test::openstack]
