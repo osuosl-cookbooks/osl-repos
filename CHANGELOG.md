@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.5.0 (2024-12-04)
+------------------
+- OpenStack Victoria
+
 5.4.0 (2024-11-25)
 ------------------
 - Switch to OpenStack Ussuri Release
