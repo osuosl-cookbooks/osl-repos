@@ -56,16 +56,16 @@ describe 'osl-repos-test::openstack' do
       when ALMA_8
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
-            description: 'OpenStack RDO ussuri',
-            url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-ussuri',
+            description: 'OpenStack RDO victoria',
+            url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-victoria',
             gpgcheck: true,
             gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
           )
         end
         it do
           is_expected.to create_yum_repository('OSL-openstack').with(
-            description: 'OpenStack OSL ussuri',
-            baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-ussuri/$basearch',
+            description: 'OpenStack OSL victoria',
+            baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-victoria/$basearch',
             gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
             priority: '10'
           )
@@ -109,16 +109,16 @@ describe 'osl-repos-test::openstack' do
           when ALMA_8
             it do
               expect(chef_run).to create_yum_repository('RDO-openstack').with(
-                description: 'OpenStack RDO ussuri',
-                url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-ussuri',
+                description: 'OpenStack RDO victoria',
+                url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-victoria',
                 gpgcheck: true,
                 gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
               )
             end
             it do
               is_expected.to create_yum_repository('OSL-openstack').with(
-                description: 'OpenStack OSL ussuri',
-                baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-ussuri/$basearch',
+                description: 'OpenStack OSL victoria',
+                baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-victoria/$basearch',
                 gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
                 priority: '10'
               )
@@ -149,8 +149,8 @@ describe 'osl-repos-test::openstack' do
         when ALMA_8
           it do
             is_expected.to create_yum_repository('OSL-openstack-power10').with(
-              description: 'OpenStack OSL ussuri - POWER10',
-              baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-ussuri-power10/$basearch',
+              description: 'OpenStack OSL victoria - POWER10',
+              baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-victoria-power10/$basearch',
               gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
               priority: '10',
               options: { module_hotfixes: '1' }
@@ -184,8 +184,8 @@ describe 'osl-repos::openstack' do
       when ALMA_8
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
-            description: 'OpenStack RDO ussuri',
-            url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-ussuri',
+            description: 'OpenStack RDO victoria',
+            url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-victoria',
             gpgcheck: true,
             gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
           )
