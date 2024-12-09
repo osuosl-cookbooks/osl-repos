@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.6.0 (2024-12-09)
+------------------
+- OpenStack Wallaby
+
 5.5.0 (2024-12-04)
 ------------------
 - OpenStack Victoria
