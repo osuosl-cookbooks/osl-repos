@@ -79,7 +79,7 @@ module OslRepos
         when 9
           'yoga'
         when 8
-          'wallaby'
+          'xena'
         end
       end
 
