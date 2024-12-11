@@ -56,16 +56,16 @@ describe 'osl-repos-test::openstack' do
       when ALMA_8
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
-            description: 'OpenStack RDO xena',
-            url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-xena',
+            description: 'OpenStack RDO yoga',
+            url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-yoga',
             gpgcheck: true,
             gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
           )
         end
         it do
           is_expected.to create_yum_repository('OSL-openstack').with(
-            description: 'OpenStack OSL xena',
-            baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-xena/$basearch',
+            description: 'OpenStack OSL yoga',
+            baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-yoga/$basearch',
             gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
             priority: '10'
           )
@@ -109,16 +109,16 @@ describe 'osl-repos-test::openstack' do
           when ALMA_8
             it do
               expect(chef_run).to create_yum_repository('RDO-openstack').with(
-                description: 'OpenStack RDO xena',
-                url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-xena',
+                description: 'OpenStack RDO yoga',
+                url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-yoga',
                 gpgcheck: true,
                 gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
               )
             end
             it do
               is_expected.to create_yum_repository('OSL-openstack').with(
-                description: 'OpenStack OSL xena',
-                baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-xena/$basearch',
+                description: 'OpenStack OSL yoga',
+                baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-yoga/$basearch',
                 gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
                 priority: '10'
               )
@@ -149,8 +149,8 @@ describe 'osl-repos-test::openstack' do
         when ALMA_8
           it do
             is_expected.to create_yum_repository('OSL-openstack-power10').with(
-              description: 'OpenStack OSL xena - POWER10',
-              baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-xena-power10/$basearch',
+              description: 'OpenStack OSL yoga - POWER10',
+              baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-yoga-power10/$basearch',
               gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
               priority: '10',
               options: { module_hotfixes: '1' }
@@ -184,8 +184,8 @@ describe 'osl-repos::openstack' do
       when ALMA_8
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
-            description: 'OpenStack RDO xena',
-            url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-xena',
+            description: 'OpenStack RDO yoga',
+            url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-yoga',
             gpgcheck: true,
             gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
           )
@@ -195,15 +195,15 @@ describe 'osl-repos::openstack' do
       context 'set attribute' do
         cached(:chef_run) do
           ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_openstack])) do |node|
-            node.normal['osl-repos']['openstack']['version'] = 'xena'
+            node.normal['osl-repos']['openstack']['version'] = 'yoga'
           end.converge(described_recipe)
         end
         case p
         when ALMA_9
           it do
             expect(chef_run).to create_yum_repository('RDO-openstack').with(
-              description: 'OpenStack RDO xena',
-              url: 'https://centos-stream.osuosl.org/SIGs/$releasever-stream/cloud/$basearch/openstack-xena',
+              description: 'OpenStack RDO yoga',
+              url: 'https://centos-stream.osuosl.org/SIGs/$releasever-stream/cloud/$basearch/openstack-yoga',
               gpgcheck: true,
               gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
             )
@@ -211,8 +211,8 @@ describe 'osl-repos::openstack' do
         when ALMA_8
           it do
             expect(chef_run).to create_yum_repository('RDO-openstack').with(
-              description: 'OpenStack RDO xena',
-              url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-xena',
+              description: 'OpenStack RDO yoga',
+              url: 'https://ftp.osuosl.org/pub/osl/rdo/$releasever/$basearch/openstack-yoga',
               gpgcheck: true,
               gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
             )
