@@ -14,6 +14,7 @@ action :add do
     baseurl "#{openstack_baseurl}/$basearch/openstack-#{new_resource.version}"
     gpgkey 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
     priority '20'
+    options(module_hotfixes: '1')
   end
 
   yum_repository 'OSL-openstack' do
