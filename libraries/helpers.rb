@@ -76,10 +76,8 @@ module OslRepos
 
       def openstack_release
         case node['platform_version'].to_i
-        when 9
+        when 8, 9
           'yoga'
-        when 8
-          'xena'
         end
       end
 
