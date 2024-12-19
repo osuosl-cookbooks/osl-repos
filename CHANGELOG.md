@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.8.0 (2024-12-19)
+------------------
+- OpenStack Yoga
+
 5.7.0 (2024-12-11)
 ------------------
 - OpenStack Xena
