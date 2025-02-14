@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.8.1 (2025-02-14)
+------------------
+- Use correct gpgkey on AlmaLinux 9 for OpenStack repos
+
 5.8.0 (2024-12-19)
 ------------------
 - OpenStack Yoga
