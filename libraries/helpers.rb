@@ -19,6 +19,14 @@ module OslRepos
         node['platform_version'].to_i >= 9 ? 'CRB' : 'PowerTools'
       end
 
+      def osl_gpg_key
+        if node['platform_version'].to_i >= 9
+          gpgkey 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl-2024'
+        else
+          gpgkey 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl'
+        end
+      end
+
       def repo_resource_exist?(resource)
         !find_resource!(:yum_repository, resource).nil?
       rescue Chef::Exceptions::ResourceNotFound

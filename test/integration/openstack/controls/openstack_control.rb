@@ -44,7 +44,11 @@ control 'openstack' do
 
   describe ini('/etc/yum.repos.d/OSL-openstack.repo') do
     its('OSL-openstack.gpgcheck') { should cmp '1' }
-    its('OSL-openstack.gpgkey') { should cmp 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl' }
+    if rel >= 9
+      its('OSL-openstack.gpgkey') { should cmp 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl-2024' }
+    else
+      its('OSL-openstack.gpgkey') { should cmp 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl' }
+    end
   end
 
   describe ini('/etc/yum.repos.d/centos-nfv.repo') do

@@ -2,7 +2,7 @@
 # Cookbook:: osl-repos
 # Spec:: elevate
 #
-# Copyright:: 2023-2024, Oregon State University
+# Copyright:: 2023-2025, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ describe 'osl-repos-test::openstack' do
           is_expected.to create_yum_repository('OSL-openstack').with(
             description: 'OpenStack OSL yoga',
             baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-yoga/$basearch',
-            gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
+            gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl-2024',
             priority: '10'
           )
         end
@@ -101,7 +101,7 @@ describe 'osl-repos-test::openstack' do
               is_expected.to create_yum_repository('OSL-openstack').with(
                 description: 'OpenStack OSL yoga',
                 baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-yoga/$basearch',
-                gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
+                gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl-2024',
                 priority: '10'
               )
             end
@@ -141,7 +141,7 @@ describe 'osl-repos-test::openstack' do
             is_expected.to create_yum_repository('OSL-openstack-power10').with(
               description: 'OpenStack OSL yoga - POWER10',
               baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-yoga-power10/$basearch',
-              gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl',
+              gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl-2024',
               priority: '10',
               options: { module_hotfixes: '1' }
             )

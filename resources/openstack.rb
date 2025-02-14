@@ -20,7 +20,7 @@ action :add do
   yum_repository 'OSL-openstack' do
     description "OpenStack OSL #{new_resource.version}"
     baseurl "https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-#{new_resource.version}/$basearch"
-    gpgkey 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl'
+    gpgkey osl_gpg_key
     priority '10'
   end
 
@@ -28,7 +28,7 @@ action :add do
   yum_repository 'OSL-openstack-power10' do
     description "OpenStack OSL #{new_resource.version} - POWER10"
     baseurl "https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-#{new_resource.version}-power10/$basearch"
-    gpgkey 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl'
+    gpgkey osl_gpg_key
     priority '10'
     options(module_hotfixes: '1')
   end if node.read('cpu', 'model_name').to_s.match?(/POWER10/)
