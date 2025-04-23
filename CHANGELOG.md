@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.8.2 (2025-04-23)
+------------------
+- Update to yum-elrepo 2.3.0 to get correct gpg keys
+
 5.8.1 (2025-02-14)
 ------------------
 - Use correct gpgkey on AlmaLinux 9 for OpenStack repos
