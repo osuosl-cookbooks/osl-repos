@@ -11,7 +11,7 @@ action :add do
 
   yum_repository 'RDO-openstack' do
     description "OpenStack RDO #{new_resource.version}"
-    baseurl "#{openstack_baseurl}/$basearch/openstack-#{new_resource.version}"
+    baseurl openstack_rdo_baseurl
     gpgkey 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
     priority '20'
     options(module_hotfixes: '1')
@@ -19,7 +19,7 @@ action :add do
 
   yum_repository 'OSL-openstack' do
     description "OpenStack OSL #{new_resource.version}"
-    baseurl "https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-#{new_resource.version}/$basearch"
+    baseurl openstack_osl_baseurl
     gpgkey osl_gpg_key
     priority '10'
   end

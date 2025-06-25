@@ -24,6 +24,6 @@ end if platform_family?('debian')
 
 yum_repository 'hashicorp' do
   description 'Hashicorp'
-  baseurl 'https://rpm.releases.hashicorp.com/RHEL/$releasever/$basearch/stable'
+  baseurl hashicorp_yum_baseurl
   gpgkey 'https://rpm.releases.hashicorp.com/gpg'
 end if platform_family?('rhel')

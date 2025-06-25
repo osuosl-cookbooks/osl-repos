@@ -101,6 +101,33 @@ module OslRepos
         end
       end
 
+      def openstack_osl_baseurl
+        case node['platform_version'].to_i
+        when 10
+          'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/$basearch'
+        when 8, 9
+          "https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-#{openstack_release}/$basearch"
+        end
+      end
+
+      def openstack_rdo_baseurl
+        case node['platform_version'].to_i
+        when 10
+          "#{openstack_baseurl}/$basearch/okd-4.20"
+        when 8, 9
+          "#{openstack_baseurl}/$basearch/openstack-#{new_resource.version}"
+        end
+      end
+
+      def hashicorp_yum_baseurl
+        case node['platform_version'].to_i
+        when 10
+          'https://rpm.releases.hashicorp.com/RHEL/9/$basearch/stable'
+        when 8, 9
+          'https://rpm.releases.hashicorp.com/RHEL/$releasever/$basearch/stable'
+        end
+      end
+
       def openstack_nfv_baseurl
         case node['platform_version'].to_i
         when 9, 10
