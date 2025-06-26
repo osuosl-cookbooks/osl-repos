@@ -113,7 +113,7 @@ module OslRepos
       def openstack_rdo_baseurl
         case node['platform_version'].to_i
         when 8, 9, 10
-          "#{openstack_baseurl}/$basearch/openstack-#{new_resource.version}"
+          "#{openstack_baseurl}/$basearch/openstack-#{openstack_release}"
         end
       end
 
