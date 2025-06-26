@@ -86,7 +86,9 @@ module OslRepos
 
       def openstack_release
         case node['platform_version'].to_i
-        when 8, 9, 10
+        when 10
+          'epoxy'
+        when 8, 9
           'yoga'
         end
       end
@@ -103,18 +105,14 @@ module OslRepos
 
       def openstack_osl_baseurl
         case node['platform_version'].to_i
-        when 10
-          'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/$basearch'
-        when 8, 9
+        when 8, 9, 10
           "https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-#{openstack_release}/$basearch"
         end
       end
 
       def openstack_rdo_baseurl
         case node['platform_version'].to_i
-        when 10
-          "#{openstack_baseurl}/$basearch/okd-4.20"
-        when 8, 9
+        when 8, 9, 10
           "#{openstack_baseurl}/$basearch/openstack-#{new_resource.version}"
         end
       end
