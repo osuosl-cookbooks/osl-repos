@@ -103,20 +103,6 @@ module OslRepos
         end
       end
 
-      def openstack_osl_baseurl
-        case node['platform_version'].to_i
-        when 8, 9, 10
-          "https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-#{openstack_release}/$basearch"
-        end
-      end
-
-      def openstack_rdo_baseurl
-        case node['platform_version'].to_i
-        when 8, 9, 10
-          "#{openstack_baseurl}/$basearch/openstack-#{openstack_release}"
-        end
-      end
-
       def hashicorp_yum_baseurl
         case node['platform_version'].to_i
         when 10
