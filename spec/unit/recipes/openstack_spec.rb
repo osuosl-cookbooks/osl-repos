@@ -28,6 +28,23 @@ describe 'osl-repos-test::openstack' do
         expect { chef_run }.to_not raise_error
       end
       case p
+      when ALMA_10
+        it do
+          expect(chef_run).to create_yum_repository('RDO-openstack').with(
+            description: 'OpenStack RDO epoxy',
+            url: 'https://centos-stream.osuosl.org/SIGs/$releasever-stream/cloud/$basearch/openstack-epoxy',
+            gpgcheck: true,
+            gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
+          )
+        end
+        it do
+          is_expected.to create_yum_repository('OSL-openstack').with(
+            description: 'OpenStack OSL epoxy',
+            baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-epoxy/$basearch',
+            gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl-2024',
+            priority: '10'
+          )
+        end
       when ALMA_9
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
@@ -45,6 +62,7 @@ describe 'osl-repos-test::openstack' do
             priority: '10'
           )
         end
+      when ALMA_9, ALMA_10
         it do
           is_expected.to create_yum_repository('centos-nfv').with(
             description: 'CentOS $releasever - NFV',
@@ -88,6 +106,24 @@ describe 'osl-repos-test::openstack' do
             end.converge(described_recipe)
           end
           case p
+          when ALMA_10
+            it do
+              expect(chef_run).to create_yum_repository('RDO-openstack').with(
+                description: 'OpenStack RDO epoxy',
+                url: 'https://centos-stream.osuosl.org/SIGs/$releasever-stream/cloud/$basearch/openstack-epoxy',
+                gpgcheck: true,
+                gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
+              )
+            end
+            it do
+              is_expected.to create_yum_repository('OSL-openstack').with(
+                description: 'OpenStack OSL epoxy',
+                baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-epoxy/$basearch',
+                gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl-2024',
+                priority: '10'
+              )
+            end
+            it { is_expected.to_not create_yum_repository 'OSL-openstack-power10' }
           when ALMA_9
             it do
               expect(chef_run).to create_yum_repository('RDO-openstack').with(
@@ -136,6 +172,16 @@ describe 'osl-repos-test::openstack' do
           end.converge(described_recipe)
         end
         case p
+        when ALMA_10
+          it do
+            is_expected.to create_yum_repository('OSL-openstack-power10').with(
+              description: 'OpenStack OSL epoxy - POWER10',
+              baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack-epoxy-power10/$basearch',
+              gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl-2024',
+              priority: '10',
+              options: { module_hotfixes: '1' }
+            )
+          end
         when ALMA_9
           it do
             is_expected.to create_yum_repository('OSL-openstack-power10').with(
@@ -172,6 +218,15 @@ describe 'osl-repos::openstack' do
         expect { chef_run }.to_not raise_error
       end
       case p
+      when ALMA_10
+        it do
+          expect(chef_run).to create_yum_repository('RDO-openstack').with(
+            description: 'OpenStack RDO epoxy',
+            url: 'https://centos-stream.osuosl.org/SIGs/$releasever-stream/cloud/$basearch/openstack-epoxy',
+            gpgcheck: true,
+            gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
+          )
+        end
       when ALMA_9
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
@@ -195,10 +250,25 @@ describe 'osl-repos::openstack' do
       context 'set attribute' do
         cached(:chef_run) do
           ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_openstack])) do |node|
-            node.normal['osl-repos']['openstack']['version'] = 'yoga'
+            node.normal['osl-repos']['openstack']['version'] = 
+              case p
+              when ALMA_10
+                'epoxy'
+              else
+                'yoga'
+              end
           end.converge(described_recipe)
         end
         case p
+        when ALMA_10
+          it do
+            expect(chef_run).to create_yum_repository('RDO-openstack').with(
+              description: 'OpenStack RDO epoxy',
+              url: 'https://centos-stream.osuosl.org/SIGs/$releasever-stream/cloud/$basearch/openstack-epoxy',
+              gpgcheck: true,
+              gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Cloud'
+            )
+          end
         when ALMA_9
           it do
             expect(chef_run).to create_yum_repository('RDO-openstack').with(

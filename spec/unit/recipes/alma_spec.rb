@@ -21,7 +21,7 @@ require_relative '../../spec_helper'
 # Begin Spec Tests
 describe 'osl-repos::alma' do
   # TODO: Add AlmaLinux 9 testing when supported
-  [ALMA_8, ALMA_9].each do |p|
+  [ALMA_8, ALMA_9, ALMA_10].each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
         # Here we step into our :osl_repos_alma resource, this enables us to test the resources created within it

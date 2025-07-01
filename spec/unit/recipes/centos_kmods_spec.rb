@@ -20,7 +20,7 @@ require_relative '../../spec_helper'
 
 # Begin Spec Tests
 describe 'osl-repos-test::centos_kmods' do
-  [ALMA_8, ALMA_9].each do |p|
+  [ALMA_8, ALMA_9, ALMA_10].each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
         ChefSpec::SoloRunner.new(p.dup.merge(step_into: :osl_repos_centos_kmods)).converge(described_recipe)
