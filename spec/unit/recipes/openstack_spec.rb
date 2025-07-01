@@ -45,6 +45,13 @@ describe 'osl-repos-test::openstack' do
             priority: '10'
           )
         end
+        it do
+          is_expected.to create_yum_repository('centos-nfv').with(
+            description: 'CentOS $releasever - NFV',
+            baseurl: 'https://centos-stream.osuosl.org/SIGs/$releasever-stream/nfv/$basearch/openvswitch-2',
+            gpgkey: 'https://centos.org/keys/RPM-GPG-KEY-CentOS-SIG-NFV'
+          )
+        end
       when ALMA_9
         it do
           expect(chef_run).to create_yum_repository('RDO-openstack').with(
@@ -62,7 +69,6 @@ describe 'osl-repos-test::openstack' do
             priority: '10'
           )
         end
-      when ALMA_9, ALMA_10
         it do
           is_expected.to create_yum_repository('centos-nfv').with(
             description: 'CentOS $releasever - NFV',
@@ -250,7 +256,7 @@ describe 'osl-repos::openstack' do
       context 'set attribute' do
         cached(:chef_run) do
           ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_openstack])) do |node|
-            node.normal['osl-repos']['openstack']['version'] = 
+            node.normal['osl-repos']['openstack']['version'] =
               case p
               when ALMA_10
                 'epoxy'
