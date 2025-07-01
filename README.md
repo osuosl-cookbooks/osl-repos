@@ -36,21 +36,21 @@ Note: All repositories controlled by a resource will be installed and configured
 ### osl_repos_alma:
 | Property         | Effect                           | Default | Compatibility  |
 |----------------- |--------------------------------- |-------- |--------------- |
-| appstream        | Enable the appstream repo        | True    | Alma 8, 9      |
-| base             | Enable the base repo             | True    | Alma 8, 9      |
-| extras           | Enable the extras repo           | True    | Alma 8, 9      |
-| highavailability | Enable the highavailability repo | False   | Alma 8, 9      |
-| powertools       | Enable the powertools repo       | True    | Alma 8, 9      |
+| appstream        | Enable the appstream repo        | True    | Alma 8, 9, 10  |
+| base             | Enable the base repo             | True    | Alma 8, 9, 10  |
+| extras           | Enable the extras repo           | True    | Alma 8, 9, 10  |
+| highavailability | Enable the highavailability repo | False   | Alma 8, 9, 10  |
+| powertools       | Enable the powertools repo       | True    | Alma 8, 9, 10  |
 
 ### osl_repos_elrepo:
 | Property  | Effect                  | Default | Compatibility  |
 |---------- |------------------------ |-------- |--------------- |
-| elrepo    | Enable the elrepo repo  | True    | Alma 8, 9      |
+| elrepo    | Enable the elrepo repo  | True    | Alma 8, 9, 10  |
 
 ### osl_repos_epel:
 | Resource  | Property  | Effect                | Default | Compatibility  |
 |---------- |---------- |---------------------- |-------- |--------------- |
-| epel      | epel      | Enable the epel repo  | True    | Alma 8, 9      |
+| epel      | epel      | Enable the epel repo  | True    | Alma 8, 9, 10  |
 ## Examples:
 
 Configure the EPEL repository:
