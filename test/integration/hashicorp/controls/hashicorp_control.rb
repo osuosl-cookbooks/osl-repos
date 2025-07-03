@@ -5,10 +5,13 @@ control 'hashicorp' do
   rel = os.release.to_i
   arch = os.arch
 
+  repo_rel = rel >= 10 ? 9 : rel
+  yum_repo_baseurl = "https://rpm.releases.hashicorp.com/RHEL/#{repo_rel}/#{arch}/stable"
+
   describe yum.repo('hashicorp') do
     it { should exist }
     it { should be_enabled }
-    its('baseurl') { should include "https://rpm.releases.hashicorp.com/RHEL/#{rel}/#{arch}/stable" }
+    its('baseurl') { should include yum_repo_baseurl }
   end if family == 'redhat'
 
   describe ini('/etc/yum.repos.d/hashicorp.repo') do

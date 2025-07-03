@@ -28,7 +28,15 @@ describe 'osl-repos::hashicorp' do
         expect { chef_run }.to_not raise_error
       end
       case p
-      when *ALL_RHEL
+      when ALMA_10
+        it do
+          expect(chef_run).to create_yum_repository('hashicorp').with(
+            description: 'Hashicorp',
+            baseurl: 'https://rpm.releases.hashicorp.com/RHEL/9/$basearch/stable',
+            gpgkey: 'https://rpm.releases.hashicorp.com/gpg'
+          )
+        end
+      when ALMA_8, ALMA_9
         it do
           expect(chef_run).to create_yum_repository('hashicorp').with(
             description: 'Hashicorp',

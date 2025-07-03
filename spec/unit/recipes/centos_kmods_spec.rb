@@ -20,7 +20,7 @@ require_relative '../../spec_helper'
 
 # Begin Spec Tests
 describe 'osl-repos-test::centos_kmods' do
-  [ALMA_8, ALMA_9].each do |p|
+  [ALMA_8, ALMA_9, ALMA_10].each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
         ChefSpec::SoloRunner.new(p.dup.merge(step_into: :osl_repos_centos_kmods)).converge(described_recipe)
@@ -58,22 +58,28 @@ describe 'osl-repos-test::centos_kmods' do
         )
       end
 
-      it do
-        is_expected.to create_yum_repository('centos-kmods-kernel-6.1').with(
-          description: 'CentOS $releasever - Kmods - Kernel - 6.1',
-          url: 'https://centos-stream.osuosl.org/SIGs/$releasever/kmods/$basearch/kernel-6.1/',
-          gpgcheck: true,
-          gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods'
-        )
-      end
+      case p
+      when ALMA_8, ALMA_9
+        it do
+          is_expected.to create_yum_repository('centos-kmods-kernel-6.1').with(
+            description: 'CentOS $releasever - Kmods - Kernel - 6.1',
+            url: 'https://centos-stream.osuosl.org/SIGs/$releasever/kmods/$basearch/kernel-6.1/',
+            gpgcheck: true,
+            gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods'
+          )
+        end
 
-      it do
-        is_expected.to create_yum_repository('centos-kmods-kernel-6.6').with(
-          description: 'CentOS $releasever - Kmods - Kernel - 6.6',
-          url: 'https://centos-stream.osuosl.org/SIGs/$releasever/kmods/$basearch/kernel-6.6/',
-          gpgcheck: true,
-          gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods'
-        )
+        it do
+          is_expected.to create_yum_repository('centos-kmods-kernel-6.6').with(
+            description: 'CentOS $releasever - Kmods - Kernel - 6.6',
+            url: 'https://centos-stream.osuosl.org/SIGs/$releasever/kmods/$basearch/kernel-6.6/',
+            gpgcheck: true,
+            gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods'
+          )
+        end
+      else
+        it { is_expected.to_not create_yum_repository 'centos-kmods-kernel-6.1' }
+        it { is_expected.to_not create_yum_repository 'centos-kmods-kernel-6.6' }
       end
 
       if p[:version].to_i >= 9

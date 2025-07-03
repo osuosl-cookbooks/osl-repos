@@ -41,11 +41,11 @@ action :add do
     description 'CentOS $releasever - Kmods - Kernel - 6.1'
     baseurl 'https://centos-stream.osuosl.org/SIGs/$releasever/kmods/$basearch/kernel-6.1/'
     gpgkey 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods'
-  end if new_resource.kernel_6_1
+  end if new_resource.kernel_6_1 && node['platform_version'].to_i < 10
 
   yum_repository 'centos-kmods-kernel-6.6' do
     description 'CentOS $releasever - Kmods - Kernel - 6.6'
     baseurl 'https://centos-stream.osuosl.org/SIGs/$releasever/kmods/$basearch/kernel-6.6/'
     gpgkey 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods'
-  end if new_resource.kernel_6_6
+  end if new_resource.kernel_6_6 && node['platform_version'].to_i < 10
 end

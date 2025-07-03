@@ -53,6 +53,7 @@ module OslRepos
           includepkgs
           keepalive
           make_cache
+          makecache_fast
           max_retries
           metadata_expire
           metalink
@@ -79,11 +80,14 @@ module OslRepos
           throttle
           timeout
           username
+          action
         )
       end
 
       def openstack_release
         case node['platform_version'].to_i
+        when 10
+          'epoxy'
         when 8, 9
           'yoga'
         end
@@ -91,7 +95,7 @@ module OslRepos
 
       def openstack_baseurl
         case node['platform_version'].to_i
-        when 9
+        when 9, 10
           'https://centos-stream.osuosl.org/SIGs/$releasever-stream/cloud'
         when 8
           # TODO: Upstream has removed RDO from mirrors so this is a local mirror
@@ -99,9 +103,18 @@ module OslRepos
         end
       end
 
+      def hashicorp_yum_baseurl
+        case node['platform_version'].to_i
+        when 10
+          'https://rpm.releases.hashicorp.com/RHEL/9/$basearch/stable'
+        when 8, 9
+          'https://rpm.releases.hashicorp.com/RHEL/$releasever/$basearch/stable'
+        end
+      end
+
       def openstack_nfv_baseurl
         case node['platform_version'].to_i
-        when 9
+        when 9, 10
           'https://centos-stream.osuosl.org/SIGs/$releasever-stream/nfv/$basearch/openvswitch-2'
         when 8
           # TODO: Upstream has removed RDO from mirrors so this is a local mirror
