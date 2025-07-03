@@ -23,15 +23,25 @@ control 'elevate' do
   end
 
   describe yum.repo('centos-kmods-kernel-6.1') do
-    it { should exist }
-    it { should be_enabled }
-    its('baseurl') { should include "https://centos-stream.osuosl.org/SIGs/#{rel}/kmods/#{arch}/kernel-6.1/" }
+    if rel < 10
+      it { should exist }
+      it { should be_enabled }
+      its('baseurl') { should include "https://centos-stream.osuosl.org/SIGs/#{rel}/kmods/#{arch}/kernel-6.1/" }
+    else
+      it { should_not exist }
+      it { should_not be_enabled }
+    end
   end
 
   describe yum.repo('centos-kmods-kernel-6.6') do
-    it { should exist }
-    it { should be_enabled }
-    its('baseurl') { should include "https://centos-stream.osuosl.org/SIGs/#{rel}/kmods/#{arch}/kernel-6.6/" }
+    if rel < 10
+      it { should exist }
+      it { should be_enabled }
+      its('baseurl') { should include "https://centos-stream.osuosl.org/SIGs/#{rel}/kmods/#{arch}/kernel-6.6/" }
+    else
+      it { should_not exist }
+      it { should_not be_enabled }
+    end
   end
 
   %w(
@@ -48,12 +58,12 @@ control 'elevate' do
   describe ini('/etc/yum.repos.d/centos-kmods-kernel-6.1.repo') do
     its(['centos-kmods-kernel-6.1', 'gpgcheck']) { should cmp '1' }
     its(['centos-kmods-kernel-6.1', 'gpgkey']) { should cmp 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods' }
-  end
+  end if rel < 10
 
   describe ini('/etc/yum.repos.d/centos-kmods-kernel-6.6.repo') do
     its(['centos-kmods-kernel-6.6', 'gpgcheck']) { should cmp '1' }
     its(['centos-kmods-kernel-6.6', 'gpgkey']) { should cmp 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods' }
-  end
+  end if rel < 10
 
   if rel >= 9
     describe ini('/etc/yum.repos.d/centos-kmods-kernel-latest.repo') do
