@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.9.1 (2025-07-29)
+------------------
+- Change unattended-upgrades email
+
 5.9.0 (2025-07-03)
 ------------------
 - AlmaLinux 10 support
