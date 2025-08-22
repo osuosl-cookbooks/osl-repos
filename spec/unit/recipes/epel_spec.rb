@@ -32,14 +32,27 @@ describe 'osl-repos::epel' do
       end
 
       # Test the epel repository
-      it do
-        expect(chef_run).to create_yum_repository('epel').with(
-          mirrorlist: nil,
-          exclude: nil,
-          baseurl: 'https://epel.osuosl.org/$releasever/Everything/$basearch/',
-          gpgkey: "https://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{p[:version].to_i}",
-          enabled: true
-        )
+      case p
+      when ALMA_10
+        it do
+          expect(chef_run).to create_yum_repository('epel').with(
+            mirrorlist: nil,
+            exclude: nil,
+            baseurl: 'https://epel.osuosl.org/10.0/Everything/$basearch/',
+            gpgkey: "https://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{p[:version].to_i}",
+            enabled: true
+          )
+        end
+      else
+        it do
+          expect(chef_run).to create_yum_repository('epel').with(
+            mirrorlist: nil,
+            exclude: nil,
+            baseurl: 'https://epel.osuosl.org/$releasever/Everything/$basearch/',
+            gpgkey: "https://epel.osuosl.org/RPM-GPG-KEY-EPEL-#{p[:version].to_i}",
+            enabled: true
+          )
+        end
       end
     end
   end
