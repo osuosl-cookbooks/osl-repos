@@ -7,7 +7,11 @@ module OslRepos
 
       # Select the epel baseurl based on centos version
       def epel_baseurl
-        'https://epel.osuosl.org/$releasever/Everything/$basearch/'
+        if node['platform_version'].to_i >= 10
+          "https://epel.osuosl.org/#{node['platform_version']}/Everything/$basearch/"
+        else
+          'https://epel.osuosl.org/$releasever/Everything/$basearch/'
+        end
       end
 
       # Define variables to use in alma repo urls
