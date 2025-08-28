@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.9.3 (2025-08-28)
+------------------
+- Update EPEL baseurl to correct location
+
 5.9.2 (2025-08-22)
 ------------------
 - Use full release for EPEL repo
