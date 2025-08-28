@@ -8,7 +8,7 @@ module OslRepos
       # Select the epel baseurl based on centos version
       def epel_baseurl
         if node['platform_version'].to_i >= 10
-          "https://epel.osuosl.org/#{node['platform_version']}/Everything/$basearch/"
+          'https://epel.osuosl.org/$releasever${releasever_minor:+z}/Everything/$basearch/'
         else
           'https://epel.osuosl.org/$releasever/Everything/$basearch/'
         end
