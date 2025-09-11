@@ -16,6 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: this should be removed once Chef supports deb822 repo source files
+execute 'remove deb822 sources file' do
+  command 'rm -f /etc/apt/sources.list.d/*.sources'
+  not_if { Dir.glob('/etc/apt/sources.list.d/*.sources').empty? }
+end
+
 apt_update 'update' do
   action :nothing
 end

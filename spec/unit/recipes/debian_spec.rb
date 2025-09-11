@@ -7,8 +7,19 @@ describe 'osl-repos::debian' do
         ChefSpec::SoloRunner.new(p).converge(described_recipe)
       end
 
+      before do
+        allow(Dir).to receive(:glob).and_call_original
+        allow(Dir).to receive(:glob).with('/etc/apt/sources.list.d/*.sources').and_return([])
+      end
+
       it 'converges successfully' do
         expect { chef_run }.to_not raise_error
+      end
+
+      it do
+        is_expected.to nothing_execute('remove deb822 sources file').with(
+          command: 'rm -f /etc/apt/sources.list.d/*.sources'
+        )
       end
 
       it { is_expected.to nothing_apt_update 'update' }
