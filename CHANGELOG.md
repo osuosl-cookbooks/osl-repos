@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.10.0 (2025-10-29)
+-------------------
+- Bump yum-elrepo to add proper EL10 fixes
+
 5.9.4 (2025-09-11)
 ------------------
 - Remove any deb822 new style repository files
