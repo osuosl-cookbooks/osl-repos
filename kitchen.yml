@@ -21,6 +21,7 @@ platforms:
   - name: almalinux-9
   - name: almalinux-10
   - name: debian-12
+  - name: debian-13
   - name: ubuntu-24.04
 
 suites:
@@ -43,6 +44,7 @@ suites:
       - recipe[osl-repos::debian]
     includes:
       - debian-12
+      - debian-13
   - name: disable
     run_list:
       - recipe[osl-repos-test::disable]
@@ -80,6 +82,7 @@ suites:
       - recipe[osl-repos-test::openstack]
     excludes:
       - debian-12
+      - debian-13
       - ubuntu-24.04
   - name: highavailability
     run_list:
