@@ -1,39 +1,30 @@
 control 'debian' do
-  if os.release.to_i == 12
-    describe file '/etc/apt/sources.list' do
-      its('content') do
-        should cmp <<~EOF
-          # sources.list file written by Chef
-          deb https://debian.osuosl.org/debian bookworm main non-free non-free-firmware contrib
-          deb https://debian.osuosl.org/debian bookworm-updates main non-free non-free-firmware contrib
-          deb https://debian.osuosl.org/debian bookworm-backports main non-free non-free-firmware contrib
-          deb https://deb.debian.org/debian-security bookworm-security main non-free non-free-firmware contrib
-        EOF
-      end
-    end
+  release_name =
+  case os.release.to_i
+  when 12
+    'bookworm'
+  when 13
+    'trixie'
   end
-  if os.release.to_i == 13
-    describe file '/etc/apt/sources.list' do
-      its('content') do
-        should cmp <<~EOF
-          # sources.list file written by Chef
-          deb https://debian.osuosl.org/debian trixie main non-free non-free-firmware contrib
-          deb https://debian.osuosl.org/debian trixie-updates main non-free non-free-firmware contrib
-          deb https://debian.osuosl.org/debian trixie-backports main non-free non-free-firmware contrib
-        EOF
-      end
-    end
+
+  expected_sources = [
+        '# sources.list file written by Chef',
+        "deb https://debian.osuosl.org/debian #{release_name} main non-free non-free-firmware contrib",
+        "deb https://debian.osuosl.org/debian #{release_name}-updates main non-free non-free-firmware contrib",
+        "deb https://debian.osuosl.org/debian #{release_name}-backports main non-free non-free-firmware contrib",
+  ]
+
+  if os.release.to_i == 12
+    expected_sources << "deb https://deb.debian.org/debian-security #{release_name}-security main non-free non-free-firmware contrib"
+  end
+
+  describe file '/etc/apt/sources.list' do
+    its('content') { should cmp expected_sources.join("\n") + "\n" }
   end
 
   if os.release.to_i == 12
     describe file '/etc/apt/apt.conf.d/99osuosl' do
       it { should_not exist }
-    end
-  end
-  if os.release.to_i == 13
-    describe file '/etc/apt/apt.conf.d/99osuosl' do
-      it { should exist }
-      its('content') { should match('APT::Default-Release "trixie";') }
     end
   end
 
@@ -47,7 +38,7 @@ control 'debian' do
   end
 
   describe file '/etc/apt/apt.conf.d/50unattended-upgrades' do
-    its('content') { should match(/file written by Chef/) }
+    its('content') { should match /file written by Chef/ }
   end
 
   %w(
