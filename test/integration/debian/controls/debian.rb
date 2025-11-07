@@ -1,18 +1,31 @@
 control 'debian' do
-  describe file '/etc/apt/sources.list' do
-    its('content') do
-      should cmp <<~EOF
-        # sources.list file written by Chef
-        deb https://debian.osuosl.org/debian bookworm main non-free non-free-firmware contrib
-        deb https://debian.osuosl.org/debian bookworm-updates main non-free non-free-firmware contrib
-        deb https://debian.osuosl.org/debian bookworm-backports main non-free non-free-firmware contrib
-        deb https://deb.debian.org/debian-security bookworm-security main non-free non-free-firmware contrib
-      EOF
-    end
+  release_name =
+  case os.release.to_i
+  when 12
+    'bookworm'
+  when 13
+    'trixie'
   end
 
-  describe file '/etc/apt/apt.conf.d/99osuosl' do
-    it { should_not exist }
+  expected_sources = [
+        '# sources.list file written by Chef',
+        "deb https://debian.osuosl.org/debian #{release_name} main non-free non-free-firmware contrib",
+        "deb https://debian.osuosl.org/debian #{release_name}-updates main non-free non-free-firmware contrib",
+        "deb https://debian.osuosl.org/debian #{release_name}-backports main non-free non-free-firmware contrib",
+  ]
+
+  if os.release.to_i == 12
+    expected_sources << "deb https://deb.debian.org/debian-security #{release_name}-security main non-free non-free-firmware contrib"
+  end
+
+  describe file '/etc/apt/sources.list' do
+    its('content') { should cmp expected_sources.join("\n") + "\n" }
+  end
+
+  if os.release.to_i == 12
+    describe file '/etc/apt/apt.conf.d/99osuosl' do
+      it { should_not exist }
+    end
   end
 
   %w(
