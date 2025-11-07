@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.11.0 (2025-11-07)
+-------------------
+- Debian 13 Integration
+
 5.10.0 (2025-10-29)
 -------------------
 - Bump yum-elrepo to add proper EL10 fixes
