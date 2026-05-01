@@ -224,6 +224,36 @@ describe 'osl-repos::openstack' do
           end
         end
       end
+
+      context 'with osuosl source attribute' do
+        cached(:chef_run) do
+          ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_openstack])) do |node|
+            node.normal['osl-repos']['openstack']['source'] = 'osuosl'
+          end.converge(described_recipe)
+        end
+        it { is_expected.to_not create_yum_repository 'RDO-openstack' }
+        it { is_expected.to_not create_yum_repository 'centos-nfv' }
+        case p
+        when ALMA_10
+          it do
+            is_expected.to create_yum_repository('OSL-openstack').with(
+              description: 'OSL OpenStack epoxy',
+              baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack/epoxy/$basearch/',
+              gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl-2024',
+              priority: '10'
+            )
+          end
+        when ALMA_9
+          it do
+            is_expected.to create_yum_repository('OSL-openstack').with(
+              description: 'OSL OpenStack yoga',
+              baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack/yoga/$basearch/',
+              gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl-2024',
+              priority: '10'
+            )
+          end
+        end
+      end
     end
   end
 
@@ -239,6 +269,42 @@ describe 'osl-repos::openstack' do
           node.normal['osl-repos']['openstack']['version'] = 'yoga'
         end.converge(described_recipe)
       end.to raise_error(RuntimeError, /supports EL9 and later, not EL8/)
+    end
+  end
+end
+
+describe 'osl-repos-test::openstack_osuosl' do
+  (ALL_RHEL - [ALMA_8]).each do |p|
+    context "#{p[:platform]} #{p[:version]}" do
+      cached(:chef_run) do
+        ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_openstack])).converge(described_recipe)
+      end
+      it 'converges successfully' do
+        expect { chef_run }.to_not raise_error
+      end
+      it { is_expected.to_not create_yum_repository 'RDO-openstack' }
+      it { is_expected.to_not create_yum_repository 'centos-nfv' }
+      it { is_expected.to_not create_yum_repository 'OSL-openstack-power10' }
+      case p
+      when ALMA_10
+        it do
+          is_expected.to create_yum_repository('OSL-openstack').with(
+            description: 'OSL OpenStack epoxy',
+            baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack/epoxy/$basearch/',
+            gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl-2024',
+            priority: '10'
+          )
+        end
+      when ALMA_9
+        it do
+          is_expected.to create_yum_repository('OSL-openstack').with(
+            description: 'OSL OpenStack yoga',
+            baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack/yoga/$basearch/',
+            gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl-2024',
+            priority: '10'
+          )
+        end
+      end
     end
   end
 end

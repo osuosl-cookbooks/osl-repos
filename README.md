@@ -62,8 +62,10 @@ so glibc keeps the AlmaLinux headers. Changing `kernel` on a node leaves the pre
 | Property | Effect                                   | Default                       | Compatibility |
 |--------- |----------------------------------------- |------------------------------ |-------------- |
 | version  | OpenStack release in the repo paths      | Alma 9: `yoga`, Alma 10: `epoxy` | Alma 9, 10    |
+| source   | `:rdo` adds the RDO, OSL, POWER10 and NFV repos; `:osuosl` adds only the OSL-built venv RPM repo (`osuosl-openstack-*` packages) | `:rdo` | Alma 9, 10 |
 
-The `osl-repos::openstack` recipe takes `version` from `node['osl-repos']['openstack']['version']` when set.
+The `osl-repos::openstack` recipe takes `version` and `source` from `node['osl-repos']['openstack']['version']`
+and `['source']` when set. Switching a node from `:rdo` to `:osuosl` does not remove the RDO repo files.
 The resource raises on AlmaLinux 8, where the RDO repositories are no longer mirrored.
 
 ### osl_repos_elrepo:
