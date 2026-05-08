@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.11.1 (2026-05-08)
+-------------------
+- Clean up debian recipe for trixie release
+
 5.11.0 (2025-11-07)
 -------------------
 - Debian 13 Integration
