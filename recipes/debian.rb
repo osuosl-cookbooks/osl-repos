@@ -2,7 +2,7 @@
 # Cookbook:: osl-repos
 # Recipe:: debian
 #
-# Copyright:: 2024-2025, Oregon State University
+# Copyright:: 2024-2026, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO: this should be removed once Chef supports deb822 repo source files
+# The Debian installer drops a deb822 sources file at /etc/apt/sources.list.d/debian.sources
+# which would conflict with the legacy /etc/apt/sources.list we manage below.
 execute 'remove deb822 sources file' do
   command 'rm -f /etc/apt/sources.list.d/*.sources'
   not_if { Dir.glob('/etc/apt/sources.list.d/*.sources').empty? }
@@ -30,11 +31,6 @@ template '/etc/apt/sources.list' do
   source 'debian.sources.list.erb'
   notifies :update, 'apt_update[update]', :immediately
 end
-
-# TODO: Needed since trixie is still under testing
-file '/etc/apt/apt.conf.d/99osuosl' do
-  content 'APT::Default-Release "trixie";'
-end if node['lsb']['codename'] == 'trixie'
 
 package %w(unattended-upgrades apt-listchanges)
 
