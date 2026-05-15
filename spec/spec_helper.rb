@@ -60,6 +60,8 @@ ALL_RESOURCES = [
   :yum_alma_ha,
   :yum_alma_powertools,
   :yum_alma_synergy,
+  :yum_alma_testing,
+  :yum_alma_nvidia,
 ].freeze
 
 ALMA_RESOURCES = [
@@ -70,6 +72,8 @@ ALMA_RESOURCES = [
   :yum_alma_ha,
   :yum_alma_powertools,
   :yum_alma_synergy,
+  :yum_alma_testing,
+  :yum_alma_nvidia,
 ].freeze
 
 RSpec.configure do |config|
