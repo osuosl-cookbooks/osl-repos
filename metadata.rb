@@ -6,7 +6,7 @@ description       'Installs/Configures osl-repos'
 issues_url        'https://github.com/osuosl-cookbooks/osl-repos/issues'
 source_url        'https://github.com/osuosl-cookbooks/osl-repos'
 chef_version      '>= 16.0'
-version           '5.11.1'
+version           '5.12.0'
 
 depends           'yum',           '~> 7.4.13'
 depends           'yum-almalinux', '~> 3.1.0'

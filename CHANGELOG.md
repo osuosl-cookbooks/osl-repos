@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.12.0 (2026-05-15)
+-------------------
+- Bump yum-almalinux to 3.1.0 and add testing/nvidia repos
+
 5.11.1 (2026-05-08)
 -------------------
 - Clean up debian recipe for trixie release
