@@ -11,6 +11,8 @@ property :appstream, [true, false], default: true
 property :powertools, [true, false], default: true
 property :highavailability, [true, false], default: false
 property :synergy, [true, false], default: false
+property :testing, [true, false], default: false
+property :nvidia, [true, false], default: false
 property :exclude, Array, default: []
 
 action :add do
@@ -68,5 +70,17 @@ action :add do
     baseurl "#{alma_url}/#{release_var}/synergy/$basearch/os/"
     extra_options passthrough
     enabled new_resource.synergy
+  end
+
+  yum_alma_testing 'default' do
+    extra_options passthrough
+    enabled new_resource.testing
+  end
+
+  if new_resource.nvidia
+    yum_alma_nvidia 'default' do
+      extra_options passthrough
+      enabled new_resource.nvidia
+    end
   end
 end

@@ -9,7 +9,7 @@ chef_version      '>= 16.0'
 version           '5.11.1'
 
 depends           'yum',           '~> 7.4.13'
-depends           'yum-almalinux', '~> 1.2.0'
+depends           'yum-almalinux', '~> 3.1.0'
 depends           'yum-epel',      '~> 5.0.0'
 depends           'yum-elrepo',    '~> 2.4.0'
 

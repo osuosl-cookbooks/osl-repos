@@ -106,6 +106,20 @@ describe 'osl-repos::alma' do
             )
           end
 
+          # Test the testing repository (disabled by default; baseurl from
+          # upstream yum-almalinux defaults to vault.almalinux.org)
+          it do
+            expect(chef_run).to create_yum_repository('testing').with(
+              baseurl: "https://vault.almalinux.org/#{p[:version].to_i}/testing/$basearch/os/",
+              enabled: false
+            )
+          end
+
+          # The nvidia repo is only wired up when the nvidia property is
+          # explicitly set to true (the resource itself installs a release
+          # package, so we don't want it running on hosts that don't need it).
+          it { expect(chef_run).not_to create_yum_repository('nvidia') }
+
           # Test the powertools repository
           power_tools = p[:version].to_i >= 9 ? 'CRB' : 'PowerTools'
           it do

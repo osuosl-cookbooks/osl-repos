@@ -44,6 +44,19 @@ describe yum.repo('synergy') do
   its('mirrors') { should eq nil }
 end
 
+describe yum.repo('testing') do
+  it { should exist }
+  it { should_not be_enabled }
+  its('baseurl') { should eq "https://vault.almalinux.org/#{rel}/testing/x86_64/os/" }
+  its('mirrors') { should eq nil }
+end
+
+# nvidia is off by default and the resource is only declared when the
+# nvidia property is true, so the repo file should not be present.
+describe yum.repo('nvidia') do
+  it { should_not exist }
+end
+
 describe yum.repo(power_tools.downcase) do
   it { should exist }
   it { should be_enabled }
