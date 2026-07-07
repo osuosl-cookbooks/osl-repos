@@ -8,10 +8,10 @@ source_url        'https://github.com/osuosl-cookbooks/osl-repos'
 chef_version      '>= 16.0'
 version           '5.12.0'
 
-depends           'yum',           '~> 7.4.13'
+depends           'yum',           '~> 8.0.0'
 depends           'yum-almalinux', '~> 3.1.0'
-depends           'yum-epel',      '~> 5.0.0'
-depends           'yum-elrepo',    '~> 2.4.0'
+depends           'yum-epel',      '~> 5.0.9'
+depends           'yum-elrepo',    '~> 3.0.0'
 
 supports          'almalinux', '~> 8.0'
 supports          'almalinux', '~> 9.0'
