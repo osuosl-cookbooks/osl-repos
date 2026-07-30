@@ -23,7 +23,7 @@ describe 'osl-repos::epel' do
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
         # Here we step into our :osl_repos_epel resource, this enables us to test the resources created within it
-        ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_epel])).converge(described_recipe)
+        ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_epel, :yum_epel_repository])).converge(described_recipe)
       end
 
       # Check for convergence
