@@ -23,7 +23,7 @@ describe 'osl-repos::elrepo' do
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
         # Here we step into our :osl_repos_elrepo resource, this enables us to test the resources created within it
-        ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_elrepo])).converge(described_recipe)
+        ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_elrepo, :yum_elrepo])).converge(described_recipe)
       end
 
       # Check for convergence
@@ -36,7 +36,7 @@ describe 'osl-repos::elrepo' do
       %w(x86_64 ppc64le aarch64 s390x).each do |arch|
         context "arch #{arch}" do
           cached(:chef_run) do
-            ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_elrepo])) do |node|
+            ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_elrepo, :yum_elrepo])) do |node|
               # Here we set the architecture to match our current iteration of the loop
               node.automatic['kernel']['machine'] = arch
             end.converge(described_recipe)
