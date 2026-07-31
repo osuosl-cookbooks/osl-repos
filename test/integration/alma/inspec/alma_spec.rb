@@ -1,5 +1,5 @@
 describe ini('/etc/yum.conf') do
-  its('main.distroverpkg') { should eq nil }
+  its('main.distroverpkg') { should eq 'almalinux-release' }
   its('main.cachedir') { should eq '/var/cache/dnf' }
   its('main.installonlypkgs') { should eq 'kernel kernel-osuosl' }
   its('main.installonly_limit') { should eq '2' }
