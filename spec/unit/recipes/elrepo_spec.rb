@@ -77,6 +77,29 @@ describe 'osl-repos::elrepo' do
         it { expect(chef_run).to_not create_yum_repository('elrepo') }
       end
 
+      # Separate declarations merge instead of overwriting each other
+      context 'declared twice' do
+        cached(:chef_run) do
+          ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_elrepo])).converge('osl-repos-test::elrepo_merged')
+        end
+
+        it do
+          expect(chef_run).to create_yum_repository('elrepo').with(
+            baseurl: 'https://ftp.osuosl.org/pub/elrepo/elrepo/el$releasever/$basearch/',
+            exclude: 'kmod-foo kmod-bar',
+            enabled: true
+          )
+        end
+
+        it 'applies the merged config to every declaration of the repo' do
+          repos = chef_run.run_context.resource_collection.select do |r|
+            r.resource_name == :yum_repository && r.name == 'elrepo'
+          end
+          expect(repos).to_not be_empty
+          expect(repos.map(&:exclude).uniq).to eq(['kmod-foo kmod-bar'])
+        end
+      end
+
       context 'with exclude' do
         cached(:chef_run) do
           ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_elrepo])).converge('osl-repos-test::elrepo_exclude')

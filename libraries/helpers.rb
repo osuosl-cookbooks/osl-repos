@@ -68,6 +68,17 @@ module OslRepos
           'https://ftp.osuosl.org/pub/osl/vault/$releasever-stream/nfv/$basearch/openvswitch-2'
         end
       end
+
+      # Lets a repo resource be declared more than once in a run: every declaration merges
+      # into one config instead of the last one winning. Order independent, so each writes
+      # identical content and the run stays idempotent.
+      # union: arrays merged with |   all: booleans merged with && so any false wins
+      def merge_shared_config(union: {}, all: {})
+        config = ((node.run_state['osl-repos'] ||= {})[resource_name] ||= {})
+        union.each { |name, value| config[name] = config.fetch(name, []) | Array(value) }
+        all.each { |name, value| config[name] = config.fetch(name, true) && value }
+        config
+      end
     end
   end
 end

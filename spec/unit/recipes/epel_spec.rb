@@ -77,6 +77,62 @@ describe 'osl-repos::epel' do
         end
       end
 
+      # Separate declarations merge instead of overwriting each other
+      context 'declared twice' do
+        cached(:chef_run) do
+          ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_epel, :yum_epel_repository]))
+                              .converge('osl-repos-test::epel_merged')
+        end
+
+        it do
+          expect(chef_run).to create_yum_repository('epel').with(
+            baseurl: baseurl,
+            exclude: 'foo bar',
+            enabled: true
+          )
+        end
+
+        it 'applies the merged config to every declaration of the repo' do
+          repos = chef_run.run_context.resource_collection.select do |r|
+            r.resource_name == :yum_repository && r.name == 'epel'
+          end
+          expect(repos).to_not be_empty
+          expect(repos.map(&:exclude).uniq).to eq(['foo bar'])
+        end
+      end
+
+      # Any declaration asking for epel to be off wins, whatever the order
+      context 'declared twice with one disabling epel' do
+        cached(:chef_run) do
+          ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_epel, :yum_epel_repository]))
+                              .converge('osl-repos-test::epel_merged_disabled')
+        end
+
+        it 'disables every declaration of the repo' do
+          repos = chef_run.run_context.resource_collection.select do |r|
+            r.resource_name == :yum_repository && r.name == 'epel'
+          end
+          expect(repos).to_not be_empty
+          expect(repos.map(&:enabled).uniq).to eq([false])
+        end
+      end
+
+      # Adjusting the resource after the fact, as documented in the README
+      context 'edited with edit_resource' do
+        cached(:chef_run) do
+          ChefSpec::SoloRunner.new(p.dup.merge(step_into: [:osl_repos_epel, :yum_epel_repository]))
+                              .converge('osl-repos-test::epel_with_edit')
+        end
+
+        it do
+          expect(chef_run).to create_yum_repository('epel').with(
+            baseurl: baseurl,
+            exclude: 'foo bar',
+            enabled: true
+          )
+        end
+      end
+
       # exclude is passed through yum_epel_repository's options property
       context 'with exclude' do
         cached(:chef_run) do
