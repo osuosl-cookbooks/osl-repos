@@ -72,6 +72,15 @@ module OslRepos
           'https://centos-stream.osuosl.org/SIGs/$releasever-stream/nfv/$basearch/openvswitch-2'
         end
       end
+
+      # Merges every declaration of a repo resource in the run, order independent so
+      # each writes identical content: union arrays with |, AND booleans with &&
+      def merge_shared_config(union: {}, all: {})
+        config = ((node.run_state['osl-repos'] ||= {})[resource_name] ||= {})
+        union.each { |name, value| config[name] = config.fetch(name, []) | Array(value) }
+        all.each { |name, value| config[name] = config.fetch(name, true) && value }
+        config
+      end
     end
   end
 end
