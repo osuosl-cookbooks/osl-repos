@@ -31,63 +31,6 @@ module OslRepos
         end
       end
 
-      def repo_resource_exist?(resource)
-        !find_resource!(:yum_repository, resource).nil?
-      rescue Chef::Exceptions::ResourceNotFound
-        false
-      end
-
-      # List all known parameters for yum_repository
-      # https://docs.chef.io/resources/yum_repository/
-      def yum_repo_parameters
-        %w(
-          baseurl
-          clean_metadata
-          cost
-          description
-          enabled
-          enablegroups
-          exclude
-          failovermethod
-          fastestmirror_enabled
-          gpgcheck
-          gpgkey
-          http_caching
-          include_config
-          includepkgs
-          keepalive
-          make_cache
-          makecache_fast
-          max_retries
-          metadata_expire
-          metalink
-          mirror_expire
-          mirrorlist
-          mirrorlist_expire
-          mode
-          options
-          password
-          priority
-          proxy
-          proxy_password
-          proxy_username
-          repo_gpgcheck
-          report_instanceid
-          reposdir
-          repositoryid
-          skip_if_unavailable
-          source
-          sslcacert
-          sslclientcert
-          sslclientkey
-          sslverify
-          throttle
-          timeout
-          username
-          action
-        )
-      end
-
       def openstack_release
         case node['platform_version'].to_i
         when 10
