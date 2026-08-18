@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This is an example of directly using the resource to disable select repos
+# Disable select repos directly via the resource
 
 osl_repos_alma 'default' do
   powertools false

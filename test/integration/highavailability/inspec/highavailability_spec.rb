@@ -1,4 +1,4 @@
-# Test for the main configuration file ('/etc/yum.conf'cookstyle)
+# Main yum configuration file
 describe ini('/etc/yum.conf') do
   its('main.installonlypkgs') { should eq 'kernel kernel-osuosl' }
   its('main.installonly_limit') { should eq '2' }
