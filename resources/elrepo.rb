@@ -4,7 +4,7 @@ unified_mode true
 
 default_action :add
 
-# This property indicates whether the elrepo repo should be enabled
+# Whether the elrepo repo is managed
 property :elrepo, [true, false], default: true
 property :exclude, Array, default: []
 
@@ -12,22 +12,18 @@ action_class do
   include YumElRepo::Cookbook::Helpers
 end
 
-# This is the default and only action, It will add all available repos, unless specified in properties above
+# The default and only action
 action :add do
-  # NOTE: the elrepo repository is only availible for x86_64
-  if new_resource.elrepo && platform_family?('rhel') && node['kernel']['machine'] == 'x86_64'
-    validate_yum_elrepo_platform!
-
-    # yum-elrepo 3.0 is a resource only cookbook
-    # yum_elrepo wraps Chef's built in yum_repository resource directly
+  # elrepo only ships x86_64, and the predicate covers the platforms its helpers raise on
+  if new_resource.elrepo && yum_elrepo_supported_platform? && node['kernel']['machine'] == 'x86_64'
+    # Not yum_elrepo: its mirrorlist is a non-nilable String, so `mirrorlist nil` reads as
+    # a get and the elrepo.org mirrorlist would survive alongside our baseurl
     yum_repository 'elrepo' do
       description yum_elrepo_description('Community Enterprise Linux')
       baseurl 'https://ftp.osuosl.org/pub/elrepo/elrepo/el$releasever/$basearch/'
       mirrorlist nil
       gpgkey yum_elrepo_gpgkey
       exclude new_resource.exclude.join(' ') unless new_resource.exclude.empty?
-      enabled new_resource.elrepo
-      action :create
     end
   end
 end
