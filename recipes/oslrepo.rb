@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Configure the legacy OSL yum repository
+# Legacy OSL repository
 yum_repository 'osl' do
   repositoryid 'osl'
   description 'OSL repo $releasever - $basearch'
