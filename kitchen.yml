@@ -10,7 +10,7 @@ transport:
 
 provisioner:
   name: cinc_infra
-  product_version: '18'
+  product_version: '19'
   enforce_idempotency: true
   multiple_converge: 2
   deprecations_as_errors: true
@@ -80,6 +80,7 @@ suites:
     run_list:
       - recipe[osl-repos-test::openstack]
     excludes:
+      - almalinux-10
       - debian-12
       - debian-13
       - ubuntu-24.04
