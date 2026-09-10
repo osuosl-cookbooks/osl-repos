@@ -5,7 +5,7 @@ module OslRepos
         '$releasever'
       end
 
-      # Select the epel baseurl based on centos version
+      # epel baseurl varies by major release
       def epel_baseurl
         if node['platform_version'].to_i >= 10
           'https://epel.osuosl.org/$releasever${releasever_minor:+z}/Everything/$basearch/'
@@ -14,7 +14,7 @@ module OslRepos
         end
       end
 
-      # Define variables to use in alma repo urls
+      # Host for the alma repo urls
       def alma_url
         'https://almalinux.osuosl.org'
       end
@@ -29,63 +29,6 @@ module OslRepos
         else
           gpgkey 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl'
         end
-      end
-
-      def repo_resource_exist?(resource)
-        !find_resource!(:yum_repository, resource).nil?
-      rescue Chef::Exceptions::ResourceNotFound
-        false
-      end
-
-      # List all known parameters for yum_repository
-      # https://docs.chef.io/resources/yum_repository/
-      def yum_repo_parameters
-        %w(
-          baseurl
-          clean_metadata
-          cost
-          description
-          enabled
-          enablegroups
-          exclude
-          failovermethod
-          fastestmirror_enabled
-          gpgcheck
-          gpgkey
-          http_caching
-          include_config
-          includepkgs
-          keepalive
-          make_cache
-          makecache_fast
-          max_retries
-          metadata_expire
-          metalink
-          mirror_expire
-          mirrorlist
-          mirrorlist_expire
-          mode
-          options
-          password
-          priority
-          proxy
-          proxy_password
-          proxy_username
-          repo_gpgcheck
-          report_instanceid
-          reposdir
-          repositoryid
-          skip_if_unavailable
-          source
-          sslcacert
-          sslclientcert
-          sslclientkey
-          sslverify
-          throttle
-          timeout
-          username
-          action
-        )
       end
 
       def openstack_release
@@ -124,6 +67,17 @@ module OslRepos
           # TODO: Upstream has removed RDO from mirrors so this is a local mirror
           'https://ftp.osuosl.org/pub/osl/vault/$releasever-stream/nfv/$basearch/openvswitch-2'
         end
+      end
+
+      # Lets a repo resource be declared more than once in a run: every declaration merges
+      # into one config instead of the last one winning. Order independent, so each writes
+      # identical content and the run stays idempotent.
+      # union: arrays merged with |   all: booleans merged with && so any false wins
+      def merge_shared_config(union: {}, all: {})
+        config = ((node.run_state['osl-repos'] ||= {})[resource_name] ||= {})
+        union.each { |name, value| config[name] = config.fetch(name, []) | Array(value) }
+        all.each { |name, value| config[name] = config.fetch(name, true) && value }
+        config
       end
     end
   end

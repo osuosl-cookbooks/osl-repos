@@ -18,24 +18,21 @@
 
 require_relative '../../spec_helper'
 
-# Begin Spec Tests
 describe 'osl-repos-test::with_edit' do
   ALL_RHEL.each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
-        # Here we step into each of our resources, this enables us to test the resources created within it
+        # step_into to assert on the resources created inside
         ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALL_RESOURCES)) do |node|
-          # This sets the base architecture to 'x86_64'
           node.default['kernel']['machine'] = 'x86_64'
         end.converge(described_recipe)
       end
 
-      # Check for convergence
       it 'converges successfully' do
         expect { chef_run }.to_not raise_error
       end
 
-      # Test for the main configuration file ('/etc/yum.conf'cookstyle)
+      # Main yum configuration file
       it do
         expect(chef_run).to create_yum_globalconfig('/etc/yum.conf').with(
           installonly_limit: '2',
@@ -45,8 +42,7 @@ describe 'osl-repos-test::with_edit' do
 
       url = 'almalinux.osuosl.org'
 
-      # We need to test each supported architecture
-      # This loop creates a context for each architecture and applies its tests.
+      # One context per supported architecture
       %w(x86_64 ppc64le aarch64 s390x).each do |arch|
         context "arch #{arch}" do
           cached(:chef_run) do
@@ -55,10 +51,7 @@ describe 'osl-repos-test::with_edit' do
             end.converge(described_recipe)
           end
 
-          # The following will test for the correct settings being applied to each Alma 8 repository
-          # ( Based on the default values for managed and enabled being set to true )
-
-          # Test the appstream repository
+          # Defaults have managed and enabled both true
           it do
             expect(chef_run).to create_yum_repository('appstream').with(
               mirrorlist: nil,
@@ -68,7 +61,6 @@ describe 'osl-repos-test::with_edit' do
             )
           end
 
-          # Test the base repository
           it do
             expect(chef_run).to create_yum_repository('baseos').with(
               mirrorlist: nil,
@@ -78,7 +70,6 @@ describe 'osl-repos-test::with_edit' do
             )
           end
 
-          # Test the extras repository
           it do
             expect(chef_run).to create_yum_repository('extras').with(
               mirrorlist: nil,
@@ -88,7 +79,6 @@ describe 'osl-repos-test::with_edit' do
             )
           end
 
-          # Test the highavailability repository
           it do
             expect(chef_run).to create_yum_repository('highavailability').with(
               mirrorlist: nil,
@@ -98,7 +88,6 @@ describe 'osl-repos-test::with_edit' do
             )
           end
 
-          # Test the powertools repository
           power_tools = p[:version].to_i >= 9 ? 'CRB' : 'PowerTools'
           it do
             expect(chef_run).to create_yum_repository(power_tools.downcase).with(
