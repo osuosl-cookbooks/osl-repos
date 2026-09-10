@@ -6,4 +6,4 @@ description       'Installs/Configures osl-repos'
 chef_version      '>= 15.0'
 version           '0.1.0'
 
-depends           'osl-repos'
+depends 'osl-repos'
