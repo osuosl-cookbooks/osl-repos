@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Configure the legacy OSL yum repository
+# ELevate repository
 yum_repository 'elevate' do
   description 'ELevate'
   baseurl "https://repo.almalinux.org/elevate/el#{node['platform_version'].to_i}/$basearch/"

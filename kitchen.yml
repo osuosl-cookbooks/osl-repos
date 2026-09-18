@@ -63,9 +63,30 @@ suites:
       - almalinux-8
       - almalinux-9
       - almalinux-10
+  - name: elrepo-merged
+    run_list:
+      - recipe[osl-repos-test::elrepo_merged]
+    includes:
+      - almalinux-8
+      - almalinux-9
+      - almalinux-10
   - name: epel
     run_list:
       - recipe[osl-repos::epel]
+    includes:
+      - almalinux-8
+      - almalinux-9
+      - almalinux-10
+  - name: epel-disabled
+    run_list:
+      - recipe[osl-repos-test::epel_off]
+    includes:
+      - almalinux-8
+      - almalinux-9
+      - almalinux-10
+  - name: epel-merged
+    run_list:
+      - recipe[osl-repos-test::epel_merged]
     includes:
       - almalinux-8
       - almalinux-9

@@ -18,20 +18,16 @@
 
 require_relative '../../spec_helper'
 
-# Begin Spec Tests
 describe 'osl-repos::alma' do
-  # TODO: Add AlmaLinux 9 testing when supported
   [ALMA_8, ALMA_9, ALMA_10].each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
-        # Here we step into our :osl_repos_alma resource, this enables us to test the resources created within it
+        # step_into to assert on the resources created inside
         ChefSpec::SoloRunner.new(p.dup.merge(step_into: ALL_RESOURCES)) do |node|
-          # This sets the base architecture to 'x86_64'
           node.default['kernel']['machine'] = 'x86_64'
         end.converge(described_recipe)
       end
 
-      # Check for convergence
       it 'converges successfully' do
         expect { chef_run }.to_not raise_error
       end
@@ -47,8 +43,7 @@ describe 'osl-repos::alma' do
 
       rel = '$releasever'
 
-      # We need to test each supported architecture
-      # This loop creates a context for each architecture and applies its tests.
+      # One context per supported architecture
       %w(x86_64 ppc64le aarch64 s390x).each do |arch|
         context "#arch #{arch}" do
           cached(:chef_run) do
@@ -58,10 +53,7 @@ describe 'osl-repos::alma' do
             end.converge(described_recipe)
           end
 
-          # The following will test for the correct settings being applied to each Alma 8 repository
-          # ( Based on the default values for managed and enabled being set to true )
-
-          # Test the appstream repository
+          # Defaults have managed and enabled both true
           it do
             expect(chef_run).to create_yum_repository('appstream').with(
               mirrorlist: nil,
@@ -70,7 +62,6 @@ describe 'osl-repos::alma' do
             )
           end
 
-          # Test the base repository
           it do
             expect(chef_run).to create_yum_repository('baseos').with(
               mirrorlist: nil,
@@ -79,7 +70,6 @@ describe 'osl-repos::alma' do
             )
           end
 
-          # Test the extras repository
           it do
             expect(chef_run).to create_yum_repository('extras').with(
               mirrorlist: nil,
@@ -88,7 +78,6 @@ describe 'osl-repos::alma' do
             )
           end
 
-          # Test the highavailability repository
           it do
             expect(chef_run).to create_yum_repository('highavailability').with(
               mirrorlist: nil,
@@ -97,7 +86,6 @@ describe 'osl-repos::alma' do
             )
           end
 
-          # Test the synergy repository
           it do
             expect(chef_run).to create_yum_repository('synergy').with(
               mirrorlist: nil,
@@ -106,8 +94,7 @@ describe 'osl-repos::alma' do
             )
           end
 
-          # Test the testing repository (disabled by default; baseurl from
-          # upstream yum-almalinux defaults to vault.almalinux.org)
+          # baseurl comes from the upstream yum-almalinux default
           it do
             expect(chef_run).to create_yum_repository('testing').with(
               baseurl: "https://vault.almalinux.org/#{p[:version].to_i}/testing/$basearch/os/",
@@ -115,12 +102,9 @@ describe 'osl-repos::alma' do
             )
           end
 
-          # The nvidia repo is only wired up when the nvidia property is
-          # explicitly set to true (the resource itself installs a release
-          # package, so we don't want it running on hosts that don't need it).
+          # Only declared when nvidia is true, it installs a release package
           it { expect(chef_run).not_to create_yum_repository('nvidia') }
 
-          # Test the powertools repository
           power_tools = p[:version].to_i >= 9 ? 'CRB' : 'PowerTools'
           it do
             expect(chef_run).to create_yum_repository(power_tools.downcase).with(

@@ -18,19 +18,13 @@
 
 require_relative '../../spec_helper'
 
-# Begin Spec Tests
 describe 'osl-repos-test::centos_kmods' do
-  gpgkey = 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods'
-  streams = %w(6.1 6.6 6.12 6.18 latest)
-
   [ALMA_8, ALMA_9, ALMA_10].each do |p|
     context "#{p[:platform]} #{p[:version]}" do
       cached(:chef_run) do
         ChefSpec::SoloRunner.new(p.dup.merge(step_into: :osl_repos_centos_kmods)).converge(described_recipe)
       end
-      kernel = p[:version].to_i < 9 ? '6.6' : '6.18'
 
-      # Check for convergence
       it 'converges successfully' do
         expect { chef_run }.to_not raise_error
       end
@@ -40,7 +34,7 @@ describe 'osl-repos-test::centos_kmods' do
           description: 'CentOS $releasever - Kmods',
           url: 'https://centos-stream.osuosl.org/SIGs/$releasever/kmods/$basearch/packages-main/',
           gpgcheck: true,
-          gpgkey: gpgkey
+          gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods'
         )
       end
 
@@ -49,7 +43,7 @@ describe 'osl-repos-test::centos_kmods' do
           description: 'CentOS $releasever - Kmods - Rebuild',
           url: 'https://centos-stream.osuosl.org/SIGs/$releasever/kmods/$basearch/packages-rebuild/',
           gpgcheck: true,
-          gpgkey: gpgkey
+          gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods'
         )
       end
 
@@ -58,32 +52,46 @@ describe 'osl-repos-test::centos_kmods' do
           description: 'CentOS $releasever - Kmods - User Space',
           url: 'https://centos-stream.osuosl.org/SIGs/$releasever/kmods/$basearch/packages-userspace/',
           gpgcheck: true,
-          gpgkey: gpgkey
+          gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods'
         )
       end
 
-      it do
-        is_expected.to create_yum_repository("centos-kmods-kernel-#{kernel}").with(
-          description: "CentOS $releasever - Kmods - Kernel - #{kernel}",
-          url: "https://centos-stream.osuosl.org/SIGs/$releasever/kmods/$basearch/kernel-#{kernel}/",
-          gpgcheck: true,
-          gpgkey: gpgkey,
-          exclude: 'kernel-headers kernel-cross-headers'
-        )
+      case p
+      when ALMA_8, ALMA_9
+        it do
+          is_expected.to create_yum_repository('centos-kmods-kernel-6.1').with(
+            description: 'CentOS $releasever - Kmods - Kernel - 6.1',
+            url: 'https://centos-stream.osuosl.org/SIGs/$releasever/kmods/$basearch/kernel-6.1/',
+            gpgcheck: true,
+            gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods'
+          )
+        end
+
+        it do
+          is_expected.to create_yum_repository('centos-kmods-kernel-6.6').with(
+            description: 'CentOS $releasever - Kmods - Kernel - 6.6',
+            url: 'https://centos-stream.osuosl.org/SIGs/$releasever/kmods/$basearch/kernel-6.6/',
+            gpgcheck: true,
+            gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods'
+          )
+        end
+      else
+        it { is_expected.to_not create_yum_repository 'centos-kmods-kernel-6.1' }
+        it { is_expected.to_not create_yum_repository 'centos-kmods-kernel-6.6' }
       end
 
-      (streams - [kernel]).each do |other|
-        it { is_expected.to_not create_yum_repository "centos-kmods-kernel-#{other}" }
+      if p[:version].to_i >= 9
+        it do
+          is_expected.to create_yum_repository('centos-kmods-kernel-latest').with(
+            description: 'CentOS $releasever - Kmods - Kernel',
+            url: 'https://centos-stream.osuosl.org/SIGs/$releasever/kmods/$basearch/kernel-latest/',
+            gpgcheck: true,
+            gpgkey: 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods'
+          )
+        end
+      else
+        it { is_expected.to_not create_yum_repository 'centos-kmods-kernel-latest' }
       end
     end
-  end
-
-  context 'kernel stream not published for the release' do
-    cached(:chef_run) do
-      ChefSpec::SoloRunner.new(ALMA_8.dup.merge(step_into: :osl_repos_centos_kmods))
-                          .converge('osl-repos-test::centos_kmods_unavailable')
-    end
-
-    it { expect { chef_run }.to raise_error(RuntimeError, /does not publish kernel-latest for EL8 \(available: 6.1, 6.6\)/) }
   end
 end

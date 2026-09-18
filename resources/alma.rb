@@ -18,7 +18,7 @@ property :exclude, Array, default: []
 action :add do
   raise 'AlmaLinux repositories are for AlmaLinux systems only' unless platform?('almalinux')
 
-  # Manage components of the main yum configuration file.
+  # Main yum configuration file
   yum_globalconfig '/etc/yum.conf' do
     cachedir '/var/cache/dnf'
     installonly_limit '2'

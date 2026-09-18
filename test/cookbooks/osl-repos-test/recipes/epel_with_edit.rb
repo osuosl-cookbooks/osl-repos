@@ -1,6 +1,6 @@
 #
 # Cookbook:: osl-repos
-# Recipe:: disable
+# Recipe:: epel_with_edit
 #
 # Copyright:: 2020-2026, Oregon State University
 #
@@ -8,7 +8,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,8 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Disable select repos directly via the resource
+# Adjusting the repo after including the recipe, per the README
 
-osl_repos_alma 'default' do
-  powertools false
+include_recipe 'osl-repos::epel'
+
+edit_resource(:osl_repos_epel, 'default') do
+  exclude %w(foo bar)
 end
