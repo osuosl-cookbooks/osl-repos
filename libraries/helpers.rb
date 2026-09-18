@@ -31,6 +31,16 @@ module OslRepos
         end
       end
 
+      # Kernel streams the Kmods SIG publishes per EL release
+      # https://sigs.centos.org/kmods/repositories/
+      def kmods_kernel_streams
+        {
+          8 => %w(6.1 6.6),
+          9 => %w(6.1 6.6 6.12 6.18 latest),
+          10 => %w(6.18 latest),
+        }
+      end
+
       def repo_resource_exist?(resource)
         !find_resource!(:yum_repository, resource).nil?
       rescue Chef::Exceptions::ResourceNotFound
