@@ -49,10 +49,13 @@ https://github.com/osuosl-cookbooks/osl-repos
 
 ## Resources:
 
-- `osl_repos_elrepo` - Manages and configures the elrepo repository using the `yum-epel` cookbook
-- `osl_repos_epel`   - Manages and configures the epel repository using the `yum-elrepo` cookbook
-- `osl_repos_alma`   - Manages and configures the base, extras, appstream, highavailability, powertools
-- `osl_repos_centos_kmods` - Manages the CentOS Kmods SIG package repos and an optional kernel stream repo
+| Resource                 | Description                                                             |
+|------------------------- |------------------------------------------------------------------------ |
+| `osl_repos_alma`         | Manages the AlmaLinux distribution repositories                          |
+| `osl_repos_centos_kmods` | Manages the CentOS Kmods SIG repositories                                |
+| `osl_repos_elrepo`       | Manages the elrepo repository using the `yum-elrepo` cookbook            |
+| `osl_repos_epel`         | Manages the epel repository using the `yum-epel` cookbook                |
+| `osl_repos_openstack`    | Manages the RDO, OSL OpenStack and CentOS NFV repositories               |
 
 ### Actions:
 
@@ -90,19 +93,6 @@ Note: unlike the others, `nvidia` is only declared when it is true, so the repo 
 | kernel_latest      | Manage the kmods kernel-latest repo        | False   | Alma 9, 10     |
 | kernel_6_1         | Manage the kmods kernel-6.1 repo           | False   | Alma 8, 9      |
 | kernel_6_6         | Manage the kmods kernel-6.6 repo           | False   | Alma 8, 9      |
-
-### osl_repos_centos_kmods:
-| Property           | Effect                                                         | Default | Compatibility                 |
-|------------------- |--------------------------------------------------------------- |-------- |------------------------------ |
-| kernel             | Kernel stream repo to add: `6.1`, `6.6`, `6.12`, `6.18`, `latest` | nil     | Alma 8: 6.1, 6.6; Alma 9: all; Alma 10: 6.18, latest |
-| packages_main      | Enable the packages-main repo                                  | True    | Alma 8, 9, 10                 |
-| packages_rebuild   | Enable the packages-rebuild repo                               | False   | Alma 8, 9, 10                 |
-| packages_userspace | Enable the packages-userspace repo                             | False   | Alma 8, 9, 10                 |
-
-The resource raises when `kernel` names a stream the SIG does not publish for the
-node's release. Kernel repos exclude `kernel-headers` and `kernel-cross-headers`
-so glibc keeps the AlmaLinux headers. Changing `kernel` on a node leaves the previous
-`centos-kmods-kernel-*.repo` file behind; remove it by hand.
 
 ### osl_repos_elrepo:
 
@@ -154,17 +144,6 @@ include_recipe 'osl-repos::alma'
 
 # or resource
 osl_repos_alma 'default'
-```
-
-Install the 6.18 LTS kernel from the CentOS Kmods SIG:
-```ruby
-osl_repos_centos_kmods 'default' do
-  kernel '6.18'
-end
-
-package 'kernel' do
-  action :upgrade
-end
 ```
 
 Disable or enable a specific repo on *creation* (In this case PowerTools):
