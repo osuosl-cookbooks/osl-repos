@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.13.0 (2026-09-18)
+-------------------
+- Select the Kmods SIG kernel stream with a single kernel property
+
 5.12.0 (2026-05-15)
 -------------------
 - Bump yum-almalinux to 3.1.0 and add testing/nvidia repos
