@@ -102,7 +102,7 @@ module OslRepos
         case node['platform_version'].to_i
         when 10
           'epoxy'
-        when 8, 9
+        when 9
           'yoga'
         end
       end
@@ -111,9 +111,6 @@ module OslRepos
         case node['platform_version'].to_i
         when 9, 10
           'https://centos-stream.osuosl.org/SIGs/$releasever-stream/cloud'
-        when 8
-          # TODO: Upstream has removed RDO from mirrors so this is a local mirror
-          'https://ftp.osuosl.org/pub/osl/rdo/$releasever'
         end
       end
 
@@ -130,9 +127,6 @@ module OslRepos
         case node['platform_version'].to_i
         when 9, 10
           'https://centos-stream.osuosl.org/SIGs/$releasever-stream/nfv/$basearch/openvswitch-2'
-        when 8
-          # TODO: Upstream has removed RDO from mirrors so this is a local mirror
-          'https://ftp.osuosl.org/pub/osl/vault/$releasever-stream/nfv/$basearch/openvswitch-2'
         end
       end
     end

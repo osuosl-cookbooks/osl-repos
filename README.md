@@ -15,6 +15,7 @@ https://github.com/osuosl-cookbooks/osl-repos
 - `osl-repos::elevate` - Configures and enables the 'elevate' repository
 - `osl-repos::elrepo`  - Configures and enables the 'elrepo' repository
 - `osl-repos::epel`    - Configures and enables the 'epel' repository
+- `osl-repos::openstack` - Configures the OpenStack RDO, OSL and NFV repositories via `osl_repos_openstack`
 - `osl-repos::oslrepo` - Configures and enables the 'oslrepo' repository (legacy OSL repo)
 
 ## Resources:
@@ -23,6 +24,7 @@ https://github.com/osuosl-cookbooks/osl-repos
 - `osl_repos_epel`   - Manages and configures the epel repository using the `yum-elrepo` cookbook
 - `osl_repos_alma`   - Manages and configures the base, extras, appstream, highavailability, powertools
 - `osl_repos_centos_kmods` - Manages the CentOS Kmods SIG package repos and an optional kernel stream repo
+- `osl_repos_openstack` - Manages the OpenStack RDO, OSL (plus POWER10) and CentOS NFV repos
 
 ### Actions:
 
@@ -55,6 +57,14 @@ The resource raises when `kernel` names a stream the SIG does not publish for th
 node's release. Kernel repos exclude `kernel-headers` and `kernel-cross-headers`
 so glibc keeps the AlmaLinux headers. Changing `kernel` on a node leaves the previous
 `centos-kmods-kernel-*.repo` file behind; remove it by hand.
+
+### osl_repos_openstack:
+| Property | Effect                                   | Default                       | Compatibility |
+|--------- |----------------------------------------- |------------------------------ |-------------- |
+| version  | OpenStack release in the repo paths      | Alma 9: `yoga`, Alma 10: `epoxy` | Alma 9, 10    |
+
+The `osl-repos::openstack` recipe takes `version` from `node['osl-repos']['openstack']['version']` when set.
+The resource raises on AlmaLinux 8, where the RDO repositories are no longer mirrored.
 
 ### osl_repos_elrepo:
 | Property  | Effect                  | Default | Compatibility  |
