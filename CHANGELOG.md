@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.14.0 (2026-09-28)
+-------------------
+- openstack: drop AlmaLinux 8 support
+
 5.13.0 (2026-09-18)
 -------------------
 - Select the Kmods SIG kernel stream with a single kernel property
