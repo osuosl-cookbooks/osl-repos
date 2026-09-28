@@ -7,6 +7,8 @@ default_action :add
 property :version, String, default: lazy { openstack_release }
 
 action :add do
+  raise "osl_repos_openstack supports EL9 and later, not EL#{node['platform_version'].to_i}" unless openstack_baseurl
+
   include_recipe 'osl-repos::epel'
 
   yum_repository 'RDO-openstack' do

@@ -12,8 +12,6 @@ control 'openstack' do
       its('baseurl') { should include "https://centos-stream.osuosl.org/SIGs/10-stream/cloud/#{arch}/openstack-epoxy" }
     when 9
       its('baseurl') { should include "https://centos-stream.osuosl.org/SIGs/9-stream/cloud/#{arch}/openstack-yoga" }
-    when 8
-      its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/rdo/8/#{arch}/openstack-yoga" }
     end
   end
 
@@ -25,8 +23,6 @@ control 'openstack' do
       its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/repos/yum/10/openstack-epoxy/#{arch}" }
     when 9
       its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/repos/yum/9/openstack-yoga/#{arch}" }
-    when 8
-      its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/repos/yum/8/openstack-yoga/#{arch}" }
     end
   end
 
@@ -38,8 +34,6 @@ control 'openstack' do
       its('baseurl') { should include "https://centos-stream.osuosl.org/SIGs/10-stream/nfv/#{arch}/openvswitch-2" }
     when 9
       its('baseurl') { should include "https://centos-stream.osuosl.org/SIGs/9-stream/nfv/#{arch}/openvswitch-2" }
-    when 8
-      its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/vault/8-stream/nfv/#{arch}/openvswitch-2" }
     end
   end
 
