@@ -85,6 +85,11 @@ suites:
       - debian-12
       - debian-13
       - ubuntu-24.04
+  - name: openstack_osuosl
+    run_list:
+      - recipe[osl-repos-test::openstack_osuosl]
+    includes:
+      - almalinux-9
   - name: highavailability
     run_list:
       - recipe[osl-repos-test::highavailability]

@@ -18,4 +18,5 @@
 
 osl_repos_openstack 'default' do
   version node.read('osl-repos', 'openstack', 'version') || openstack_release
+  source (node.read('osl-repos', 'openstack', 'source') || :rdo).to_sym
 end
