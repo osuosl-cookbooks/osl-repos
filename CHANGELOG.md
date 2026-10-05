@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.15.0 (2026-10-05)
+-------------------
+- Add an :osuosl source to osl_repos_openstack
+
 5.14.0 (2026-09-28)
 -------------------
 - openstack: drop AlmaLinux 8 support
