@@ -67,6 +67,7 @@ so glibc keeps the AlmaLinux headers. Changing `kernel` on a node leaves the pre
 The `osl-repos::openstack` recipe takes `version` and `source` from `node['osl-repos']['openstack']['version']`
 and `['source']` when set. Switching a node from `:rdo` to `:osuosl` does not remove the RDO repo files.
 The resource raises on AlmaLinux 8, where the RDO repositories are no longer mirrored.
+The `:osuosl` repo's metadata expires after 15 minutes, so a published RPM is seen on the next converge.
 
 ### osl_repos_elrepo:
 | Property  | Effect                  | Default | Compatibility  |

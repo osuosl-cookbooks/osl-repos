@@ -21,6 +21,7 @@ control 'openstack_osuosl' do
   describe ini('/etc/yum.repos.d/OSL-openstack.repo') do
     its('OSL-openstack.gpgcheck') { should cmp '1' }
     its('OSL-openstack.gpgkey') { should cmp 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl-2024' }
+    its('OSL-openstack.metadata_expire') { should cmp '15m' }
   end
 
   # The :osuosl source must NOT pull in any of the RDO-era repos.

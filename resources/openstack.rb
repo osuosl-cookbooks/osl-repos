@@ -51,6 +51,8 @@ action :add do
       description "OSL OpenStack #{new_resource.version}"
       baseurl "https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack/#{new_resource.version}/$basearch/"
       gpgkey osl_gpg_key
+      # dnf's 48h default delayed newly published RPMs by up to two days
+      metadata_expire '15m'
       priority '10'
     end
   end
