@@ -10,6 +10,10 @@ property :version, String, default: lazy { openstack_release }
 # venv RPM repo (osuosl-openstack-* RPMs)
 property :source, Symbol, equal_to: %i(rdo osuosl), default: :rdo
 
+# :osuosl only: a second, disabled repo lets a node stage the next release
+property :repo_name, String, default: 'OSL-openstack'
+property :enabled, [true, false], default: true
+
 action :add do
   raise "osl_repos_openstack supports EL9 and later, not EL#{node['platform_version'].to_i}" unless openstack_baseurl
 
@@ -47,9 +51,10 @@ action :add do
       gpgkey 'https://centos.org/keys/RPM-GPG-KEY-CentOS-SIG-NFV'
     end
   when :osuosl
-    yum_repository 'OSL-openstack' do
+    yum_repository new_resource.repo_name do
       description "OSL OpenStack #{new_resource.version}"
       baseurl "https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack/#{new_resource.version}/$basearch/"
+      enabled new_resource.enabled
       gpgkey osl_gpg_key
       # dnf's 48h default delayed newly published RPMs by up to two days
       metadata_expire '15m'
