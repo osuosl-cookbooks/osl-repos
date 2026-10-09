@@ -292,6 +292,7 @@ describe 'osl-repos-test::openstack_osuosl' do
             description: 'OSL OpenStack epoxy',
             baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack/epoxy/$basearch/',
             gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl-2024',
+            metadata_expire: '15m',
             priority: '10'
           )
         end
@@ -301,6 +302,7 @@ describe 'osl-repos-test::openstack_osuosl' do
             description: 'OSL OpenStack yoga',
             baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack/yoga/$basearch/',
             gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl-2024',
+            metadata_expire: '15m',
             priority: '10'
           )
         end
