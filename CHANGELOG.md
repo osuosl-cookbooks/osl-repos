@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.15.1 (2026-10-09)
+-------------------
+- Expire the OSL-openstack repo metadata after 15 minutes
+
 5.15.0 (2026-10-05)
 -------------------
 - Add an :osuosl source to osl_repos_openstack
