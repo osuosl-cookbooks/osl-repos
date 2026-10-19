@@ -63,11 +63,15 @@ so glibc keeps the AlmaLinux headers. Changing `kernel` on a node leaves the pre
 |--------- |----------------------------------------- |------------------------------ |-------------- |
 | version  | OpenStack release in the repo paths      | Alma 9: `yoga`, Alma 10: `epoxy` | Alma 9, 10    |
 | source   | `:rdo` adds the RDO, OSL, POWER10 and NFV repos; `:osuosl` adds only the OSL-built venv RPM repo (`osuosl-openstack-*` packages) | `:rdo` | Alma 9, 10 |
+| repo_name | Repo id of the `:osuosl` repo (ignored by `:rdo`) | `OSL-openstack` | Alma 9, 10 |
+| enabled  | Whether the `:osuosl` repo is enabled (ignored by `:rdo`) | `true` | Alma 9, 10 |
 
 The `osl-repos::openstack` recipe takes `version` and `source` from `node['osl-repos']['openstack']['version']`
 and `['source']` when set. Switching a node from `:rdo` to `:osuosl` does not remove the RDO repo files.
 The resource raises on AlmaLinux 8, where the RDO repositories are no longer mirrored.
 The `:osuosl` repo's metadata expires after 15 minutes, so a published RPM is seen on the next converge.
+A second `:osuosl` instance with its own `repo_name` and `enabled false` stages the next release: dnf
+reads it only with `--enablerepo`, and Chef never fetches its metadata.
 
 ### osl_repos_elrepo:
 | Property  | Effect                  | Default | Compatibility  |

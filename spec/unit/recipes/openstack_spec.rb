@@ -285,6 +285,17 @@ describe 'osl-repos-test::openstack_osuosl' do
       it { is_expected.to_not create_yum_repository 'RDO-openstack' }
       it { is_expected.to_not create_yum_repository 'centos-nfv' }
       it { is_expected.to_not create_yum_repository 'OSL-openstack-power10' }
+      it { is_expected.to create_yum_repository('OSL-openstack').with(enabled: true) }
+      it do
+        is_expected.to create_yum_repository('OSL-openstack-zed').with(
+          description: 'OSL OpenStack zed',
+          baseurl: 'https://ftp.osuosl.org/pub/osl/repos/yum/$releasever/openstack/zed/$basearch/',
+          enabled: false,
+          gpgkey: 'https://ftp.osuosl.org/pub/osl/repos/yum/RPM-GPG-KEY-osuosl-2024',
+          metadata_expire: '15m',
+          priority: '10'
+        )
+      end
       case p
       when ALMA_10
         it do

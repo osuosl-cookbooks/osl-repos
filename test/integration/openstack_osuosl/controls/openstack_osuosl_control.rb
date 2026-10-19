@@ -24,6 +24,13 @@ control 'openstack_osuosl' do
     its('OSL-openstack.metadata_expire') { should cmp '15m' }
   end
 
+  # The staged next release is written disabled
+  describe yum.repo('OSL-openstack-zed') do
+    it { should exist }
+    it { should_not be_enabled }
+    its('baseurl') { should include "https://ftp.osuosl.org/pub/osl/repos/yum/#{rel}/openstack/zed/#{arch}" }
+  end
+
   # The :osuosl source must NOT pull in any of the RDO-era repos.
   describe yum.repo('RDO-openstack') do
     it { should_not exist }
