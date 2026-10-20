@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.17.0 (2026-10-20)
+-------------------
+- fix: updated elrepo and epel resources and spec files
+
 5.16.0 (2026-10-19)
 -------------------
 - Let osl_repos_openstack write a named, disabled staging repo
