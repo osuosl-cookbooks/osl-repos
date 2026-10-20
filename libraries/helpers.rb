@@ -5,7 +5,7 @@ module OslRepos
         '$releasever'
       end
 
-      # Select the epel baseurl based on centos version
+      # epel baseurl varies by major release
       def epel_baseurl
         if node['platform_version'].to_i >= 10
           'https://epel.osuosl.org/$releasever${releasever_minor:+z}/Everything/$basearch/'
@@ -14,7 +14,7 @@ module OslRepos
         end
       end
 
-      # Define variables to use in alma repo urls
+      # Host for the alma repo urls
       def alma_url
         'https://almalinux.osuosl.org'
       end
@@ -39,63 +39,6 @@ module OslRepos
           9 => %w(6.1 6.6 6.12 6.18 latest),
           10 => %w(6.18 latest),
         }
-      end
-
-      def repo_resource_exist?(resource)
-        !find_resource!(:yum_repository, resource).nil?
-      rescue Chef::Exceptions::ResourceNotFound
-        false
-      end
-
-      # List all known parameters for yum_repository
-      # https://docs.chef.io/resources/yum_repository/
-      def yum_repo_parameters
-        %w(
-          baseurl
-          clean_metadata
-          cost
-          description
-          enabled
-          enablegroups
-          exclude
-          failovermethod
-          fastestmirror_enabled
-          gpgcheck
-          gpgkey
-          http_caching
-          include_config
-          includepkgs
-          keepalive
-          make_cache
-          makecache_fast
-          max_retries
-          metadata_expire
-          metalink
-          mirror_expire
-          mirrorlist
-          mirrorlist_expire
-          mode
-          options
-          password
-          priority
-          proxy
-          proxy_password
-          proxy_username
-          repo_gpgcheck
-          report_instanceid
-          reposdir
-          repositoryid
-          skip_if_unavailable
-          source
-          sslcacert
-          sslclientcert
-          sslclientkey
-          sslverify
-          throttle
-          timeout
-          username
-          action
-        )
       end
 
       def openstack_release
@@ -128,6 +71,15 @@ module OslRepos
         when 9, 10
           'https://centos-stream.osuosl.org/SIGs/$releasever-stream/nfv/$basearch/openvswitch-2'
         end
+      end
+
+      # Merges every declaration of a repo resource in the run, order independent so
+      # each writes identical content: union arrays with |, AND booleans with &&
+      def merge_shared_config(union: {}, all: {})
+        config = ((node.run_state['osl-repos'] ||= {})[resource_name] ||= {})
+        union.each { |name, value| config[name] = config.fetch(name, []) | Array(value) }
+        all.each { |name, value| config[name] = config.fetch(name, true) && value }
+        config
       end
     end
   end

@@ -18,7 +18,6 @@
 
 require_relative '../../spec_helper'
 
-# Begin Spec Tests
 describe 'osl-repos-test::centos_kmods' do
   gpgkey = 'https://www.centos.org/keys/RPM-GPG-KEY-CentOS-SIG-Kmods'
   streams = %w(6.1 6.6 6.12 6.18 latest)
@@ -30,7 +29,6 @@ describe 'osl-repos-test::centos_kmods' do
       end
       kernel = p[:version].to_i < 9 ? '6.6' : '6.18'
 
-      # Check for convergence
       it 'converges successfully' do
         expect { chef_run }.to_not raise_error
       end

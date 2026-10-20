@@ -1,5 +1,5 @@
 describe ini('/etc/yum.conf') do
-  its('main.distroverpkg') { should eq nil }
+  its('main.distroverpkg') { should eq 'almalinux-release' }
   its('main.cachedir') { should eq '/var/cache/dnf' }
   its('main.installonlypkgs') { should eq 'kernel kernel-osuosl' }
   its('main.installonly_limit') { should eq '2' }
@@ -51,8 +51,7 @@ describe yum.repo('testing') do
   its('mirrors') { should eq nil }
 end
 
-# nvidia is off by default and the resource is only declared when the
-# nvidia property is true, so the repo file should not be present.
+# Only declared when nvidia is true, so there should be no repo file
 describe yum.repo('nvidia') do
   it { should_not exist }
 end

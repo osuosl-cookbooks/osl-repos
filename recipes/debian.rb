@@ -16,8 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# The Debian installer drops a deb822 sources file at /etc/apt/sources.list.d/debian.sources
-# which would conflict with the legacy /etc/apt/sources.list we manage below.
+# The installer's deb822 sources would conflict with the sources.list we manage below
 execute 'remove deb822 sources file' do
   command 'rm -f /etc/apt/sources.list.d/*.sources'
   not_if { Dir.glob('/etc/apt/sources.list.d/*.sources').empty? }
