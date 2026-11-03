@@ -39,7 +39,7 @@ https://github.com/osuosl-cookbooks/osl-repos
 | Recipe                 | Description                                                                | Platforms         |
 |----------------------- |--------------------------------------------------------------------------- |------------------ |
 | `osl-repos::alma`      | Configures the AlmaLinux distribution repositories                          | AlmaLinux         |
-| `osl-repos::debian`    | Manages `/etc/apt/sources.list` and unattended upgrades                     | Debian            |
+| `osl-repos::debian`    | Manages `/etc/apt/sources.list` and unattended upgrades, and removes the `99osuosl` pin written by 5.1.0 to 5.11.0 | Debian            |
 | `osl-repos::elevate`   | Configures the AlmaLinux 'ELevate' repository                               | AlmaLinux         |
 | `osl-repos::elrepo`    | Configures the 'elrepo' repository                                          | AlmaLinux, x86_64 |
 | `osl-repos::epel`      | Configures the 'epel' repository                                            | AlmaLinux         |

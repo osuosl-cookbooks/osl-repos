@@ -31,6 +31,11 @@ template '/etc/apt/sources.list' do
   notifies :update, 'apt_update[update]', :immediately
 end
 
+# Written by 5.1.0 to 5.11.0; it pins trixie main to 990, above trixie-security
+file '/etc/apt/apt.conf.d/99osuosl' do
+  action :delete
+end
+
 package %w(unattended-upgrades apt-listchanges)
 
 cookbook_file '/etc/apt/apt.conf.d/50unattended-upgrades' do

@@ -40,7 +40,7 @@ suites:
       - almalinux-10
   - name: debian
     run_list:
-      - recipe[osl-repos::debian]
+      - recipe[osl-repos-test::debian]
     includes:
       - debian-12
       - debian-13

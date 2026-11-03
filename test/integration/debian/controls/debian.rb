@@ -23,6 +23,21 @@ control 'debian' do
     it { should_not exist }
   end
 
+  describe command 'apt-config dump' do
+    its('stdout') { should_not match /Default-Release/ }
+  end
+
+  # The test cookbook seeds 99osuosl on trixie only; the marker proves the delete had work to do
+  if os.release.to_i == 13
+    describe file '/var/tmp/osl-repos-99osuosl-seeded' do
+      it { should exist }
+    end
+
+    describe command 'apt-cache policy' do
+      its('stdout') { should_not match /^\s*990\s/ }
+    end
+  end
+
   %w(
     unattended-upgrades
     apt-listchanges
