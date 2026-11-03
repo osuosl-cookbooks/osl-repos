@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the osl-repos cookbook.
 
+5.17.1 (2026-11-03)
+-------------------
+- Delete the stale 99osuosl apt pin on Debian trixie
+
 5.17.0 (2026-10-20)
 -------------------
 - fix: updated elrepo and epel resources and spec files
