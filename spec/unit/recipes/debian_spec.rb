@@ -38,7 +38,7 @@ describe 'osl-repos::debian' do
           )
       end
       it { expect(chef_run.template('/etc/apt/sources.list')).to notify('apt_update[update]').to(:update).immediately }
-      it { is_expected.to_not create_file('/etc/apt/apt.conf.d/99osuosl') }
+      it { is_expected.to delete_file('/etc/apt/apt.conf.d/99osuosl') }
       it { is_expected.to install_package(%w(unattended-upgrades apt-listchanges)) }
       it do
         is_expected.to create_cookbook_file('/etc/apt/apt.conf.d/50unattended-upgrades').with(
